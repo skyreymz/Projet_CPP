@@ -3,4 +3,6 @@
 
 Joueur::~Joueur() {}
 
-
+int Joueur::getArgent() const{
+	return argent;
+}

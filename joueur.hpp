@@ -5,15 +5,15 @@
 
 class Joueur {
 	
+	bool mode; // 0 signifie manuel, 1 signifie automatique
 	int argent;
 	int pvBase;
 
 	
 	public:
-		Joueur(int depart = 50) : argent(depart), pvBase(100) {}
+		Joueur(int mod = 0, int depart = 50) : mode(mod), argent(depart), pvBase(100) {}
 		~Joueur();
-		
-		
+		int getArgent() const;
 };
 
 #endif
