@@ -13,7 +13,11 @@ class Joueur {
 	public:
 		Joueur(int mod = 0, int depart = 50) : mode(mod), argent(depart), pvBase(100) {}
 		~Joueur();
+
 		int getArgent() const;
+		void setArgent(int money);
+
+		virtual void dommages(int atq);
 };
 
 #endif

@@ -15,6 +15,8 @@ class Catapulte : public Unite {
 	public:
 		Catapulte() : Unite(12) {}
 		~Catapulte();
+
+		static int getPrix();
 };
 
 #endif

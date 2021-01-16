@@ -16,6 +16,10 @@ class Fantassin : public Unite {
 		Fantassin(int pdv) : Unite(pdv) {} // Pour le Super-Soldat
 		~Fantassin();
 
+		bool aVaincuFantassin(Unite* unite);
+
+		static int getPrix();
+
 
 };
 

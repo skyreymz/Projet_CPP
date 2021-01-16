@@ -10,3 +10,16 @@ int Unite::getPV() {
 int Unite::getCamp() {
 	return camp;
 }
+
+void Unite::dommages(int atq) {
+	pv -= atq;
+}
+
+bool Unite::estVaincu() {
+	if (pv <= 0) {
+		return true;
+	}
+	else{
+		return false;
+	}
+}
