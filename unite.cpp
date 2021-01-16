@@ -7,7 +7,7 @@ int Unite::getPV() const {
 	return pv;
 }
 
-int Unite::getCamp() const {
+bool Unite::getCamp() const {
 	return camp;
 }
 
@@ -19,7 +19,7 @@ std::string Unite::getInfos() const {
 	}
 }
 
-void Unite::dommages(int atq) {
+void Unite::setPV(int atq) {
 	pv -= atq;
 }
 

@@ -3,12 +3,16 @@
 
 #include <iostream>
 #include <string>
+#include <utility>
+#include <vector>
 
 class Unite {
 	
 	int pv;
 
-	int camp; // 1 ou -1, permet de differencier les unites du joueur de gauche de ceux du joueur de droite
+	bool camp; // permet de differencier les unites du joueur de gauche de ceux du joueur de droite
+
+	bool autreAction;
 	
 
 	public:
@@ -19,10 +23,13 @@ class Unite {
 		virtual std::string getInfos() const;
 
 		int getPV() const; // j'ai enlevé "virtual" car je pense que c'est nécesaire que quand on a de la redéfinition de méthode
-		virtual int getCamp() const;
+		bool getCamp() const;
 
-		virtual void dommages(int atq);
-		virtual bool estVaincu();
+		void setPV(int atq);
+		bool estVaincu();
+
+		// Renvoie une paire <true, vecteur d'indices des unites vaincus>, true si et seulement si un fantassin a vaincu un autre fantassin
+		virtual std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i);
 
 };
 

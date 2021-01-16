@@ -17,6 +17,8 @@ class Catapulte : public Unite {
 		~Catapulte();
 
 		static int getPrix();
+
+		void attaque(); // normalement c'est une redéfinition, sinon mon code est foutu pour faire l'action 1 
 };
 
 #endif
