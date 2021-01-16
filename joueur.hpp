@@ -20,7 +20,7 @@ class Joueur {
 		int getPvBase() const {return pvBase;};
 		int getArgent() const {return argent;};
 		void setArgent(int money) {argent += money;};
-		virtual void dommages(int atq){pvBase -= atq;}; // pk virtual ?
+		void dommages(int atq){pvBase -= atq;}; // pk virtual ?
 };
 
 #endif
