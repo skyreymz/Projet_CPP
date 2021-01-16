@@ -5,7 +5,7 @@
 #include "archer.hpp"
 #include "catapulte.hpp"
 
-AireDeJeu::AireDeJeu(bool mod, int tourActuel = 1, int tourMaximum = 100) {
+AireDeJeu::AireDeJeu(bool mod, int tourActuel, int tourMaximum) {
 	for (int i=0; i <= 12; i++) {
 		plateau[i] = nullptr;
 	}
@@ -149,6 +149,7 @@ void AireDeJeu::creationUniteManuelle(bool joueur){
 	}
 }
 
+
 void AireDeJeu::jouerTour() {
 
 	// tourDeJeu == 1 signifie que c'est le tour du joueur A, donc j1
@@ -236,37 +237,3 @@ void AireDeJeu::jouerTour() {
 
 }
 
-
-
-	/*
-
-
-2. Tour de jeu du joueur A
-(a) Phase de résolution des actions 1 des unités du joueur A
-(b) Phase de résolution des actions 2 des unités du joueur A
-(c) Phase de résolution des actions 3 des unités du joueur A
-(d) Création éventuelle d'une nouvelle unité du joueur A
-3. Tour de jeu du joueur B
-(a) Phase de résolution des actions 1 des unités du joueur B
-(b) Phase de résolution des actions 2 des unités du joueur B
-3
-(c) Phase de résolution des actions 3 des unités du joueur B
-(d) Création éventuelle d'une nouvelle unité du joueur B
-
-
-L'ordre dans lequel les unités eectuent leur action dépend de la phase :
-• Lors de la phase de résolution des actions 1, l'unité la plus proche de la base du joueur
-courant tente d'eectuer son action en premier, puis la deuxième unité la plus proche
-et ainsi de suite jusqu'à l'unité la plus lointaine de la base du joueur.
-• Lors des phases de résolution des actions 2 et 3, l'unité la plus lointaine de la base du
-joueur courant tente d'eectuer son action en premier, puis la deuxième unité la plus
-lointaine et ainsi de suite jusqu'à l'unité la plus proche de la base du joueur.
-
-A chaque étape, si l'unité a la possibilité de faire son action, elle l'eectue obligatoirement.
-A la n de son tour de jeu, le joueur a la possibilité de recruter une unité sur la case de sa base
-s'il possède assez de pièces d'or (le coût de recrutement est alors retranché de ce qu'il possède)
-
-
-
-
-	*/

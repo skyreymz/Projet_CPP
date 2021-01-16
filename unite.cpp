@@ -16,6 +16,9 @@ std::string Unite::getInfos() const {
 		return "A";
 	} else {
 		return "B";
+	}
+}
+
 void Unite::dommages(int atq) {
 	pv -= atq;
 }
