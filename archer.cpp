@@ -11,6 +11,10 @@ int Archer::getPrix() {
     return prix;
 }
 
+int Archer::getPrixDeces() {
+    return prix/2;
+}
+
 
 //IL FAUDRA CHANGER LE bool camp en int = 1 ou -1 
 std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i) {
@@ -25,5 +29,6 @@ std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i) {
             }
         }
     }
+    std::cout << (plateau[0] == nullptr) << i; // "warning plateau & i isn't used"
     return std::make_pair(false, std::vector<int>()={});
 }

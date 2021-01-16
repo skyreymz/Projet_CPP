@@ -28,8 +28,13 @@ int Fantassin::getPrix() {
     return prix;
 }
 
+int Fantassin::getPrixDeces() {
+    return prix/2;
+}
 
-//IL FAUDRA CHANGER LE bool camp en int = 1 ou -1 
+
+//IL FAUDRA CHANGER LE bool camp en int = 1 ou -1
+// ne pas oublier de donner de l'argent au joueur lorsqu'une unité meurt
 std::pair<bool,std::vector<int>> Fantassin::attaque(Unite* plateau[12], int i) {
     if (! (plateau[i + getCamp() * portee[0]] == nullptr) ) {
         if (plateau[i + getCamp() * portee[0]]->getCamp() != getCamp()) {

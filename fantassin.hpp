@@ -9,6 +9,8 @@ class Fantassin : public Unite {
 	static int prix;
 	static int atq;
 	static int portee[1];
+
+	bool autreAction;
 	
 	
 	public:
@@ -20,8 +22,9 @@ class Fantassin : public Unite {
 		bool aVaincuFantassin(Unite* unite);
 
 		static int getPrix();
+		int getPrixDeces();
 
-		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i); // normalement c'est une redéfinition, sinon mon code est foutu pour faire l'action 1 
+		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i); // ceci est une redéfinition car la méthode de la mère est virtual
 };
 
 #endif

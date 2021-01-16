@@ -11,8 +11,6 @@ class Unite {
 	int pv;
 
 	bool camp; // permet de differencier les unites du joueur de gauche de ceux du joueur de droite
-
-	bool autreAction;
 	
 
 	public:
@@ -30,6 +28,8 @@ class Unite {
 
 		// Renvoie une paire <true, vecteur d'indices des unites vaincus>, true si et seulement si un fantassin a vaincu un autre fantassin
 		virtual std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i);
+
+		virtual int getPrixDeces();
 
 };
 
