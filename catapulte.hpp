@@ -9,11 +9,11 @@ class Catapulte : public Unite {
 	
 	static int prix;
 	static int atq;
-	static std::pair<int,int> portee[2];
+	//static std::pair<int,int> portee[2];
 	
 	
 	public:
-		Catapulte() : Unite(12) {}
+		Catapulte(bool equipe) : Unite(12, equipe) {}
 		~Catapulte();
 };
 

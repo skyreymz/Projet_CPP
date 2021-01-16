@@ -8,15 +8,15 @@ class Fantassin : public Unite {
 	
 	static int prix;
 	static int atq;
-	static int portee[1];
+	//static int portee[1]; //problème avec initialisation du tableau static dans les .cpp
 	
 	
 	public:
-		Fantassin() : Unite(10) {}
-		Fantassin(int pdv) : Unite(pdv) {} // Pour le Super-Soldat
+		Fantassin(bool equipe) : Unite(10, equipe) {}
+		Fantassin(int pdv, bool equipe) : Unite(pdv, equipe) {} // Pour le Super-Soldat
 		~Fantassin();
 
-
+		std::string getInfos() const;
 };
 
 #endif

@@ -2,6 +2,7 @@
 #define UNITE_HPP
 
 #include <iostream>
+#include <string>
 
 class Unite {
 	
@@ -11,12 +12,14 @@ class Unite {
 	
 
 	public:
-		Unite(int pdv  /* , int equipe */) : pv(pdv) /* , camp(equipe) */ {} 
+		Unite(int pdv, bool equipe) : pv(pdv), camp(equipe) {} 
 		//rajouter dans ce constructeur et TOUS ceux qui en derivent par heritage, l'initialisation du camp (si jamais l'idee est bonne)
 		virtual ~Unite()=0;
 
-		virtual int getPV();
-		virtual int getCamp();
+		virtual std::string getInfos() const;
+
+		int getPV() const; // j'ai enlevé "virtual" car je pense que c'est nécesaire que quand on a de la redéfinition de méthode
+		virtual int getCamp() const;
 
 };
 

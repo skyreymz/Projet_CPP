@@ -8,11 +8,11 @@ class Archer : public Unite {
 	
 	static int prix;
 	static int atq;
-	static int portee[3];
+	//static int portee[3];
 	
 	
 	public:
-		Archer() : Unite(8) {}
+		Archer(bool equipe) : Unite(8, equipe) {}
 		~Archer();
 
 };
