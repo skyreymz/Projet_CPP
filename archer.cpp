@@ -6,3 +6,7 @@ int Archer::atq = 3;
 //int Archer::portee = {1,2,3};
 
 Archer::~Archer() {}
+
+int Archer::getPrix() {
+    return prix;
+}

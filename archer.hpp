@@ -15,6 +15,8 @@ class Archer : public Unite {
 		Archer(bool equipe) : Unite(8, equipe) {}
 		~Archer();
 
+		static int getPrix();
+
 };
 
 #endif

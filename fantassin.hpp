@@ -17,6 +17,9 @@ class Fantassin : public Unite {
 		~Fantassin();
 
 		std::string getInfos() const;
+		bool aVaincuFantassin(Unite* unite);
+
+		static int getPrix();
 };
 
 #endif

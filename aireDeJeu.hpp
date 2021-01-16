@@ -13,7 +13,7 @@
 class AireDeJeu {
 	public: // j'ai mis ça pour ajouter plus facilement pour les tests, faudra le supprimer
 	Unite* plateau[12]; // est ce une solution viable ? On ne sait pas si en C++, un fantassin sera considere comme une unite et pas plus...
-	int tourDeJeu; // 0 ou 1, permet de differencier le joueur de gauche de celui de droite
+	int tourDeJeu; // 1 ou -1, permet de differencier le joueur de gauche de celui de droite
 	int nbToursActuel;
 	int nbToursMAX;
 
@@ -22,8 +22,8 @@ class AireDeJeu {
 	Joueur jB;
 	
 	public:
-		AireDeJeu(int tourActuel = 0, int tourMaximum = 100, bool mod = 0) : plateau(), tourDeJeu(0), nbToursActuel(tourActuel), nbToursMAX(tourMaximum), mode(mod), jA(Joueur(0, 50)), jB(Joueur(mod, 50)) {} // initialise un tableau de pointeurs avec des pointeurs null
-		
+		AireDeJeu(bool mod, int tourActuel = 1, int tourMaximum = 100);
+
 		~AireDeJeu();
 
 		void print() const;
@@ -32,9 +32,10 @@ class AireDeJeu {
 		void creationUniteManuelle(bool joueur);
 
 		// Pour gerer le plateau :
-		// - retirer une Unite du plateau : delete plateau[element];
+		// - retirer une Unite du plateau : delete plateau[element]; plateau[element] = NULL;
 		// - s'il n'y a pas d'Unite sur la case du plateau : try catch des null pointers
 		
+		void jouerTour();
 		
 };
 

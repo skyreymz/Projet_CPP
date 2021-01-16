@@ -8,7 +8,7 @@ class Unite {
 	
 	int pv;
 
-	int camp; // 0 ou 1, permet de differencier les unites du joueur de gauche de ceux du joueur de droite
+	int camp; // 1 ou -1, permet de differencier les unites du joueur de gauche de ceux du joueur de droite
 	
 
 	public:
@@ -20,6 +20,9 @@ class Unite {
 
 		int getPV() const; // j'ai enlevé "virtual" car je pense que c'est nécesaire que quand on a de la redéfinition de méthode
 		virtual int getCamp() const;
+
+		virtual void dommages(int atq);
+		virtual bool estVaincu();
 
 };
 
