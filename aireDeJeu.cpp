@@ -265,15 +265,12 @@ void AireDeJeu::creationUniteManuelle(bool joueur){
 
 void AireDeJeu::jouerTour() {
 
-<<<<<<< HEAD
-=======
 	char choix;
 	int indice;
 	Joueur joueur;
 	bool equipe;
 	int indiceUniteMAX; //utile pour l'action 2 et 3, potentiellement +/- 1 apres mouvement lors de l'action 2!
 
->>>>>>> 39deda2bb8eab063322a273e870fef242d2b67d2
 	// tourDeJeu == 1 signifie que c'est le tour du joueur A, donc jA
 	// tourDeJeu == -1 signifie que c'est le tour du joueur B, donc jB
 
@@ -294,73 +291,46 @@ void AireDeJeu::jouerTour() {
 	// 2) Tour de jeu d'un joueur
 	
 	// Action 1
-	if (tourDeJeu == 1) {
-		for (int i=indice; i<12; i=i+tourDeJeu) { // c dommage car y'a que le i<12 et le i>0 qui different entre les 2 gros blocs... mais y'a pas le choix car je trouve pas de condition commune
-			if (! (plateau[i] == nullptr)) {
-				if (plateau[i]->getCamp() == tourDeJeu) {
-					indiceUniteMAX = i;
-					std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i);
-					// On évolue le fantassin s'il a vaincu un fantassin ennemi
-					if (paire.first) {
-						int pv = plateau[i]->getPV();
-						int camp = plateau[i]->getCamp(); //changer le camp et equipe en int 1 ou -1 !!!!! pck la c un bool
-						delete plateau[i];
-						plateau[i] = new SuperSoldat(pv, camp);
-					}
-					// On enlève les unités vaincus
-					for (int j=0; j<paire.second.size(); j++) {
-						delete plateau[paire.second[j]];
-					}
+	for (int i=indice; ((tourDeJeu == 1) && (i < 11)) || ((tourDeJeu == -1) && (i > 0)); i=i+tourDeJeu) {
+		if (! (plateau[i] == nullptr)) {
+			if (plateau[i]->getCamp() == tourDeJeu) {
+				indiceUniteMAX = i;
+				std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i);
+				// On évolue le fantassin s'il a vaincu un fantassin ennemi
+				if (paire.first) {
+					int pv = plateau[i]->getPV();
+					int camp = plateau[i]->getCamp(); //changer le camp et equipe en int 1 ou -1 !!!!! pck la c un bool
+					delete plateau[i];
+					plateau[i] = new SuperSoldat(pv, camp);
 				}
-				else {
-					break;
+				// On enlève les unités vaincus
+//>>>>>>>>>>>>>>>> ne pas oublier de donner de l'argent au joueur lorsqu'une unité meurt
+				for (size_t j=0; j<paire.second.size(); j++) {
+					delete plateau[paire.second[j]];
 				}
 			}
-		}
-	}
-	else {
-		for (int i=indice; i>0; i=i+tourDeJeu) {
-			if (! (plateau[i] == nullptr)) {
-				if (plateau[i]->getCamp() == tourDeJeu) {
-					indiceUniteMAX = i;
-					std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i);
-					// On évolue le fantassin s'il a vaincu un fantassin ennemi
-					if (paire.first) {
-						int pv = plateau[i]->getPV();
-						int camp = plateau[i]->getCamp(); //changer le camp et equipe en int 1 ou -1 !!!!! pck la c un bool
-						delete plateau[i];
-						plateau[i] = new SuperSoldat(pv, camp);
-					}
-					// On enlève les unités vaincus
-					for (int j=0; j<paire.second.size(); j++) {
-						delete plateau[paire.second[j]];
-					}
-				}
-				else {
-					break;
-				}
+			else {
+				break;
 			}
 		}
 	}
 
 
-<<<<<<< HEAD
 	// 4) Fin de tour d'un joueur
-	char choix;
-	int indice;
+	//char choix;  // déjà défini ci-dessus
+	//int indice;  // déjà défini ci-dessus
 
 	if (tourDeJeu == 1) {
 		indice = 0;
 	} else {
 		indice = 11;
 	}
-=======
+
 	// Action 2
-	// Commencer à parcourir à partir de indiceUniteMAX !!!!
-	
+	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
+		// to do
+	}
 
-
->>>>>>> 39deda2bb8eab063322a273e870fef242d2b67d2
 
 	// 3) Fin de tour d'un joueur
 	if (plateau[indice] == nullptr) {
@@ -394,18 +364,6 @@ void AireDeJeu::jouerTour() {
 		
 		
 		if (choix == 'f') {
-<<<<<<< HEAD
-			jA.setArgent( (-1) * Fantassin::getPrix() );
-			plateau[indice] = new Fantassin(0);
-		}
-		else if (choix == 'a') {
-			jA.setArgent( (-1) * Archer::getPrix() );
-			plateau[indice] = new Archer(0);
-		}
-		else if (choix == 'c') {
-			jA.setArgent( (-1) * Catapulte::getPrix() );
-			plateau[indice] = new Catapulte(0);
-=======
 			joueur.setArgent( (-1) * Fantassin::getPrix() );
 			plateau[indice] = new Fantassin(equipe);
 		}
@@ -416,7 +374,6 @@ void AireDeJeu::jouerTour() {
 		else if (choix == 'c') {
 			joueur.setArgent( (-1) * Catapulte::getPrix() );
 			plateau[indice] = new Catapulte(equipe);
->>>>>>> 39deda2bb8eab063322a273e870fef242d2b67d2
 		}
 		else {
 
