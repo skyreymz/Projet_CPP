@@ -1,8 +1,6 @@
 #include <iostream>
 #include "aireDeJeu.hpp"
-<<<<<<< HEAD
 #include <string>
-=======
 #include "fantassin.hpp"
 #include "archer.hpp"
 #include "catapulte.hpp"
@@ -158,9 +156,9 @@ void AireDeJeu::jouerTour() {
 
 	// 1) Chaque joueur reçoit 8 pièces d'or (A SON TOUR ???????? Je vais considerer que oui...)
 	if (tourDeJeu == 1) {
-		j1->setArgent(8);
+		jA.setArgent(8);
 	} else {
-		j2->setArgent(8);
+		jB.setArgent(8);
 	}
 
 
@@ -177,11 +175,14 @@ void AireDeJeu::jouerTour() {
 	// 4) Fin de tour d'un joueur
 	char choix;
 	int indice;
+	Joueur joueur;
 
 	if (tourDeJeu == 1) {
 		indice = 0;
+		joueur = jA;
 	} else {
 		indice = 11;
+		joueur = jB;
 	}
 
 	if (plateau[indice] == nullptr) {
@@ -191,19 +192,19 @@ void AireDeJeu::jouerTour() {
 
 		do { std::cin >> choix; } while ( (choix != 'f') && (choix != 'a') && (choix != 'c') && (choix != 'o') );
 
-		if (j1->getArgent() < 10) {
+		if (joueur.getArgent() < 10) {
 			while (choix != 'o') {
 				std::cout << "Vous n'avez pas assez d'argent pour recruter" << std::endl << "Veuillez finir votre tour (en cliquant sur o)" << std::endl;
 				std::cin >> choix;
 			}
 		}
-		else if ( (j1->getArgent() >= 10) && (j1->getArgent() < 12) ) {
+		else if ( (joueur.getArgent() >= 10) && (joueur.getArgent() < 12) ) {
 			while ((choix != 'o') && (choix != 'f')) {
 				std::cout << "Vous ne pouvez recruter qu'un fantassin" << std::endl << "Veuillez recommencer" << std::endl;;
 				std::cin >> choix;
 			}
 		}
-		else if ( (j1->getArgent() >= 12) && (j1->getArgent() < 20) ) {
+		else if ( (joueur.getArgent() >= 12) && (joueur.getArgent() < 20) ) {
 			while ((choix != 'o') && (choix != 'f') && (choix != 'a')) {
 				std::cout << "Vous ne pouvez recruter qu'un fantassin ou qu'un archer" << std::endl << "Veuillez recommencer" << std::endl;;
 				std::cin >> choix;
@@ -215,15 +216,15 @@ void AireDeJeu::jouerTour() {
 		
 		
 		if (choix == 'f') {
-			j1->setArgent( (-1) * Fantassin::getPrix() );
+			joueur.setArgent( (-1) * Fantassin::getPrix() );
 			plateau[indice] = new Fantassin();
 		}
 		else if (choix == 'a') {
-			j1->setArgent( (-1) * Archer::getPrix() );
+			joueur.setArgent( (-1) * Archer::getPrix() );
 			plateau[indice] = new Archer();
 		}
 		else if (choix == 'c') {
-			j1->setArgent( (-1) * Catapulte::getPrix() );
+			joueur.setArgent( (-1) * Catapulte::getPrix() );
 			plateau[indice] = new Catapulte();
 		}
 		else {
