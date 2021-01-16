@@ -265,15 +265,12 @@ void AireDeJeu::creationUniteManuelle(bool joueur){
 
 void AireDeJeu::jouerTour() {
 
-<<<<<<< HEAD
-=======
 	char choix;
 	int indice;
 	Joueur joueur;
 	bool equipe;
 	int indiceUniteMAX; //utile pour l'action 2 et 3, potentiellement +/- 1 apres mouvement lors de l'action 2!
 
->>>>>>> 39deda2bb8eab063322a273e870fef242d2b67d2
 	// tourDeJeu == 1 signifie que c'est le tour du joueur A, donc jA
 	// tourDeJeu == -1 signifie que c'est le tour du joueur B, donc jB
 
@@ -310,6 +307,7 @@ void AireDeJeu::jouerTour() {
 					// On enlève les unités vaincus
 					for (int j=0; j<paire.second.size(); j++) {
 						delete plateau[paire.second[j]];
+						plateau[paire.second[j]] = nullptr; // utile ?
 					}
 				}
 				else {
@@ -334,6 +332,7 @@ void AireDeJeu::jouerTour() {
 					// On enlève les unités vaincus
 					for (int j=0; j<paire.second.size(); j++) {
 						delete plateau[paire.second[j]];
+						plateau[paire.second[j]] = nullptr;
 					}
 				}
 				else {
@@ -344,23 +343,11 @@ void AireDeJeu::jouerTour() {
 	}
 
 
-<<<<<<< HEAD
-	// 4) Fin de tour d'un joueur
-	char choix;
-	int indice;
-
-	if (tourDeJeu == 1) {
-		indice = 0;
-	} else {
-		indice = 11;
-	}
-=======
 	// Action 2
 	// Commencer à parcourir à partir de indiceUniteMAX !!!!
 	
 
 
->>>>>>> 39deda2bb8eab063322a273e870fef242d2b67d2
 
 	// 3) Fin de tour d'un joueur
 	if (plateau[indice] == nullptr) {
@@ -394,18 +381,6 @@ void AireDeJeu::jouerTour() {
 		
 		
 		if (choix == 'f') {
-<<<<<<< HEAD
-			jA.setArgent( (-1) * Fantassin::getPrix() );
-			plateau[indice] = new Fantassin(0);
-		}
-		else if (choix == 'a') {
-			jA.setArgent( (-1) * Archer::getPrix() );
-			plateau[indice] = new Archer(0);
-		}
-		else if (choix == 'c') {
-			jA.setArgent( (-1) * Catapulte::getPrix() );
-			plateau[indice] = new Catapulte(0);
-=======
 			joueur.setArgent( (-1) * Fantassin::getPrix() );
 			plateau[indice] = new Fantassin(equipe);
 		}
@@ -416,7 +391,6 @@ void AireDeJeu::jouerTour() {
 		else if (choix == 'c') {
 			joueur.setArgent( (-1) * Catapulte::getPrix() );
 			plateau[indice] = new Catapulte(equipe);
->>>>>>> 39deda2bb8eab063322a273e870fef242d2b67d2
 		}
 		else {
 

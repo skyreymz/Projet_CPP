@@ -33,9 +33,12 @@ int Fantassin::getPrix() {
 std::pair<bool,std::vector<int>> Fantassin::attaque(Unite* plateau[12], int i) {
     if (! (plateau[i + getCamp() * portee[0]] == nullptr) ) {
         if (plateau[i + getCamp() * portee[0]]->getCamp() != getCamp()) {
-            plateau[i+ getCamp() * portee[0]]->setPV(-atq);
+            plateau[i + getCamp() * portee[0]]->setPV(-atq);
             if (aVaincuFantassin(plateau[i + getCamp() * portee[0]])) {
                 return std::make_pair(true, std::vector<int>(1)={i+ getCamp() * portee[0]});
+            }
+            else if (plateau[i + getCamp() * portee[0]]->estVaincu()) {
+                return std::make_pair(false, std::vector<int>(1)={i+ getCamp() * portee[0]});
             }
         }
     }
