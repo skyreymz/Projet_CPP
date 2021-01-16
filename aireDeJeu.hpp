@@ -17,7 +17,6 @@ class AireDeJeu {
 	int nbToursActuel;
 	int nbToursMAX;
 
-	bool mode; // mode du joueur B : 0 signifie manuel ; 1 signifie automatique
 	Joueur jA;
 	Joueur jB;
 	
@@ -26,7 +25,12 @@ class AireDeJeu {
 
 		~AireDeJeu();
 
+		void charger(char* entree);
+		void sauvegarder(char* sortie) const;
+		void setAireDeJeu(int tourDeJeu0, int nbToursActuel0, int nbToursMAX0){tourDeJeu = tourDeJeu0; nbToursActuel = nbToursActuel0; nbToursMAX = nbToursMAX0;};
+
 		void print() const;
+		bool finDeJeu() const;
 
 		void nouveauTour();
 		void creationUniteManuelle(bool joueur);

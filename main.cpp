@@ -7,7 +7,7 @@ int main() {
 	std::cout << "MODE CHOISI : Joueur A (manuel) vs Joueur B (" + mode + ')' << std::endl;
 
 	std::cout << "INSTANCIATION D'UNE AIRE DE JEU" << std::endl;
-	AireDeJeu* a = new AireDeJeu(0, 100, m);
+	AireDeJeu* a = new AireDeJeu(m);
 	
 	// TESTS
 	Fantassin* f = new Fantassin(1);
@@ -20,9 +20,14 @@ int main() {
 
 	//a->print();
 
-	delete a;//je crois qu'il faut aussi détruire le plateau
+	char* nomFichier = new char;
+	std::cout << "entrez le nom du fichier à charger : ";
+	std::cin >> nomFichier;
+	a->charger(nomFichier);
 
-	
+	a->print();
+
+	delete a; //je crois qu'il faut aussi détruire le plateau
 
 	return 0;
 }

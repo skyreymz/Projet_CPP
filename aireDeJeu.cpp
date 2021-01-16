@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "aireDeJeu.hpp"
 #include <string>
 
@@ -10,12 +11,109 @@ AireDeJeu::AireDeJeu(bool mod, int tourActuel, int tourMaximum) {
 	tourDeJeu = 0;
 	nbToursActuel = tourActuel; // on laisse ça car plus tard on fera sans doute le chargement de partie -> nbToursActuel sera différent
 	nbToursMAX = tourMaximum;
-	mode = mod;
 	jA = Joueur(0, 50);
 	jB = Joueur(mod, 50);
 }
 
 AireDeJeu::~AireDeJeu() {}
+
+// INFORMATIONS PROVENANT D'UN TP REALISE EN C++ AVEC LECTURE ET ECRITURE DANS UN .TXT :
+//LECTURE
+	/*
+	std::ifstream file("1984.txt");
+    std::string buf;
+    while(std::getline(file, buf))
+    {
+        res.push_back(buf); // On ajoute chaque ligne du fichier dans un vecteur
+    }*/
+
+//ECRITURE
+	/*std::ofstream txtdata("decompress.txt");
+    for(auto i = 0 ; i < vect.size() ; i = i + 1)
+    {
+		std::string s = code_inverse.find(vect.at(i))->second;
+        txtdata << s;
+        if(i < vect.size() - 1)
+        {
+            txtdata << "\n"; // Si nous ne sommes pas sur le dernier mot du vecteur vect, on saute une ligne pour le prochain mot dans le fichier "decompress.txt", cela permet qu'il n'y ait pas de retour à la ligne après le dernier mot
+        }
+    }*/
+
+void AireDeJeu::charger(char* entree) {
+	std::ifstream file(entree);
+	if (!file) {
+		std::cerr << "Ouverture de fichier impossible";
+		return;
+	}
+	try {
+		std::string var;
+		int var2;
+		// Récupération des informations de la classe AireDeJeu
+		std::getline(file, var);
+		var2 = std::stoi(var); // 1 ou -1, permet de differencier le joueur de gauche de celui de droite
+		int tourDeJeu0;
+		if ((var2 != 1) && (var2 !=-1)){
+			throw 0;
+		} else {
+			tourDeJeu0 = var2;
+		}
+
+		std::getline(file, var);
+		int nbToursActuel0 = std::stoi(var);
+		if (nbToursActuel0 < 0) throw 0;
+
+		std::getline(file, var);
+		int nbToursMAX0 = std::stoi(var);
+		if (nbToursMAX0 < nbToursActuel0) throw 0;
+
+
+		// Récupération des informations des classes Joueur
+		std::getline(file, var);
+		var2 = std::stoi(var);
+		int modeJB;
+		if (var2 != 0 && var2 != 1) {
+			throw 0;// 0 signifie manuel, 1 signifie automatique
+		} else {
+			modeJB = var2;
+		}
+
+		std::getline(file, var);
+		int argentJA = std::stoi(var);
+		if (argentJA < 0) throw 0;// 0 signifie manuel, 1 signifie automatique
+
+		std::getline(file, var);
+		int argentJB = std::stoi(var);
+		if (argentJB < 0) throw 0;// 0 signifie manuel, 1 signifie automatique
+
+		std::getline(file, var);
+		int pvBaseJA = std::stoi(var);
+
+		std::getline(file, var);
+		int pvBaseJB = std::stoi(var);
+
+
+		// Récupérations des informations des classes Unité
+		// TO DO
+
+		setAireDeJeu(tourDeJeu0, nbToursActuel0, nbToursMAX0);
+		jA.setJoueur(     0, argentJA, pvBaseJA);
+		jB.setJoueur(modeJB, argentJB, pvBaseJB);
+		// TO DO : modifier plateau en créant des unités
+
+		std::cout << "Chargement réussi !" << std::endl;
+		
+	} catch (...) {
+		std::cerr << "Fichier invalide : au moins argument est invalide" << std::endl;
+	}	
+}
+
+void AireDeJeu::sauvegarder(char* sortie) const {
+	std::ofstream file(sortie);
+	if (!file) {
+		std::cerr << "Ouverture de fichier impossible";
+		return;
+	}
+}
 
 void AireDeJeu::print() const {
 	std::cout << "-----------------------------------------------" << std::endl;
@@ -49,18 +147,31 @@ void AireDeJeu::print() const {
 		if (plateau[i] != nullptr) {
 			int pv = plateau[i]->getPV();
 			if (pv/10 == 0) {
-				std::cout << "  " << pv << "  |";
+				std::cout << "__" << pv << "__|";
 			} else {
-				std::cout << " " << pv << " |";
+				std::cout << "_" << pv << "_|";
 			}
 		} else {
-			std::cout << "    |";
+			std::cout << "____|";
 		} 
 	}
-	std::cout << " <- Points de vie des unités\n";
+	std::cout << " <- PV des unités\n";	
+}
 
-	for (int i = 0 ; i < 56 ; i++) std::cout << "_";
-	std::cout << std::endl;	
+bool AireDeJeu::finDeJeu() const {
+	if (nbToursActuel >= nbToursMAX) {
+		std::cout << "FIN DE JEU ! AUCUN VAINQUEUR !" << std::endl;
+		return true;
+	}
+
+	if (jA.getPvBase() <= 0) {
+		std::cout << "FIN DE JEU ! JOUEUR B VAINQUEUR !" << std::endl;
+		return true;
+	} else if (jB.getPvBase() <= 0) {
+		std::cout << "FIN DE JEU ! JOUEUR A VAINQUEUR !" << std::endl;
+		return true;
+	}
+	return false;
 }
 
 void AireDeJeu::nouveauTour() {
@@ -76,14 +187,14 @@ void AireDeJeu::nouveauTour() {
 
 		// Création éventuelle d'une nouvelle unité :
 		if (jA.getArgent() >= 10 /*&& (pas d'unité sur sa base) */){ // on propose que s'il a assez d'argent
-			creationUniteManuelle(0);
+		creationUniteManuelle(0);
 		}
 
 	// Tour du joueur B
 		//Phase de résoution des actions 1 à 3 du joueur B
 
 		if (jB.getArgent() >= 10 /*&& (pas d'unité sur sa base) */){ // on propose que s'il a assez d'argent
-			creationUniteManuelle(1);
+		creationUniteManuelle(1);
 		}
 
 	
@@ -97,45 +208,44 @@ void AireDeJeu::creationUniteManuelle(bool joueur){
 		j = &jB;
 	}
 
-	int res = -1;
-	while (res != 0) {
-		std::cout << "Voulez-vous créer une nouvelle unité ? (Entrez -1 pour obtenir de l'aide) : ";
-		//std::cin >> res; // TO DO
-		res = 1;
+	char res;
+	while (res != '0') {
+		std::cout << "Voulez-vous créer une nouvelle unité ? (Entrez 'h' pour obtenir de l'aide) : ";
+		std::cin >> res;
 		switch (res) {
-			case -1:
-				std::cout << "Si vous ne souhaitez pas créer d'unité, entrez 0" << std::endl;
+			case 'h':
+				std::cout << "Si vous ne souhaitez pas créer d'unité, entrez '0'" << std::endl;
 				std::cout << "Sinon, entrez le code d'une unité :" << std::endl;
-				std::cout << "	Nom : Fantassin ; Prix : 10 pièces d'or ; Code : 1" << std::endl;
-				std::cout << "	Nom : Archer    ; Prix : 12 pièces d'or ; Code : 2" << std::endl;
-				std::cout << "	Nom : Catapulte ; Prix : 20 pièces d'or ; Code : 3" << std::endl;	
-				res = 0;
+				std::cout << "	Nom : Fantassin ; Prix : 10 pièces d'or ; Code : '1'" << std::endl;
+				std::cout << "	Nom : Archer    ; Prix : 12 pièces d'or ; Code : '2'" << std::endl;
+				std::cout << "	Nom : Catapulte ; Prix : 20 pièces d'or ; Code : '3'" << std::endl;	
+				res = '0';
 				break;
-			case 0:
+			case '0':
 				break;
-			case 1:
-				//if (j->getArgent() >= 10) {
+			case '1':
+				if (j->getArgent() >= 10) {
 					// création fantassin
 					j->setArgent(-10);
-					res = 0;
-				/*} else {
+					res = '0';
+				} else {
 					std::cout << "Vous n'avez pas assez d'argent" << std::endl; //sera inutile par la suite car on ne propose pas au joueur d'acheter une unité s'il a moins de 10PO
-				}*/
+				}
 				break;
-			case 2:
+			case '2':
 				if (j->getArgent() >= 12) {
 					// création archer
 					j->setArgent(-12);
-					res = 0;
+					res = '0';
 				} else {
 					std::cout << "Vous n'avez pas assez d'argent" << std::endl;
 				}
 				break;
-			case 3:
+			case '3':
 				if (j->getArgent() >= 20) {
 					// création catapulte
 					j->setArgent(-20);
-					res = 0;
+					res = '0';
 				} else {
 					std::cout << "Vous n'avez pas assez d'argent" << std::endl;
 				}
