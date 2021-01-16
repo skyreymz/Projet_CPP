@@ -1,6 +1,10 @@
 #include <iostream>
 #include "aireDeJeu.hpp"
+
 #include <string>
+#include <vector>
+#include <utility>
+
 #include "fantassin.hpp"
 #include "archer.hpp"
 #include "catapulte.hpp"
@@ -152,40 +156,89 @@ void AireDeJeu::creationUniteManuelle(bool joueur){
 
 void AireDeJeu::jouerTour() {
 
-	// tourDeJeu == 1 signifie que c'est le tour du joueur A, donc j1
-	// tourDeJeu == -1 signifie que c'est le tour du joueur B, donc j2
+	char choix;
+	int indice;
+	Joueur joueur;
+	bool equipe;
+	int indiceUniteMAX; //utile pour l'action 2 et 3, potentiellement +/- 1 apres mouvement lors de l'action 2!
+
+	// tourDeJeu == 1 signifie que c'est le tour du joueur A, donc jA
+	// tourDeJeu == -1 signifie que c'est le tour du joueur B, donc jB
 
 	// 1) Chaque joueur reçoit 8 pièces d'or (A SON TOUR ???????? Je vais considerer que oui...)
 	if (tourDeJeu == 1) {
 		jA.setArgent(8);
-	} else {
-		jB.setArgent(8);
-	}
-
-
-	// 2) Tour de jeu du joueur A
-	if (tourDeJeu == 1){
-
-	}
-	// 3) Tour de jeu du joueur B
-	else {
-		
-	}
-
-
-	// 4) Fin de tour d'un joueur
-	char choix;
-	int indice;
-	Joueur joueur;
-
-	if (tourDeJeu == 1) {
 		indice = 0;
 		joueur = jA;
+		equipe = false;
 	} else {
+		jB.setArgent(8);
 		indice = 11;
 		joueur = jB;
+		equipe = true;
 	}
 
+
+	// 2) Tour de jeu d'un joueur
+	
+	// Action 1
+	if (tourDeJeu == 1) {
+		for (int i=indice; i<12; i=i+tourDeJeu) { // c dommage car y'a que le i<12 et le i>0 qui different entre les 2 gros blocs... mais y'a pas le choix car je trouve pas de condition commune
+			if (! (plateau[i] == nullptr)) {
+				if (plateau[i]->getCamp() == tourDeJeu) {
+					indiceUniteMAX = i;
+					std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i);
+					// On évolue le fantassin s'il a vaincu un fantassin ennemi
+					if (paire.first) {
+						int pv = plateau[i]->getPV();
+						int camp = plateau[i]->getCamp(); //changer le camp et equipe en int 1 ou -1 !!!!! pck la c un bool
+						delete plateau[i];
+						plateau[i] = new SuperSoldat(pv, camp);
+					}
+					// On enlève les unités vaincus
+					for (int j=0; j<paire.second.size(); j++) {
+						delete plateau[paire.second[j]];
+					}
+				}
+				else {
+					break;
+				}
+			}
+		}
+	}
+	else {
+		for (int i=indice; i>0; i=i+tourDeJeu) {
+			if (! (plateau[i] == nullptr)) {
+				if (plateau[i]->getCamp() == tourDeJeu) {
+					indiceUniteMAX = i;
+					std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i);
+					// On évolue le fantassin s'il a vaincu un fantassin ennemi
+					if (paire.first) {
+						int pv = plateau[i]->getPV();
+						int camp = plateau[i]->getCamp(); //changer le camp et equipe en int 1 ou -1 !!!!! pck la c un bool
+						delete plateau[i];
+						plateau[i] = new SuperSoldat(pv, camp);
+					}
+					// On enlève les unités vaincus
+					for (int j=0; j<paire.second.size(); j++) {
+						delete plateau[paire.second[j]];
+					}
+				}
+				else {
+					break;
+				}
+			}
+		}
+	}
+
+
+	// Action 2
+	// Commencer à parcourir à partir de indiceUniteMAX !!!!
+	
+
+
+
+	// 3) Fin de tour d'un joueur
 	if (plateau[indice] == nullptr) {
 
 		std::cout << "Phase de recrutement" << std::endl << "Vous pouvez recruter une des unités suivantes : ";
@@ -218,15 +271,15 @@ void AireDeJeu::jouerTour() {
 		
 		if (choix == 'f') {
 			joueur.setArgent( (-1) * Fantassin::getPrix() );
-			plateau[indice] = new Fantassin();
+			plateau[indice] = new Fantassin(equipe);
 		}
 		else if (choix == 'a') {
 			joueur.setArgent( (-1) * Archer::getPrix() );
-			plateau[indice] = new Archer();
+			plateau[indice] = new Archer(equipe);
 		}
 		else if (choix == 'c') {
 			joueur.setArgent( (-1) * Catapulte::getPrix() );
-			plateau[indice] = new Catapulte();
+			plateau[indice] = new Catapulte(equipe);
 		}
 		else {
 
