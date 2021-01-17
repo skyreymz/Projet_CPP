@@ -267,7 +267,7 @@ void AireDeJeu::jouerTour() {
 
 	char choix;
 	int indice;
-	Joueur joueur;
+	Joueur* joueur;
 	bool equipe;
 	int indiceUniteMAX; //utile pour l'action 2 et 3, potentiellement +/- 1 apres mouvement lors de l'action 2!
 
@@ -278,13 +278,13 @@ void AireDeJeu::jouerTour() {
 	if (tourDeJeu == 1) {
 		jA.setArgent(8);
 		indice = 0;
-		joueur = jA;
+		joueur = &jA;
 		equipe = false;
 		indiceUniteMAX = -1; // s'il n'y a aucune unité de ce joueur sur le plateau
 	} else {
 		jB.setArgent(8);
 		indice = 11;
-		joueur = jB;
+		joueur = &jB;
 		equipe = true;
 		indiceUniteMAX = 12; // ou plus, tant que c'est strictement superieur à 11
 	}
@@ -308,7 +308,7 @@ void AireDeJeu::jouerTour() {
 				}
 				// On enlève les unités vaincus et ajoute les gains au joueur
 				for (size_t j=0; j<paire.second.size(); j++) {
-					joueur.setArgent(plateau[paire.second[j]]->getPrixDeces());
+					joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
 					delete plateau[paire.second[j]];
 					plateau[paire.second[j]] = nullptr; // utile ? à tester
 				}
@@ -343,7 +343,7 @@ void AireDeJeu::jouerTour() {
 				}
 				// On enlève les unités vaincus et ajoute les gains au joueur
 				for (size_t j=0; j<paire.second.size(); j++) {
-					joueur.setArgent(plateau[paire.second[j]]->getPrixDeces());
+					joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
 					delete plateau[paire.second[j]];
 					plateau[paire.second[j]] = nullptr; // utile ? à tester
 				}
@@ -360,50 +360,65 @@ void AireDeJeu::jouerTour() {
 
 	// 3) Fin de tour d'un joueur
 	if (plateau[indice] == nullptr) {
+		if (!joueur->getMode()) { // Joueur en mode Manuel
+			std::cout << "Phase de recrutement" << std::endl << "Vous pouvez recruter une des unités suivantes : ";
+			std::cout << "Fantassin | Archer | Catapulte" << std::endl << "Votre choix ? (f | a | c | o pour ne pas recruter)" << std::endl;
 
-		std::cout << "Phase de recrutement" << std::endl << "Vous pouvez recruter une des unités suivantes : ";
-		std::cout << "Fantassin | Archer | Catapulte" << std::endl << "Votre choix ? (f | a | c | o pour ne pas recruter)" << std::endl;
+			do { std::cin >> choix; } while ( (choix != 'f') && (choix != 'a') && (choix != 'c') && (choix != 'o') );
 
-		do { std::cin >> choix; } while ( (choix != 'f') && (choix != 'a') && (choix != 'c') && (choix != 'o') );
-
-		if (jA.getArgent() < 10) {
-			while (choix != 'o') {
-				std::cout << "Vous n'avez pas assez d'argent pour recruter" << std::endl << "Veuillez finir votre tour (en cliquant sur o)" << std::endl;
-				std::cin >> choix;
+			if (joueur->getArgent() < 10) {
+				while (choix != 'o') {
+					std::cout << "Vous n'avez pas assez d'argent pour recruter" << std::endl << "Veuillez finir votre tour (en cliquant sur o)" << std::endl;
+					std::cin >> choix;
+				}
 			}
-		}
-		else if ( (jA.getArgent() >= 10) && (jA.getArgent() < 12) ) {
-			while ((choix != 'o') && (choix != 'f')) {
-				std::cout << "Vous ne pouvez recruter qu'un fantassin" << std::endl << "Veuillez recommencer" << std::endl;;
-				std::cin >> choix;
+			else if ( (joueur->getArgent() >= 10) && (joueur->getArgent() < 12) ) {
+				while ((choix != 'o') && (choix != 'f')) {
+					std::cout << "Vous ne pouvez recruter qu'un fantassin" << std::endl << "Veuillez recommencer" << std::endl;;
+					std::cin >> choix;
+				}
 			}
-		}
-		else if ( (jA.getArgent() >= 12) && (jA.getArgent() < 20) ) {
-			while ((choix != 'o') && (choix != 'f') && (choix != 'a')) {
-				std::cout << "Vous ne pouvez recruter qu'un fantassin ou qu'un archer" << std::endl << "Veuillez recommencer" << std::endl;;
-				std::cin >> choix;
+			else if ( (joueur->getArgent() >= 12) && (joueur->getArgent() < 20) ) {
+				while ((choix != 'o') && (choix != 'f') && (choix != 'a')) {
+					std::cout << "Vous ne pouvez recruter qu'un fantassin ou qu'un archer" << std::endl << "Veuillez recommencer" << std::endl;;
+					std::cin >> choix;
+				}
 			}
-		}
-		else {
+			else {
 
+			}
+			
+			
+			if (choix == 'f') {
+				joueur->setArgent( (-1) * Fantassin::getPrix() );
+				plateau[indice] = new Fantassin(equipe);
+			}
+			else if (choix == 'a') {
+				joueur->setArgent( (-1) * Archer::getPrix() );
+				plateau[indice] = new Archer(equipe);
+			}
+			else if (choix == 'c') {
+				joueur->setArgent( (-1) * Catapulte::getPrix() );
+				plateau[indice] = new Catapulte(equipe);
+			}
+			else {
+
+			}
+		} else { // Joueur en mode Automatique
+			// Stratégie : création de l'unité la plus chère
+			if (joueur->getArgent() >= 20) {
+				joueur->setArgent( (-1) * Catapulte::getPrix() );
+				plateau[indice] = new Catapulte(equipe);
+			} else if (joueur->getArgent() >= 12) {
+				joueur->setArgent( (-1) * Archer::getPrix() );
+				plateau[indice] = new Archer(equipe);
+			} else if (joueur->getArgent() >= 10) {
+				joueur->setArgent( (-1) * Fantassin::getPrix() );
+				plateau[indice] = new Fantassin(equipe);
+			} else {}
 		}
+
 		
-		
-		if (choix == 'f') {
-			joueur.setArgent( (-1) * Fantassin::getPrix() );
-			plateau[indice] = new Fantassin(equipe);
-		}
-		else if (choix == 'a') {
-			joueur.setArgent( (-1) * Archer::getPrix() );
-			plateau[indice] = new Archer(equipe);
-		}
-		else if (choix == 'c') {
-			joueur.setArgent( (-1) * Catapulte::getPrix() );
-			plateau[indice] = new Catapulte(equipe);
-		}
-		else {
-
-		}
 
 	}
 

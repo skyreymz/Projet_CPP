@@ -10,9 +10,14 @@ int main() {
 	AireDeJeu* a = new AireDeJeu(m);
 	
 	// TESTS
-	Fantassin* f = new Fantassin(1);
+	//Fantassin* f = new Fantassin(1);
 	//std::cout << f.getInfos() << std::endl;
-	a->plateau[0] = f;
+	//a->plateau[0] = f;
+
+	// DEROULEMENT DU JEU
+	/*while(!finDeJeu()) {
+		jouerTour();
+	}*/
 
 	a->print();
 
