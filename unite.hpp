@@ -29,8 +29,8 @@ class Unite {
 		// Renvoie une paire <true, vecteur d'indices des unites vaincus>, true si et seulement si un fantassin a vaincu un autre fantassin
 		virtual std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i);
 
-		virtual int getPrixDeces();
-		virtual bool getAutreAction();
+		virtual int getPrixDeces(); // pour polymorphisme
+		virtual bool getAutreAction(); // pour polymorphisme
 
 };
 

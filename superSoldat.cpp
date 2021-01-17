@@ -10,12 +10,12 @@ bool SuperSoldat::getAutreAction() {
 
 //IL FAUDRA CHANGER LE bool camp en int = 1 ou -1
 std::pair<bool,std::vector<int>> SuperSoldat::attaque(Unite* plateau[12], int i) {
-    if (! (plateau[i + getCamp() * portee[0]] == nullptr) ) {
-        if (plateau[i + getCamp() * portee[0]]->getCamp() != getCamp()) {
-            plateau[i + getCamp() * portee[0]]->setPV(-atq);
+    if (! (plateau[i + getCamp()] == nullptr) ) {
+        if (plateau[i + getCamp()]->getCamp() != getCamp()) {
+            plateau[i + getCamp()]->setPV(- Fantassin::getAtq());
             
-            if (plateau[i + getCamp() * portee[0]]->estVaincu()) {
-            	return std::make_pair(false, std::vector<int>(1)={i+ getCamp() * portee[0]});
+            if (plateau[i + getCamp()]->estVaincu()) {
+            	return std::make_pair(false, std::vector<int>(1)={i+ getCamp()});
             }
         }
     }

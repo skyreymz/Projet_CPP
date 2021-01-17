@@ -24,6 +24,10 @@ bool Fantassin::aVaincuFantassin(Unite* unite) { //si je mets que Unite unite ca
     }
 }
 
+int Fantassin::getAtq() {
+    return atq;
+}
+
 int Fantassin::getPrix() {
     return prix;
 }

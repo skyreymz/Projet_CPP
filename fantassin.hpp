@@ -21,6 +21,7 @@ class Fantassin : public Unite {
 		std::string getInfos() const;
 		bool aVaincuFantassin(Unite* unite);
 
+		static int getAtq();
 		static int getPrix();
 		int getPrixDeces(); // utile pour SuperSoldat qui l'herite, car le prix est statique
 
