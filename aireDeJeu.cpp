@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 #include <utility>
-
 #include "fantassin.hpp"
 #include "archer.hpp"
 #include "catapulte.hpp"
@@ -15,7 +14,7 @@ AireDeJeu::AireDeJeu(bool mod, int tourActuel, int tourMaximum) {
 		plateau[i] = nullptr;
 	}
 
-	tourDeJeu = 0;
+	tourDeJeu = 1;
 	nbToursActuel = tourActuel; // on laisse ça car plus tard on fera sans doute le chargement de partie -> nbToursActuel sera différent
 	nbToursMAX = tourMaximum;
 	jA = Joueur(0, 50);
@@ -24,33 +23,11 @@ AireDeJeu::AireDeJeu(bool mod, int tourActuel, int tourMaximum) {
 
 AireDeJeu::~AireDeJeu() {}
 
-// INFORMATIONS PROVENANT D'UN TP REALISE EN C++ AVEC LECTURE ET ECRITURE DANS UN .TXT :
-//LECTURE
-	/*
-	std::ifstream file("1984.txt");
-    std::string buf;
-    while(std::getline(file, buf))
-    {
-        res.push_back(buf); // On ajoute chaque ligne du fichier dans un vecteur
-    }*/
-
-//ECRITURE
-	/*std::ofstream txtdata("decompress.txt");
-    for(auto i = 0 ; i < vect.size() ; i = i + 1)
-    {
-		std::string s = code_inverse.find(vect.at(i))->second;
-        txtdata << s;
-        if(i < vect.size() - 1)
-        {
-            txtdata << "\n"; // Si nous ne sommes pas sur le dernier mot du vecteur vect, on saute une ligne pour le prochain mot dans le fichier "decompress.txt", cela permet qu'il n'y ait pas de retour à la ligne après le dernier mot
-        }
-    }*/
-
-void AireDeJeu::charger(char* entree) {
+bool AireDeJeu::charger(char* entree) {
 	std::ifstream file(entree);
 	if (!file) {
 		std::cerr << "Ouverture de fichier impossible";
-		return;
+		return false;
 	}
 	try {
 		std::string var;
@@ -95,23 +72,21 @@ void AireDeJeu::charger(char* entree) {
 		int pvBaseJB = std::stoi(var);
 
 
-		// Récupérations des informations des classes Unité
+		// Récupération des informations des classes Unité
 			/* Structure de ces données :
 				   CAMP (A si on passe aux unités de l'équipe adverse)
-			       TYPE DE L'UNITE (f fantassin ; a archer ; c catapulte ; s superSoldat)
-			       PV DE L'UNITE
+			       TYPE DE L'UNITE (f fantassin ; a archer ; c catapulte ; s superSoldat ; N pas d'unité)
+			       PV DE L'UNITE (s'il y a une unité)
 			   Si le type est un espace, cela signifie qu'il n'y a pas d'unité sur cette position
 			*/
-
 		int camp = 1;
 		char type;
 		int pv;
-
 		int position = 0;
-		while (!file.eof() && (position < 12)) {
+		while (position < 12) {
 			std::getline(file, var);
 			type = var[0];
-			if (type != '\n' && (((position == 0) && (camp == -1)) || ((position == 11) && (camp == 1)))) {
+			if ((type != 'N') && (type != 'A') && (((position == 0) && (camp == -1)) || ((position == 11) && (camp == 1)))) {
 				std::cerr << "Il ne peut pas y avoir d'unite d'une equipe au niveau de la position de la base adverse" << std::endl;
 				throw 0;
 			} 
@@ -160,6 +135,8 @@ void AireDeJeu::charger(char* entree) {
 					throw 0;
 			}
 		}
+		std::getline(file,var); // le dernier retour à la ligne
+		if (!file.eof()) throw 1;
 
 		// Les données sont valides, mise à jour de l'aire de jeu
 		setAireDeJeu(tourDeJeu0, nbToursActuel0, nbToursMAX0);
@@ -170,17 +147,72 @@ void AireDeJeu::charger(char* entree) {
 		}
 
 		std::cout << "Chargement réussi !" << std::endl;
+		return true;
 		
 	} catch (...) {
-		std::cerr << "Fichier invalide : au moins argument est invalide" << std::endl;
+		std::cerr << "Echec lors de la récupération des données (Fichier invalide)" << std::endl;
+		return false;
 	}	
 }
 
-void AireDeJeu::sauvegarder(char* sortie) const {
+bool AireDeJeu::sauvegarder(char* sortie) const {
 	std::ofstream file(sortie);
 	if (!file) {
-		std::cerr << "Ouverture de fichier impossible";
-		return;
+		std::cerr << "Ouverture de fichier impossible" << std::endl;
+		return false;
+	}
+
+	try {
+		// Stockage des informations de la classe AireDeJeu
+		file << tourDeJeu << " // tourDeJeu : 1 ou -1, permet de differencier le joueur de gauche de celui de droite\n";
+		file << nbToursActuel << " // nbTourActuel\n";
+		file << nbToursMAX << " // nbTourMax\n";
+
+		// Stockage des informations des classes Joueur
+		file << jB.getMode() << " // mode du joueur B : 0 manuel ; 1 automatique\n";
+		file << jA.getArgent() << " // argent joueur A\n";
+		file << jB.getArgent() << " // argent joueur B\n";
+		file << jA.getPvBase() << " // pv base joueur A\n";
+		file << jB.getPvBase() << " // pv base joueur B\n";
+
+		// Stockage des informations des classes Unité
+		int campsUnites = 1; // camps de l'unité ajoutée
+		for (int i = 0 ; i < 12 ; i++) {
+			if (plateau[i] == nullptr) {
+				file << "N // Position " << i << " : Sans unité\n";
+			} else {
+				std::string infosUnite = plateau[i]->getInfos();
+				char campsUnite = infosUnite[2];
+				if ((campsUnites == 1) && (campsUnite == 'B')) {
+					campsUnites = -1;
+					file << "A // Début des unités du joueur B\n";
+				}
+				switch (infosUnite[0]) { // pour connaître la classe de l'unité
+					case 'F':
+						file << "f // Position " << i << " : Fantassin\n";
+						break;
+					case 'A':
+						file << "a // Position " << i << " : Archer\n";
+						break;
+					case 'C':
+						file << "c // Position " << i << " : Catapulte\n";
+						break;
+					case 'S':
+						file << "s // Position " << i << " : SuperSoldat\n";
+						break;
+					default:
+						std::cerr << "Erreur dans la lecture des unités" << std::endl;
+						throw 0;
+				}
+				file << plateau[i]->getPV() << " // Ses PV\n";
+			}
+		}
+
+		std::cout << "Sauvegarde réussie !" << std::endl;
+		return true;
+	} catch (...) {
+		std::cerr << "Echec lors de la sauvegarde des données (Fichier invalide)" << std::endl;
+		return false;
 	}
 }
 
@@ -192,8 +224,8 @@ void AireDeJeu::print() const {
 	
 	std::cout << "\nAIRE DE JEU :" << std::endl;
 	std::cout << "Base A : " << jA.getPvBase() << "PV				  Base B : " << jB.getPvBase() << "PV" << std::endl;
-	for (int i = 0 ; i < 46 ; i++){
-		if (i == 0 || i == 45) {
+	for (int i = 0 ; i < 51 ; i++){
+		if (i == 0 || i == 50) {
 			std::cout << "/\\/\\/\\";
 		} else {
 			 std::cout << "_";
@@ -202,7 +234,7 @@ void AireDeJeu::print() const {
 
 	std::cout << "\n|";	
 
-	for (int i = 0 ; i < 11 ; i++){
+	for (int i = 0 ; i < 12 ; i++){
 		if (plateau[i] != nullptr) {
 			std::cout << plateau[i]->getInfos() << "|";
 		} else {
@@ -212,7 +244,7 @@ void AireDeJeu::print() const {
 
 	std::cout << " <- Unité(camp)\n|";
 
-	for (int i = 0 ; i < 11 ; i++){
+	for (int i = 0 ; i < 12 ; i++){
 		if (plateau[i] != nullptr) {
 			int pv = plateau[i]->getPV();
 			if (pv/10 == 0) {

@@ -17,8 +17,8 @@ class Joueur {
 		void setJoueur(bool mode0, int argent0, int pvBase0) {mode = mode0; argent = argent0; pvBase = pvBase0;};
 
 		bool getMode() const {return mode;};
-		int getPvBase() const {return pvBase;};
 		int getArgent() const {return argent;};
+		int getPvBase() const {return pvBase;};
 		void setArgent(int money) {argent += money;};
 		void dommages(int atq) {pvBase -= atq;}; // à renommer en setPvBase et faire attention à toutes les classes qui l'utilisent
 };

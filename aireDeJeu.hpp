@@ -26,8 +26,8 @@ class AireDeJeu {
 
 		~AireDeJeu();
 
-		void charger(char* entree);
-		void sauvegarder(char* sortie) const;
+		bool charger(char* entree);
+		bool sauvegarder(char* sortie) const;
 		void setAireDeJeu(int tourDeJeu0, int nbToursActuel0, int nbToursMAX0){tourDeJeu = tourDeJeu0; nbToursActuel = nbToursActuel0; nbToursMAX = nbToursMAX0;};
 
 		void print() const;
