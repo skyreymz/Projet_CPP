@@ -11,7 +11,7 @@ class Catapulte : public Unite {
 	static int atq;
 	static std::pair<int,int> portee[3];
 
-	bool autreAction;
+	bool autreAction = true;
 	
 	
 	public:
@@ -20,6 +20,8 @@ class Catapulte : public Unite {
 
 		static int getPrix() {return prix;};
 		int getPrixDeces() {return prix/2;};
+
+		bool getAutreAction() {return autreAction;};
 
 		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i); // ceci est une redéfinition car la méthode de la mère est virtual
 };

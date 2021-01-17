@@ -3,6 +3,10 @@
 
 SuperSoldat::~SuperSoldat() {}
 
+bool SuperSoldat::getAutreAction() {
+    return autreAction;
+}
+
 
 //IL FAUDRA CHANGER LE bool camp en int = 1 ou -1
 std::pair<bool,std::vector<int>> SuperSoldat::attaque(Unite* plateau[12], int i) {

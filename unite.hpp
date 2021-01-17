@@ -26,10 +26,11 @@ class Unite {
 		void setPV(int atq) {pv -= atq;};
 		bool estVaincu() {return (pv <= 0);};
 
-		virtual int getPrixDeces() {return 0;}; // pour éviter les warnings
-
 		// Renvoie une paire <true, vecteur d'indices des unites vaincus>, true si et seulement si un fantassin a vaincu un autre fantassin
 		virtual std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i);
+
+		virtual int getPrixDeces() {return 0;}; // pour éviter les warnings
+		virtual bool getAutreAction() {return 0;}; // pour éviter les warnings
 };
 
 #endif
