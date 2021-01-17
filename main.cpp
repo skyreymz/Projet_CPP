@@ -25,7 +25,7 @@ int main() {
 
 	//a->print();
 
-	/*char* nomFichier = new char;
+	char* nomFichier = new char;
 	std::cout << "entrez le nom du fichier à charger : ";
 	std::cin >> nomFichier;
 	a->charger(nomFichier);
@@ -33,6 +33,6 @@ int main() {
 	a->print();
 
 	delete a; //je crois qu'il faut aussi détruire le plateau
-*/
+
 	return 0;
 }

@@ -15,6 +15,7 @@ class Archer : public Unite {
 	
 	public:
 		Archer(int equipe) : Unite(8, equipe) {}
+		Archer(int pdv, int equipe) : Unite(pdv, equipe) {}
 		~Archer();
 
 		static int getPrix() {return prix;};

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "aireDeJeu.hpp"
-
+#include <cstdlib>
 #include <string>
 #include <vector>
 #include <utility>
@@ -100,8 +100,65 @@ void AireDeJeu::charger(char* entree) {
 
 
 		// Récupérations des informations des classes Unité
-		// TO DO
+			/* Structure de ces données :
+				   CAMP (A si on passe aux unités de l'équipe adverse)
+			       TYPE DE L'UNITE (f fantassin ; a archer ; c catapulte ; s superSoldat)
+			       PV DE L'UNITE
+			   Si le type est un espace, cela signifie qu'il n'y a pas d'unité sur cette position
+			*/
 
+		//Unite* plateau0[12] = Unite[12]; // initialisation du plateau
+		/*int camp = 1;
+		char type;
+		int pv;
+
+		int position = 0;
+		while (position < 12) {
+			file.get(type);
+			if (((position == 0) && (camp == -1)) || ((position == 11) && (camp == 1))) throw 0; // une unité ne peut pas aller sur la case de la base adverse
+			switch (type) {
+				case 'A':
+					if (camp == 1) {
+						camp = -1;
+						break;
+					} else {
+						throw 0;
+					}
+				case 'f':
+					std::getline(file, var);
+					pv = std::stoi(var);
+					Fantassin f = Fantassin(pv, camp);
+					position ++;
+				case 'a':
+					std::getline(file, var);
+					pv = std::stoi(var);
+					Archer a = Archer(pv, camp);
+					position ++;
+				case 'c':
+					std::getline(file, var);
+					pv = std::stoi(var);
+					Catapulte c = Catapulte(pv, camp);
+					position ++;
+				case 's':
+					std::getline(file, var);
+					pv = std::stoi(var);
+					SuperSoldat s = SuperSoldat(pv, camp);
+					position ++;
+				case '\n':
+					position ++;
+				default:
+					throw 0;
+
+			}
+		}
+
+		char ch; 
+		
+		std:: cout << ch << std::endl;*/
+		//std::getline(file, var);
+		//int argentJA = std::stoi(var);
+
+		// Les données sont valides, mise à jour de l'aire de jeu
 		setAireDeJeu(tourDeJeu0, nbToursActuel0, nbToursMAX0);
 		jA.setJoueur(     0, argentJA, pvBaseJA);
 		jB.setJoueur(modeJB, argentJB, pvBaseJB);
