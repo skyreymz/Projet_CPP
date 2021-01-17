@@ -7,14 +7,6 @@ int Archer::portee[3] = {1,2,3};
 
 Archer::~Archer() {}
 
-int Archer::getPrix() {
-    return prix;
-}
-
-int Archer::getPrixDeces() {
-    return prix/2;
-}
-
 
 //IL FAUDRA CHANGER LE bool camp en int = 1 ou -1 
 std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i) {
