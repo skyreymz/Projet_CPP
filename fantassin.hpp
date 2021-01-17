@@ -22,10 +22,9 @@ class Fantassin : public Unite {
 		bool aVaincuFantassin(Unite* unite);
 
 		static int getPrix() {return prix;};
-		int getPrixDeces() {return prix/2;}; // utile pour SuperSoldat qui l'herite, car le prix est statique
-
 		static int getAtq() {return atq;};
 		static int getPortee() {return portee[0];}; 
+		int getPrixDeces() {return prix/2;}; // utile pour SuperSoldat qui l'herite, car le prix est statique
 
 		virtual bool getAutreAction() {return autreAction;}; // virtual car on va la redéfinir pour le SuperSoldat pour que celui-ci ne recupere PAS le bool autreAction hérité de Fantassin mais bien le SIEN qui sera tjs true !
 

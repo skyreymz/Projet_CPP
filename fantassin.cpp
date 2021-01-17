@@ -20,6 +20,7 @@ bool Fantassin::aVaincuFantassin(Unite* unite) { //si je mets que Unite unite ca
     }
 }
 
+
 //IL FAUDRA CHANGER LE bool camp en int = 1 ou -1
 std::pair<bool,std::vector<int>> Fantassin::attaque(Unite* plateau[12], int i) {
     if (! (plateau[i + getCamp() * getPortee()] == nullptr) ) {
