@@ -14,8 +14,8 @@ class Fantassin : public Unite {
 	
 	
 	public:
-		Fantassin(bool equipe) : Unite(10, equipe) {}
-		Fantassin(int pdv, bool equipe) : Unite(pdv, equipe) {} // Pour le Super-Soldat
+		Fantassin(int equipe) : Unite(10, equipe) {}
+		Fantassin(int pdv, int equipe) : Unite(pdv, equipe) {} // Pour le Super-Soldat
 		~Fantassin();
 
 		std::string getInfos() const;
