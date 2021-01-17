@@ -12,6 +12,8 @@ class SuperSoldat : public Fantassin {
 		SuperSoldat(int pdv, int equipe) : Fantassin(pdv, equipe) {} // il ne veut pas directement appeler le constructeur du grand-pere Unite(pdv)... peut etre qu'on ne peut pas!
 		~SuperSoldat();
 
+		std::string getInfos() const {return "S("+Unite::getInfos()+")";};
+
 		bool getAutreAction();
 
 		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i); // redefinition de celle de fantassin, car on ne va plus appeler la fonction aVaincuFantassin

@@ -1,9 +1,26 @@
--1
-5
-25
-0
-20
-20
-20
-20
-w
+-1 //tourDeJeu : 1 ou -1, permet de differencier le joueur de gauche de celui de droite
+5 //nbTourActuel
+25 //nbTourMax
+0 // mode du joueur B : 0 manuel ; 1 automatique
+20 // argent joueur A
+20 // argent joueur B
+20 // pv base joueur A
+20 // pv base joueur B
+N // signifie qu'il n'y a aucune unité à la position 0
+N // signifie qu'il n'y a aucune unité à la position 1
+N // signifie qu'il n'y a aucune unité à la position 2
+f // fantassin
+12 // pv du fantassin
+c // catapulte
+10 // pv de la catapulte
+a // archer
+1 // pv de l'archer
+A // début des unité du joueur B
+f // fantassin
+11 // pv du fantassin
+c // catapulte
+12 // pv de la catapulte
+s // super soldat
+8 // pv du super soldat
+N // signifie qu'il n'y a aucune unité à la position 10
+N // signifie qu'il n'y a aucune unité à la position 11

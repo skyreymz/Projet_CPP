@@ -4,7 +4,7 @@
 Unite::~Unite() {}
 
 std::string Unite::getInfos() const {
-	if (!camp) {
+	if (camp == 1) {
 		return "A";
 	} else {
 		return "B";

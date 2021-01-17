@@ -18,6 +18,8 @@ class Archer : public Unite {
 		Archer(int pdv, int equipe) : Unite(pdv, equipe) {}
 		~Archer();
 
+		std::string getInfos() const {return "A("+Unite::getInfos()+")";};
+
 		static int getPrix() {return prix;};
 		int getPrixDeces() {return prix/2;};
 

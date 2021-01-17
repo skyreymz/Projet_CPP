@@ -54,15 +54,11 @@ void AireDeJeu::charger(char* entree) {
 	}
 	try {
 		std::string var;
-		int var2;
 		// Récupération des informations de la classe AireDeJeu
 		std::getline(file, var);
-		var2 = std::stoi(var); // 1 ou -1, permet de differencier le joueur de gauche de celui de droite
-		int tourDeJeu0;
-		if ((var2 != 1) && (var2 !=-1)){
+		int tourDeJeu0 = std::stoi(var); // 1 ou -1, permet de differencier le joueur de gauche de celui de droite
+		if ((tourDeJeu0 != 1) && (tourDeJeu0 !=-1)){
 			throw 0;
-		} else {
-			tourDeJeu0 = var2;
 		}
 
 		std::getline(file, var);
@@ -76,12 +72,12 @@ void AireDeJeu::charger(char* entree) {
 
 		// Récupération des informations des classes Joueur
 		std::getline(file, var);
-		var2 = std::stoi(var);
-		int modeJB;
+		int var2 = std::stoi(var);
+		bool modeJB;
 		if (var2 != 0 && var2 != 1) {
 			throw 0;// 0 signifie manuel, 1 signifie automatique
 		} else {
-			modeJB = var2;
+			modeJB = (var2 == 1);
 		}
 
 		std::getline(file, var);
@@ -107,62 +103,71 @@ void AireDeJeu::charger(char* entree) {
 			   Si le type est un espace, cela signifie qu'il n'y a pas d'unité sur cette position
 			*/
 
-		//Unite* plateau0[12] = Unite[12]; // initialisation du plateau
-		/*int camp = 1;
+		int camp = 1;
 		char type;
 		int pv;
 
 		int position = 0;
-		while (position < 12) {
-			file.get(type);
-			if (((position == 0) && (camp == -1)) || ((position == 11) && (camp == 1))) throw 0; // une unité ne peut pas aller sur la case de la base adverse
+		while (!file.eof() && (position < 12)) {
+			std::getline(file, var);
+			type = var[0];
+			if (type != '\n' && (((position == 0) && (camp == -1)) || ((position == 11) && (camp == 1)))) {
+				std::cerr << "Il ne peut pas y avoir d'unite d'une equipe au niveau de la position de la base adverse" << std::endl;
+				throw 0;
+			} 
 			switch (type) {
 				case 'A':
 					if (camp == 1) {
 						camp = -1;
-						break;
 					} else {
 						throw 0;
 					}
+					break;
+				case 'N':
+					plateauCopie[position] = nullptr;
+					position ++;
+					//std::cout << "pas d'unité\n";
+					break;
 				case 'f':
 					std::getline(file, var);
 					pv = std::stoi(var);
-					Fantassin f = Fantassin(pv, camp);
+					plateauCopie[position] = new Fantassin(pv, camp);
 					position ++;
+					//std::cout << "fantassin\n";
+					break;
 				case 'a':
 					std::getline(file, var);
 					pv = std::stoi(var);
-					Archer a = Archer(pv, camp);
+					plateauCopie[position] = new Archer(pv, camp);
 					position ++;
+					//std::cout << "archer\n";
+					break;
 				case 'c':
 					std::getline(file, var);
 					pv = std::stoi(var);
-					Catapulte c = Catapulte(pv, camp);
+					plateauCopie[position] = new Catapulte(pv, camp);
 					position ++;
+					//std::cout << "catapulte\n";
+					break;
 				case 's':
 					std::getline(file, var);
 					pv = std::stoi(var);
-					SuperSoldat s = SuperSoldat(pv, camp);
+					plateauCopie[position] = new SuperSoldat(pv, camp);
 					position ++;
-				case '\n':
-					position ++;
+					//std::cout << "super soldat\n";
+					break;
 				default:
 					throw 0;
-
 			}
 		}
-
-		char ch; 
-		
-		std:: cout << ch << std::endl;*/
-		//std::getline(file, var);
-		//int argentJA = std::stoi(var);
 
 		// Les données sont valides, mise à jour de l'aire de jeu
 		setAireDeJeu(tourDeJeu0, nbToursActuel0, nbToursMAX0);
 		jA.setJoueur(     0, argentJA, pvBaseJA);
 		jB.setJoueur(modeJB, argentJB, pvBaseJB);
-		// TO DO : modifier plateau en créant des unités
+		for (int i = 0 ; i < 12 ; i++) {
+			plateau[i] = plateauCopie[i];
+		}
 
 		std::cout << "Chargement réussi !" << std::endl;
 		
@@ -211,7 +216,7 @@ void AireDeJeu::print() const {
 		if (plateau[i] != nullptr) {
 			int pv = plateau[i]->getPV();
 			if (pv/10 == 0) {
-				std::cout << "__" << pv << "__|";
+				std::cout << "__" << pv << "_|";
 			} else {
 				std::cout << "_" << pv << "_|";
 			}

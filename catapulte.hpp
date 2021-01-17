@@ -19,6 +19,8 @@ class Catapulte : public Unite {
 		Catapulte(int pdv, int equipe) : Unite(pdv, equipe) {}
 		~Catapulte();
 
+		std::string getInfos() const {return "C("+Unite::getInfos()+")";};
+
 		static int getPrix() {return prix;};
 		int getPrixDeces() {return prix/2;};
 
