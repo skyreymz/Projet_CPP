@@ -280,11 +280,13 @@ void AireDeJeu::jouerTour() {
 		indice = 0;
 		joueur = jA;
 		equipe = false;
+		indiceUniteMAX = -1; // s'il n'y a aucune unité de ce joueur sur le plateau
 	} else {
 		jB.setArgent(8);
 		indice = 11;
 		joueur = jB;
 		equipe = true;
+		indiceUniteMAX = 12; // ou plus, tant que c'est strictement superieur à 11
 	}
 
 
@@ -320,13 +322,40 @@ void AireDeJeu::jouerTour() {
 
 
 	// Action 2
-	// Commencer à parcourir à partir de indiceUniteMAX !!!!
-	
-
-	// Action 2
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
 		// to do
 	}
+
+
+	// Action 3
+
+	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
+		if (! (plateau[i] == nullptr)) {
+			//if (plateau[i]->getCamp() == tourDeJeu) {
+			if (plateau[i]->getAutreAction()) {
+				std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i);
+				// On évolue le fantassin s'il a vaincu un fantassin ennemi
+				if (paire.first) {
+					int pv = plateau[i]->getPV();
+					int camp = plateau[i]->getCamp(); //changer le camp et equipe en int 1 ou -1 !!!!! pck la c un bool
+					delete plateau[i];
+					plateau[i] = new SuperSoldat(pv, camp);
+				}
+				// On enlève les unités vaincus et ajoute les gains au joueur
+				for (size_t j=0; j<paire.second.size(); j++) {
+					joueur.setArgent(plateau[paire.second[j]]->getPrixDeces());
+					delete plateau[paire.second[j]];
+					plateau[paire.second[j]] = nullptr; // utile ? à tester
+				}
+			}
+			//}
+			//else {
+			//	break;
+			//}
+		}
+	}
+
+
 
 
 	// 3) Fin de tour d'un joueur

@@ -30,6 +30,7 @@ class Unite {
 		virtual std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i);
 
 		virtual int getPrixDeces();
+		virtual bool getAutreAction();
 
 };
 

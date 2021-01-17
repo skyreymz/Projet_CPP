@@ -15,6 +15,10 @@ int Catapulte::getPrixDeces() {
     return prix/2;
 }
 
+bool Catapulte::getAutreAction() {
+    return autreAction;
+}
+
 
 //IL FAUDRA CHANGER LE bool camp en int = 1 ou -1 
 std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i) {
@@ -25,6 +29,7 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i) {
                 if (plateau[i + getCamp() * portee[j].first]->getCamp() != getCamp()) {
                     plateau[i+ getCamp() * portee[j].first]->setPV(-atq);
                     plateau[i+ getCamp() * portee[j].second]->setPV(-atq);
+                    autreAction = false;
 
                     std::vector<int> vaincus;
                     if (plateau[i + getCamp() * portee[j].first]->estVaincu()) {
@@ -44,6 +49,7 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i) {
                 if (plateau[i + getCamp() * portee[j].second]->getCamp() != getCamp()) {
                     plateau[i+ getCamp() * portee[j].second]->setPV(-atq);
                     plateau[i+ getCamp() * portee[j].first]->setPV(-atq);
+                    autreAction = false;
 
                     std::vector<int> vaincus;
                     if (plateau[i + getCamp() * portee[j].second]->estVaincu()) {

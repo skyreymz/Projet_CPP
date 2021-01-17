@@ -10,7 +10,7 @@ class Fantassin : public Unite {
 	static int atq;
 	static int portee[1];
 
-	bool autreAction;
+	bool autreAction = true;
 	
 	
 	public:
@@ -22,7 +22,9 @@ class Fantassin : public Unite {
 		bool aVaincuFantassin(Unite* unite);
 
 		static int getPrix();
-		int getPrixDeces();
+		int getPrixDeces(); // utile pour SuperSoldat qui l'herite, car le prix est statique
+
+		virtual bool getAutreAction(); // virtual car on va la redéfinir pour le SuperSoldat pour que celui-ci ne recupere PAS le bool autreAction hérité de Fantassin mais bien le SIEN qui sera tjs true !
 
 		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i); // ceci est une redéfinition car la méthode de la mère est virtual
 };

@@ -15,6 +15,9 @@ int Archer::getPrixDeces() {
     return prix/2;
 }
 
+bool Archer::getAutreAction() {
+    return autreAction;
+}
 
 //IL FAUDRA CHANGER LE bool camp en int = 1 ou -1 
 std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i) {
