@@ -14,8 +14,7 @@ class Unite {
 	
 
 	public:
-		Unite(int pdv, int equipe) : pv(pdv), camp(equipe) {} 
-		
+		Unite(int pdv, int equipe) : pv(pdv), camp(equipe) {}
 		virtual ~Unite()=0;
 
 		virtual std::string getInfos() const;

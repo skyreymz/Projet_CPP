@@ -2,7 +2,6 @@
 #define AIREDEJEU_HPP
 
 #include <iostream>
-#include <array>
 #include "unite.hpp"
 #include "fantassin.hpp"
 #include "archer.hpp"
@@ -12,7 +11,7 @@
 
 class AireDeJeu {
 	public: // j'ai mis ça pour ajouter plus facilement pour les tests, faudra le supprimer
-	Unite* plateau[12]; // est ce une solution viable ? On ne sait pas si en C++, un fantassin sera considere comme une unite et pas plus...
+	Unite* plateau[12];
 	int tourDeJeu; // 1 ou -1, permet de differencier le joueur de gauche de celui de droite
 	int nbToursActuel;
 	int nbToursMAX;
@@ -34,10 +33,6 @@ class AireDeJeu {
 
 		void nouveauTour();
 		void creationUniteManuelle(bool joueur);
-
-		// Pour gerer le plateau :
-		// - retirer une Unite du plateau : delete plateau[element]; plateau[element] = NULL;
-		// - s'il n'y a pas d'Unite sur la case du plateau : try catch des null pointers
 		
 		void jouerTour();
 		

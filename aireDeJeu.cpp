@@ -406,7 +406,7 @@ void AireDeJeu::jouerTour() {
 				for (size_t j=0; j<paire.second.size(); j++) {
 					joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
 					delete plateau[paire.second[j]];
-					plateau[paire.second[j]] = nullptr; // utile ? à tester
+					plateau[paire.second[j]] = nullptr;
 				}
 			}
 			else {
@@ -423,16 +423,37 @@ void AireDeJeu::jouerTour() {
 		if (plateau[i] != nullptr) {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
 			if (plateau[i + tourDeJeu] == nullptr) {
-				Unite* unite = plateau[i];
-				delete plateau[i];
-				plateau[i + tourDeJeu] = unite;
 
+				if (plateau[i]->getInfos()[0] == 'F') {
+					Fantassin* unite = new Fantassin(plateau[i]->getPV(), plateau[i]->getCamp());
+					plateau[i + tourDeJeu] = unite;
+				}
+				else if (plateau[i]->getInfos()[0] == 'A') {
+					Archer* unite = new Archer(plateau[i]->getPV(), plateau[i]->getCamp());
+					plateau[i + tourDeJeu] = unite;
+				}
+				else if (plateau[i]->getInfos()[0] == 'C') {
+					Catapulte* unite = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
+					plateau[i + tourDeJeu] = unite;
+				}
+				else {
+					SuperSoldat* unite = new SuperSoldat(plateau[i]->getPV(), plateau[i]->getCamp());
+					plateau[i + tourDeJeu] = unite;
+				}
+
+				delete plateau[i];
+				plateau[i] = nullptr;
+				
 				if (i == indiceUniteMAX) {
 					indiceUniteMAX += tourDeJeu;
 				}
 			}
+			//}
 		}
 	}
+
+
+
 	
 
 
@@ -454,7 +475,7 @@ void AireDeJeu::jouerTour() {
 				for (size_t j=0; j<paire.second.size(); j++) {
 					joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
 					delete plateau[paire.second[j]];
-					plateau[paire.second[j]] = nullptr; // utile ? à tester
+					plateau[paire.second[j]] = nullptr;
 				}
 			}
 			//}
