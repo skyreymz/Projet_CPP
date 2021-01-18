@@ -9,10 +9,9 @@ int Fantassin::portee[1] = {1};
 
 Fantassin::~Fantassin() {}
 
-// à voir si cette fonction va plutôt dans la classe aireDeJeu...
+
 bool Fantassin::aVaincuFantassin(Unite* unite) { //si je mets que Unite unite ca marche pas... il veut un pointeur ce shlag
-    Fantassin f = Fantassin(0); // uniquement pour la comparaison des noms
-    if ( unite->estVaincu() && (typeid(unite).name() == typeid(f).name()/*"9Fantassin"*/) ) {
+    if ( unite->estVaincu() && (unite->getInfos()[0] == 'F') ) {
         return true;
     }
     else {
