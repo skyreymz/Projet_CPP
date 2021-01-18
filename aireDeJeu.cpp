@@ -368,15 +368,15 @@ void AireDeJeu::jouerTour() {
 	// tourDeJeu == 1 signifie que c'est le tour du joueur A, donc jA
 	// tourDeJeu == -1 signifie que c'est le tour du joueur B, donc jB
 
-	// 1) Chaque joueur reçoit 8 pièces d'or (A SON TOUR ???????? Je vais considerer que oui...)
+	// 1) Chaque joueur reçoit 8 pièces d'or (L'énoncé implique que les deux joueurs gagnent l'argent au meme moment...)
 	if (tourDeJeu == 1) {
 		jA.setArgent(8);
+		jB.setArgent(8);
 		indice = 0;
 		joueur = &jA;
 		equipe = false;
 		indiceUniteMAX = -1; // s'il n'y a aucune unité de ce joueur sur le plateau
 	} else {
-		jB.setArgent(8);
 		indice = 11;
 		joueur = &jB;
 		equipe = true;
@@ -389,7 +389,7 @@ void AireDeJeu::jouerTour() {
 	// Action 1
 	
 	for (int i=indice; ((tourDeJeu == 1) && (i < 11)) || ((tourDeJeu == -1) && (i > 0)); i=i+tourDeJeu) { 
-		if (! (plateau[i] == nullptr)) {
+		if (plateau[i] != nullptr) {
 			if (plateau[i]->getCamp() == tourDeJeu) {
 				indiceUniteMAX = i;
 				std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i);
@@ -416,15 +416,28 @@ void AireDeJeu::jouerTour() {
 
 
 	// Action 2
+
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
-		// to do
+		if (plateau[i] != nullptr) {
+			//if (plateau[i]->getCamp() == tourDeJeu) {
+			if (plateau[i + tourDeJeu] == nullptr) {
+				Unite* unite = plateau[i];
+				delete plateau[i];
+				plateau[i + tourDeJeu] = unite;
+
+				if (i == indiceUniteMAX) {
+					indiceUniteMAX += tourDeJeu;
+				}
+			}
+		}
 	}
+	
 
 
 	// Action 3
 
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
-		if (! (plateau[i] == nullptr)) {
+		if (plateau[i] != nullptr) {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
 			if (plateau[i]->getAutreAction()) {
 				std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i);
