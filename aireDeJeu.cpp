@@ -26,7 +26,7 @@ AireDeJeu::~AireDeJeu() {}
 bool AireDeJeu::charger(char* entree) {
 	std::ifstream file(entree);
 	if (!file) {
-		std::cerr << "Ouverture de fichier impossible";
+		std::cerr << "Ouverture de fichier impossible" << std::endl;
 		return false;
 	}
 	try {
@@ -79,6 +79,7 @@ bool AireDeJeu::charger(char* entree) {
 			       PV DE L'UNITE (s'il y a une unité)
 			   Si le type est un espace, cela signifie qu'il n'y a pas d'unité sur cette position
 			*/
+		Unite* plateauCopie[12];
 		int camp = 1;
 		char type;
 		int pv;
@@ -142,6 +143,7 @@ bool AireDeJeu::charger(char* entree) {
 		setAireDeJeu(tourDeJeu0, nbToursActuel0, nbToursMAX0);
 		jA.setJoueur(     0, argentJA, pvBaseJA);
 		jB.setJoueur(modeJB, argentJB, pvBaseJB);
+
 		for (int i = 0 ; i < 12 ; i++) {
 			plateau[i] = plateauCopie[i];
 		}
