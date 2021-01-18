@@ -2,12 +2,52 @@
 #include <string>
 
 int main() {
-	bool m = 0; // 0 signifie joueur contre joueur ; 1 signifie joueur contre ordinateur
-	std::string mode = m ? "automatique":"manuel";
-	std::cout << "MODE CHOISI : Joueur A (manuel) vs Joueur B (" + mode + ')' << std::endl;
+	std::cout << "\nProjet C++ : Age of War" << std::endl;
 
-	std::cout << "INSTANCIATION D'UNE AIRE DE JEU" << std::endl;
-	AireDeJeu* a = new AireDeJeu(m);
+	//INSTANCIATION D'UNE AIRE DE JEU
+	AireDeJeu* a = new AireDeJeu(1);
+	char res = '0';
+	char* nomFichier = new char; // à ne surtout pas déplacer
+
+	while (res != 'q') {
+		do {
+			std::cout << "Commencer une Nouvelle partie ('n') / Charger une partie ('c') : ";
+			std::cin >> res;
+		} while ((res != 'n') && (res != 'c'));
+
+		switch (res) {
+			case 'n' :
+				do {
+					std::cout << "Joueur contre Joueur ('j') / Joueur contre IA ('m') :";
+					std::cin >> res;
+				} while ((res != 'j') && (res != 'm'));
+				if (res == 'j') {
+					a = new AireDeJeu(false);
+				} else {
+					a = new AireDeJeu(true);
+				}
+				break;
+			case 'c' :
+				std::cout << "Entrez le nom du fichier à charger : ";
+				std::cin >> nomFichier;
+				a->charger(nomFichier);
+				break;
+		}
+		a->print();
+		/* Décommenter ce bloc pour tester la sauvegarde
+		std::cout << "nom fichier pour save : ";
+		std::cin >> nomFichier;
+		a->sauvegarder(nomFichier);*/
+
+		break;
+		
+		/*while (!a->finDeJeu()) {
+			a->print();
+			a->jouerTour();
+		}*/
+	}
+
+	
 	
 	// TESTS (ajouts d'unités)
 	/*Fantassin* u1 = new Fantassin(1);
@@ -25,14 +65,6 @@ int main() {
 	Fantassin* u7 = new Fantassin(-1);
 	a->plateau[11] = u7;*/
 
-	// DEROULEMENT DU JEU
-	/*while(!finDeJeu()) {
-		jouerTour();
-	}*/
-	a->print();
-	//a->nouveauTour();
-	//a->print();
-
 	// Sauvegarder un fichier de jeu :
 	/*char* nomFichier = new char;
 	std::cout << "Entrez le nom du fichier où sauver : ";
@@ -45,7 +77,7 @@ int main() {
 	std::cin >> nomFichier2;
 	a->charger(nomFichier2);*/
 
-	a->print();
+	//a->print();
 
 	delete a; //je crois qu'il faut aussi détruire le plateau
 
