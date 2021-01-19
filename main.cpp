@@ -23,10 +23,10 @@ int main() {
 						std::cin >> res;
 					} while ((res != 'j') && (res != 'm'));
 					if (res == 'j') {
-						//a = new AireDeJeu(false);
+						a = new AireDeJeu(false);
 						res = '1';
 					} else {
-						a->setMode(true);//a = new AireDeJeu(true);
+						a = new AireDeJeu(true);
 						res = '1';
 					}
 					break;
@@ -38,19 +38,19 @@ int main() {
 						if (nomFichier == "q") {
 							res = '0';
 						} else if(a->charger(nomFichier)) {
-							res = '2';
+							res = '1';
 							a->print();
 							a->finTour(); // le joueur fini son tour
 						} else {
-							res = '1';
+							res = '2';
 						}
-					} while (res == '1');
+					} while (res == '2');
 					break;
 			}
 		} while (res == '0');
 		
 		while (!a->finDeJeu()) {
-			std::cout << "EXECUTION DE jouerActions()\n";
+std::cout << "EXECUTION DE jouerActions()\n";
 			a->jouerActions();
 			a->print();
 			a->finTour();

@@ -276,15 +276,15 @@ void AireDeJeu::print() const {
 
 bool AireDeJeu::finDeJeu() const {
 	if (nbToursActuel > nbToursMAX) {
-		std::cout << "FIN DE JEU ! AUCUN VAINQUEUR !" << std::endl;
+		std::cout << "FIN DE JEU ! Nombre de tours maximum dépassé ! AUCUN VAINQUEUR !" << std::endl;
 		return true;
 	}
 
 	if (jA.getPvBase() <= 0) {
-		std::cout << "FIN DE JEU ! JOUEUR B VAINQUEUR !" << std::endl;
+		std::cout << "FIN DE JEU ! VICTOIRE DU JOUEUR B !" << std::endl;
 		return true;
 	} else if (jB.getPvBase() <= 0) {
-		std::cout << "FIN DE JEU ! JOUEUR A VAINQUEUR !" << std::endl;
+		std::cout << "FIN DE JEU ! VICTOIRE DU JOUEUR A !" << std::endl;
 		return true;
 	}
 	return false;
@@ -501,7 +501,7 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 					} while (choix == '1');
 					break;
 				case 'q':
-					nbToursActuel = nbToursMAX + 1; // pour que la partie s'arrete
+					joueur->detruireBase(); // Abandon du joueur => pv de sa base mis à 0 => défaite du joueur
 					break;
 			}
 		} while (choix == '0');

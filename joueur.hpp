@@ -22,6 +22,7 @@ class Joueur {
 		void setMode(bool mod) {mode = mod;};
 		void setArgent(int money) {argent += money;};
 		void setPvBase(int atq) {pvBase += atq;}; // à renommer en setPvBase et faire attention à toutes les classes qui l'utilisent
+		void detruireBase() {pvBase = 0;};
 };
 
 #endif
