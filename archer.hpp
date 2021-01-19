@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "unite.hpp"
+#include "joueur.hpp"
 
 class Archer : public Unite {
 	
@@ -24,7 +25,7 @@ class Archer : public Unite {
 
 		bool getAutreAction() {return autreAction;};
 
-		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i); // ceci est une redéfinition car la méthode de la mère est virtual
+		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur); // ceci est une redéfinition car la méthode de la mère est virtual
 
 };
 

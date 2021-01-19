@@ -296,6 +296,7 @@ void AireDeJeu::jouerActions() {
 	int indice;
 	Joueur* joueur;
 	int indiceUniteMAX; //utile pour l'action 2 et 3, potentiellement +/- 1 apres mouvement lors de l'action 2!
+	Joueur* joueurAdverse;
 
 	// tourDeJeu == 1 signifie que c'est le tour du joueur A, donc jA
 	// tourDeJeu == -1 signifie que c'est le tour du joueur B, donc jB
@@ -307,10 +308,12 @@ void AireDeJeu::jouerActions() {
 		jB.setArgent(8);
 		indice = 0;
 		joueur = &jA;
+		joueurAdverse = &jB;
 		indiceUniteMAX = -1; // s'il n'y a aucune unité de ce joueur sur le plateau
 	} else {
 		indice = 11;
 		joueur = &jB;
+		joueurAdverse = &jA;
 		indiceUniteMAX = 12; // ou plus, tant que c'est strictement superieur à 11
 	}
 
@@ -324,7 +327,7 @@ std::cout << "ACTION 1\n";
 		if (plateau[i] != nullptr) {
 			if (plateau[i]->getCamp() == tourDeJeu) {
 				indiceUniteMAX = i;
-				std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i);
+				std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i, joueurAdverse);
 				// On évolue le fantassin s'il a vaincu un fantassin ennemi
 				if (paire.first) {
 					int pv = plateau[i]->getPV();
@@ -334,7 +337,9 @@ std::cout << "ACTION 1\n";
 				}
 				// On enlève les unités vaincus et ajoute les gains au joueur
 				for (size_t j=0; j<paire.second.size(); j++) {
-					joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
+					if ( (plateau[paire.second[j]]->getCamp()) != tourDeJeu ) {
+						joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
+					}
 					delete plateau[paire.second[j]];
 					plateau[paire.second[j]] = nullptr;
 				}
@@ -352,16 +357,19 @@ std::cout << "ACTION 2\n";
 
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
 		if (plateau[i] != nullptr) {
+			if ((i + tourDeJeu) == (indice + tourDeJeu * 11)) {
+				continue;
+			}
 			if (plateau[i + tourDeJeu] == nullptr) {
 				switch(plateau[i]->getNomUnite()) {
 					case 'F':
 						plateau[i + tourDeJeu] = new Fantassin(plateau[i]->getPV(), plateau[i]->getCamp());
 						break;
 					case 'A':
-					plateau[i + tourDeJeu] = new Archer(plateau[i]->getPV(), plateau[i]->getCamp());
+						plateau[i + tourDeJeu] = new Archer(plateau[i]->getPV(), plateau[i]->getCamp());
 						break;
 					case 'C':
-					plateau[i + tourDeJeu] = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
+						plateau[i + tourDeJeu] = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
 						break;
 					case 'S':
 						plateau[i + tourDeJeu] = new SuperSoldat(plateau[i]->getPV(), plateau[i]->getCamp());
@@ -385,7 +393,7 @@ std::cout << "ACTION 3\n";
 		if (plateau[i] != nullptr) {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
 			if (plateau[i]->getAutreAction()) {
-				std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i);
+				std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i, joueurAdverse);
 				// On évolue le fantassin s'il a vaincu un fantassin ennemi
 				if (paire.first) {
 					int pv = plateau[i]->getPV();
@@ -395,7 +403,9 @@ std::cout << "ACTION 3\n";
 				}
 				// On enlève les unités vaincus et ajoute les gains au joueur
 				for (size_t j=0; j<paire.second.size(); j++) {
-					joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
+					if ( (plateau[paire.second[j]]->getCamp()) != tourDeJeu ) {
+						joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
+					}
 					delete plateau[paire.second[j]];
 					plateau[paire.second[j]] = nullptr;
 				}

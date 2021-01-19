@@ -7,7 +7,15 @@ int Archer::portee[3] = {1,2,3};
 
 Archer::~Archer() {}
 
-std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i) {
+std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i, Joueur* joueur) {
+    int indiceMAX;
+    if (getCamp() == 1) {
+        indiceMAX = 11;
+    }
+    else {
+        indiceMAX = 0;
+    }
+
     for (int j=0; j<3; j++) {
         if (! (plateau[i + getCamp() * portee[j]] == nullptr) ) {
             if (plateau[i + getCamp() * portee[j]]->getCamp() != getCamp()) {
@@ -17,6 +25,9 @@ std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i) {
                 }
                 break;
             }
+        }
+        else if ( (i + getCamp() * portee[j]) == indiceMAX ) {
+            joueur->setPvBase(-atq);
         }
     }
     std::cout << (plateau[0] == nullptr) << i; // "warning plateau & i isn't used"

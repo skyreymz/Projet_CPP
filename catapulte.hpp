@@ -4,6 +4,7 @@
 #include <iostream>
 #include <utility>
 #include "unite.hpp"
+#include "joueur.hpp"
 
 class Catapulte : public Unite {
 	
@@ -25,7 +26,7 @@ class Catapulte : public Unite {
 
 		bool getAutreAction() {return autreAction;};
 
-		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i); // ceci est une redéfinition car la méthode de la mère est virtual
+		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur); // ceci est une redéfinition car la méthode de la mère est virtual
 };
 
 #endif

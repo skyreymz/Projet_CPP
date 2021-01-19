@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "unite.hpp"
+#include "joueur.hpp"
 
 class Fantassin : public Unite {
 	
@@ -28,7 +29,7 @@ class Fantassin : public Unite {
 
 		virtual bool getAutreAction() {return autreAction;}; // virtual car on va la redéfinir pour le SuperSoldat pour que celui-ci ne recupere PAS le bool autreAction hérité de Fantassin mais bien le SIEN qui sera tjs true !
 
-		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i); // ceci est une redéfinition car la méthode de la mère est virtual
+		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* Joueur); // ceci est une redéfinition car la méthode de la mère est virtual
 };
 
 #endif
