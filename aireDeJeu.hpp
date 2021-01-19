@@ -34,7 +34,8 @@ class AireDeJeu {
 		void nouveauTour();
 		void creationUniteManuelle(bool joueur);
 		
-		void jouerTour();
+		void jouerActions();
+		void finTour();
 		
 };
 

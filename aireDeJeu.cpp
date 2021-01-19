@@ -315,7 +315,7 @@ void AireDeJeu::creationUniteManuelle(bool joueur){
 		j = &jB;
 	}
 
-	char res;
+	char res = 'z';
 	while (res != '0') {
 		std::cout << "Voulez-vous créer une nouvelle unité ? (Entrez 'h' pour obtenir de l'aide) : ";
 		std::cin >> res;
@@ -363,9 +363,9 @@ void AireDeJeu::creationUniteManuelle(bool joueur){
 	}
 }
 
-void AireDeJeu::jouerTour() {
 
-	char choix;
+void AireDeJeu::jouerActions() {
+	
 	int indice;
 	Joueur* joueur;
 	bool equipe;
@@ -394,7 +394,7 @@ void AireDeJeu::jouerTour() {
 	
 	// Action 1
 	
-	for (int i=indice; ((tourDeJeu == 1) && (i < 11)) || ((tourDeJeu == -1) && (i > 0)); i=i+tourDeJeu) { 
+	for (int i=indice; ((!equipe) && (i < 11)) || ((equipe) && (i > 0)); i=i+tourDeJeu) { 
 		if (plateau[i] != nullptr) {
 			if (plateau[i]->getCamp() == tourDeJeu) {
 				indiceUniteMAX = i;
@@ -423,7 +423,7 @@ void AireDeJeu::jouerTour() {
 
 	// Action 2
 
-	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
+	for (int i = indiceUniteMAX ; ((!equipe) && (i>=0)) || ((equipe) && (i <= 11)) ; i -=tourDeJeu ) {
 		if (plateau[i] != nullptr) {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
 			if (plateau[i + tourDeJeu] == nullptr) {
@@ -457,13 +457,9 @@ void AireDeJeu::jouerTour() {
 	}
 
 
-
-	
-
-
 	// Action 3
 
-	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
+	for (int i = indiceUniteMAX ; ((!equipe) && (i>=0)) || ((equipe) && (i <= 11)) ; i -=tourDeJeu ) {
 		if (plateau[i] != nullptr) {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
 			if (plateau[i]->getAutreAction()) {
@@ -487,6 +483,30 @@ void AireDeJeu::jouerTour() {
 			//	break;
 			//}
 		}
+	}
+	
+	
+}
+
+
+void AireDeJeu::finTour() {
+	
+	char choix;
+	int indice;
+	Joueur* joueur;
+	bool equipe;
+
+	// tourDeJeu == 1 signifie que c'est le tour du joueur A, donc jA
+	// tourDeJeu == -1 signifie que c'est le tour du joueur B, donc jB
+
+	if (tourDeJeu == 1) {
+		indice = 0;
+		joueur = &jA;
+		equipe = false;
+	} else {
+		indice = 11;
+		joueur = &jB;
+		equipe = true;
 	}
 
 
@@ -518,9 +538,8 @@ void AireDeJeu::jouerTour() {
 					std::cin >> choix;
 				}
 			}
-			else {
-
-			}
+			
+			
 			
 			
 			if (choix == 'f') {
@@ -549,7 +568,7 @@ void AireDeJeu::jouerTour() {
 			} else if (joueur->getArgent() >= 10) {
 				joueur->setArgent( (-1) * Fantassin::getPrix() );
 				plateau[indice] = new Fantassin(equipe);
-			} else {}
+			}
 		}
 
 		
@@ -560,36 +579,3 @@ void AireDeJeu::jouerTour() {
 }
 
 
-
-	/*
-
-
-2. Tour de jeu du joueur A
-(a) Phase de résolution des actions 1 des unités du joueur A
-(b) Phase de résolution des actions 2 des unités du joueur A
-(c) Phase de résolution des actions 3 des unités du joueur A
-(d) Création éventuelle d'une nouvelle unité du joueur A
-3. Tour de jeu du joueur B
-(a) Phase de résolution des actions 1 des unités du joueur B
-(b) Phase de résolution des actions 2 des unités du joueur B
-3
-(c) Phase de résolution des actions 3 des unités du joueur B
-(d) Création éventuelle d'une nouvelle unité du joueur B
-
-
-L'ordre dans lequel les unités eectuent leur action dépend de la phase :
-• Lors de la phase de résolution des actions 1, l'unité la plus proche de la base du joueur
-courant tente d'eectuer son action en premier, puis la deuxième unité la plus proche
-et ainsi de suite jusqu'à l'unité la plus lointaine de la base du joueur.
-• Lors des phases de résolution des actions 2 et 3, l'unité la plus lointaine de la base du
-joueur courant tente d'eectuer son action en premier, puis la deuxième unité la plus
-lointaine et ainsi de suite jusqu'à l'unité la plus proche de la base du joueur.
-
-A chaque étape, si l'unité a la possibilité de faire son action, elle l'eectue obligatoirement.
-A la n de son tour de jeu, le joueur a la possibilité de recruter une unité sur la case de sa base
-s'il possède assez de pièces d'or (le coût de recrutement est alors retranché de ce qu'il possède)
-
-
-
-
-	*/
