@@ -318,6 +318,7 @@ void AireDeJeu::jouerActions() {
 	// 2) Tour de jeu d'un joueur
 	
 	// Action 1
+std::cout << "ACTION 1\n";
 	
 	for (int i=indice; ((tourDeJeu == 1) && (i < 11)) || ((tourDeJeu == -1) && (i > 0)); i=i+tourDeJeu) { 
 		if (plateau[i] != nullptr) {
@@ -347,6 +348,7 @@ void AireDeJeu::jouerActions() {
 
 
 	// Action 2
+std::cout << "ACTION 2\n";
 
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
 		if (plateau[i] != nullptr) {
@@ -377,6 +379,7 @@ void AireDeJeu::jouerActions() {
 
 
 	// Action 3
+std::cout << "ACTION 3\n";
 
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
 		if (plateau[i] != nullptr) {

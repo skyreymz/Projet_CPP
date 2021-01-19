@@ -50,6 +50,7 @@ int main() {
 		} while (res == '0');
 		
 		while (!a->finDeJeu()) {
+			std::cout << "EXECUTION DE jouerActions()\n";
 			a->jouerActions();
 			a->print();
 			a->finTour();
