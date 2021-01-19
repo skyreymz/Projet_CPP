@@ -6,10 +6,10 @@ int main() {
 
 	//INSTANCIATION D'UNE AIRE DE JEU
 	AireDeJeu* a = new AireDeJeu(1);
-	char res = '0';
+	char res;
 	char* nomFichier = new char; // à ne surtout pas déplacer
 
-	while (res != 'q') {
+	do {
 		do {
 			std::cout << "Commencer une Nouvelle partie ('n') / Charger une partie ('c') : ";
 			std::cin >> res;
@@ -28,9 +28,15 @@ int main() {
 				}
 				break;
 			case 'c' :
-				std::cout << "Entrez le nom du fichier à charger : ";
-				std::cin >> nomFichier;
-				a->charger(nomFichier);
+				do {
+					std::cout << "Entrez le nom du fichier à charger : ";
+					std::cin >> nomFichier;
+					if(a->charger(nomFichier)) {
+						res = '1';
+					} else {
+						res = '0';
+					}
+				} while (res == '0');
 				break;
 		}
 		a->print();
@@ -45,9 +51,8 @@ int main() {
 			a->print();
 			a->jouerTour();
 		}*/
-	}
+	} while (res != 'q');
 
-	
 	
 	// TESTS (ajouts d'unités)
 	/*Fantassin* u1 = new Fantassin(1);

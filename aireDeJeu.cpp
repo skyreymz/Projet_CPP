@@ -217,13 +217,18 @@ bool AireDeJeu::sauvegarder(char* sortie) const {
 }
 
 void AireDeJeu::print() const {
-	std::cout << "-----------------------------------------------" << std::endl;
-	std::cout << "Tour " << nbToursActuel << "/" << nbToursMAX << std::endl; // non demandé par le sujet mais utile pour vérifier que nbToursActuel s'incrémente
+	std::cout << "--------------------------------------------------------------" << std::endl;
+	std::cout << "Tour " << nbToursActuel << '/' << nbToursMAX << " ; Tour du joueur ";	
+	if (tourDeJeu == 1) {
+		std::cout << 'A' << std::endl;
+	} else {
+		std::cout << 'B' << std::endl;
+	}	
 	std::cout << "Pièces d'or du Joueur A : " << jA.getArgent() << std::endl;
 	std::cout << "Pièces d'or du Joueur B : " << jB.getArgent() << std::endl;
 	
 	std::cout << "\nAIRE DE JEU :" << std::endl;
-	std::cout << "Base A : " << jA.getPvBase() << "PV				  Base B : " << jB.getPvBase() << "PV" << std::endl;
+	std::cout << "Base A : " << jA.getPvBase() << "PV                                 Base B : " << jB.getPvBase() << "PV" << std::endl;
 	for (int i = 0 ; i < 51 ; i++){
 		if (i == 0 || i == 50) {
 			std::cout << "/\\/\\/\\";
@@ -427,24 +432,25 @@ void AireDeJeu::jouerTour() {
 		if (plateau[i] != nullptr) {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
 			if (plateau[i + tourDeJeu] == nullptr) {
-
-				if (plateau[i]->getNomUnite() == 'F') {
-					Fantassin* unite = new Fantassin(plateau[i]->getPV(), plateau[i]->getCamp());
-					plateau[i + tourDeJeu] = unite;
+				Unite* u;
+				switch(plateau[i]->getNomUnite()) {
+					case 'F':
+						u = new Fantassin(plateau[i]->getPV(), plateau[i]->getCamp());
+						plateau[i + tourDeJeu] = u;
+						break;
+					case 'A':
+						u = new Archer(plateau[i]->getPV(), plateau[i]->getCamp());
+					plateau[i + tourDeJeu] = u;
+						break;
+					case 'C':
+						u = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
+					plateau[i + tourDeJeu] = u;
+						break;
+					case 'S':
+						u = new SuperSoldat(plateau[i]->getPV(), plateau[i]->getCamp());
+						plateau[i + tourDeJeu] = u;
+						break;
 				}
-				else if (plateau[i]->getNomUnite() == 'A') {
-					Archer* unite = new Archer(plateau[i]->getPV(), plateau[i]->getCamp());
-					plateau[i + tourDeJeu] = unite;
-				}
-				else if (plateau[i]->getNomUnite() == 'C') {
-					Catapulte* unite = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
-					plateau[i + tourDeJeu] = unite;
-				}
-				else {
-					SuperSoldat* unite = new SuperSoldat(plateau[i]->getPV(), plateau[i]->getCamp());
-					plateau[i + tourDeJeu] = unite;
-				}
-
 				delete plateau[i];
 				plateau[i] = nullptr;
 				
