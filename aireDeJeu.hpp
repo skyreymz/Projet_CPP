@@ -20,19 +20,18 @@ class AireDeJeu {
 	Joueur jB;
 	
 	public:
-		AireDeJeu(bool mod, int tourActuel = 1, int tourMaximum = 100);
+		AireDeJeu();
+		AireDeJeu(bool mod, int tourActuel = 0, int tourMaximum = 100);
 
 		~AireDeJeu();
 
-		bool charger(char* entree);
-		bool sauvegarder(char* sortie) const;
+		bool charger(std::string entree);
+		bool sauvegarder(std::string sortie) const;
 		void setAireDeJeu(int tourDeJeu0, int nbToursActuel0, int nbToursMAX0){tourDeJeu = tourDeJeu0; nbToursActuel = nbToursActuel0; nbToursMAX = nbToursMAX0;};
+		void setMode(bool mode) {jB.setMode(mode);};
 
 		void print() const;
 		bool finDeJeu() const;
-
-		void nouveauTour();
-		void creationUniteManuelle(bool joueur);
 		
 		void jouerActions();
 		void finTour();

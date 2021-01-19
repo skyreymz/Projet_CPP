@@ -7,7 +7,6 @@ std::pair<int,int> Catapulte::portee[3] = {std::make_pair(2,3), std::make_pair(3
 
 Catapulte::~Catapulte() {}
 
-//IL FAUDRA CHANGER LE bool camp en int = 1 ou -1 
 std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i) {
     for (int j=0; j<3; j++) {
 

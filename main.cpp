@@ -5,53 +5,56 @@ int main() {
 	std::cout << "\nProjet C++ : Age of War" << std::endl;
 
 	//INSTANCIATION D'UNE AIRE DE JEU
-	AireDeJeu* a = new AireDeJeu(1);
+	AireDeJeu* a = new AireDeJeu(false);
 	char res;
-	char* nomFichier = new char; // à ne surtout pas déplacer
+	
 
 	do {
 		do {
-			std::cout << "Commencer une Nouvelle partie ('n') / Charger une partie ('c') : ";
-			std::cin >> res;
-		} while ((res != 'n') && (res != 'c'));
+			do {
+				std::cout << "Commencer une Nouvelle partie ('n') / Charger une partie ('c') : ";
+				std::cin >> res;
+			} while ((res != 'n') && (res != 'c'));
 
-		switch (res) {
-			case 'n' :
-				do {
-					std::cout << "Joueur contre Joueur ('j') / Joueur contre IA ('m') :";
-					std::cin >> res;
-				} while ((res != 'j') && (res != 'm'));
-				if (res == 'j') {
-					a = new AireDeJeu(false);
-				} else {
-					a = new AireDeJeu(true);
-				}
-				break;
-			case 'c' :
-				do {
-					std::cout << "Entrez le nom du fichier à charger : ";
-					std::cin >> nomFichier;
-					if(a->charger(nomFichier)) {
+			switch (res) {
+				case 'n' :
+					do {
+						std::cout << "Joueur contre Joueur ('j') / Joueur contre IA ('m') :";
+						std::cin >> res;
+					} while ((res != 'j') && (res != 'm'));
+					if (res == 'j') {
+						//a = new AireDeJeu(false);
 						res = '1';
 					} else {
-						res = '0';
+						a->setMode(true);//a = new AireDeJeu(true);
+						res = '1';
 					}
-				} while (res == '0');
-				break;
-		}
-		a->print();
-		/* Décommenter ce bloc pour tester la sauvegarde
-		std::cout << "nom fichier pour save : ";
-		std::cin >> nomFichier;
-		a->sauvegarder(nomFichier);*/
-
-		break;
+					break;
+				case 'c' :
+					std::string nomFichier;
+					do {
+						std::cout << "Entrez le nom du fichier à charger ('q' pour revenir au menu principal) : ";
+						std::cin >> nomFichier;
+						if (nomFichier == "q") {
+							res = '0';
+						} else if(a->charger(nomFichier)) {
+							res = '2';
+							a->print();
+							a->finTour(); // le joueur fini son tour
+						} else {
+							res = '1';
+						}
+					} while (res == '1');
+					break;
+			}
+		} while (res == '0');
 		
-		/*while (!a->finDeJeu()) {
+		while (!a->finDeJeu()) {
+			a->jouerActions();
 			a->print();
-			a->jouerTour();
-		}*/
-	} while (res != 'q');
+			a->finTour();
+		}
+	} while (true);
 
 	
 	// TESTS (ajouts d'unités)

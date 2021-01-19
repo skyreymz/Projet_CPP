@@ -21,7 +21,7 @@ class Unite {
 		int getPV() const {return pv;};
 		int getCamp() const {return camp;};
 
-		void setPV(int atq) {pv -= atq;};
+		void setPV(int atq) {pv += atq;};
 		bool estVaincu() {return (pv <= 0);};
 
 		// Renvoie une paire <true, vecteur d'indices des unites vaincus>, true si et seulement si un fantassin a vaincu un autre fantassin

@@ -19,6 +19,7 @@ class Joueur {
 		bool getMode() const {return mode;};
 		int getArgent() const {return argent;};
 		int getPvBase() const {return pvBase;};
+		void setMode(bool mod) {mode = mod;};
 		void setArgent(int money) {argent += money;};
 		void dommages(int atq) {pvBase -= atq;}; // à renommer en setPvBase et faire attention à toutes les classes qui l'utilisent
 };
