@@ -11,7 +11,7 @@ Fantassin::~Fantassin() {}
 
 
 bool Fantassin::aVaincuFantassin(Unite* unite) { //si je mets que Unite unite ca marche pas... il veut un pointeur ce shlag
-    if ( unite->estVaincu() && (unite->getInfos()[0] == 'F') ) {
+    if ( unite->estVaincu() && (unite->getNomUnite() == 'F') ) {
         return true;
     }
     else {

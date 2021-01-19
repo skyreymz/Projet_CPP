@@ -18,7 +18,7 @@ class Fantassin : public Unite {
 		Fantassin(int pdv, int equipe) : Unite(pdv, equipe) {}
 		~Fantassin();
 
-		std::string getInfos() const {return "F("+Unite::getInfos()+")";};
+		char getNomUnite() const {return 'F';};
 		bool aVaincuFantassin(Unite* unite);
 
 		static int getPrix() {return prix;};

@@ -183,13 +183,11 @@ bool AireDeJeu::sauvegarder(char* sortie) const {
 			if (plateau[i] == nullptr) {
 				file << "N // Position " << i << " : Sans unité\n";
 			} else {
-				std::string infosUnite = plateau[i]->getInfos();
-				char campsUnite = infosUnite[2];
-				if ((campsUnites == 1) && (campsUnite == 'B')) {
+				if ((campsUnites == 1) && (plateau[i]->getCamp() == -1)) {
 					campsUnites = -1;
 					file << "A // Début des unités du joueur B\n";
 				}
-				switch (infosUnite[0]) { // pour connaître la classe de l'unité
+				switch (plateau[i]->getNomUnite()) { // pour connaître la classe de l'unité
 					case 'F':
 						file << "f // Position " << i << " : Fantassin\n";
 						break;
@@ -238,7 +236,13 @@ void AireDeJeu::print() const {
 
 	for (int i = 0 ; i < 12 ; i++){
 		if (plateau[i] != nullptr) {
-			std::cout << plateau[i]->getInfos() << "|";
+			char camps;
+			if (plateau[i]->getCamp() == 1) {
+				camps = 'A';
+			} else {
+				camps = 'B';
+			}
+			std::cout << plateau[i]->getNomUnite() << '(' << camps << ")|";
 		} else {
 			std::cout << "    |";
 		}
@@ -424,15 +428,15 @@ void AireDeJeu::jouerTour() {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
 			if (plateau[i + tourDeJeu] == nullptr) {
 
-				if (plateau[i]->getInfos()[0] == 'F') {
+				if (plateau[i]->getNomUnite() == 'F') {
 					Fantassin* unite = new Fantassin(plateau[i]->getPV(), plateau[i]->getCamp());
 					plateau[i + tourDeJeu] = unite;
 				}
-				else if (plateau[i]->getInfos()[0] == 'A') {
+				else if (plateau[i]->getNomUnite() == 'A') {
 					Archer* unite = new Archer(plateau[i]->getPV(), plateau[i]->getCamp());
 					plateau[i + tourDeJeu] = unite;
 				}
-				else if (plateau[i]->getInfos()[0] == 'C') {
+				else if (plateau[i]->getNomUnite() == 'C') {
 					Catapulte* unite = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
 					plateau[i + tourDeJeu] = unite;
 				}

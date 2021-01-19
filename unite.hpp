@@ -17,8 +17,7 @@ class Unite {
 		Unite(int pdv, int equipe) : pv(pdv), camp(equipe) {}
 		virtual ~Unite()=0;
 
-		virtual std::string getInfos() const;
-
+		virtual char getNomUnite() const=0;
 		int getPV() const {return pv;};
 		int getCamp() const {return camp;};
 

@@ -12,7 +12,7 @@ class SuperSoldat : public Fantassin {
 		SuperSoldat(int pdv, int equipe) : Fantassin(pdv, equipe) {} // il ne veut pas directement appeler le constructeur du grand-pere Unite(pdv)... peut etre qu'on ne peut pas!
 		~SuperSoldat();
 
-		std::string getInfos() const {return "S("+Unite::getInfos()+")";};
+		char getNomUnite() const {return 'S';};
 
 		bool getAutreAction();
 
