@@ -16,18 +16,23 @@ std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i, Joue
         indiceMAX = 0;
     }
 
-    for (int j=0; j<3; j++) {
-        if (! (plateau[i + getCamp() * portee[j]] == nullptr) ) {
-            if (plateau[i + getCamp() * portee[j]]->getCamp() != getCamp()) {
-                plateau[i+ getCamp() * portee[j]]->setPV(-atq);
-                if (plateau[i + getCamp() * portee[j]]->estVaincu()) {
+    bool attaqueRealisee = false;
+    for (int j=0; (j<3) && !attaqueRealisee; j++) {
+        int positionCible = i + getCamp() * portee[j];
+        if (plateau[positionCible] != nullptr) {
+            if (plateau[positionCible]->getCamp() != getCamp()) {
+                afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCible], positionCible);
+                plateau[positionCible]->setPV(-atq);
+                if (plateau[positionCible]->estVaincu()) {
                     return std::make_pair(false, std::vector<int>(1)={i+ getCamp() * portee[j]});
                 }
-                break;
+                attaqueRealisee = true;
             }
         }
-        else if ( (i + getCamp() * portee[j]) == indiceMAX ) {
+        else if ( positionCible == indiceMAX ) {
+            afficheAttaqueBase(this, getNomUnite(), atq, i);
             joueur->setPvBase(-atq);
+            attaqueRealisee = true;
         }
     }
     return std::make_pair(false, std::vector<int>()={});

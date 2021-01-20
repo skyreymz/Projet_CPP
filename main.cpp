@@ -19,7 +19,7 @@ int main() {
 			switch (res) {
 				case 'n' :
 					do {
-						std::cout << "Joueur contre Joueur ('j') / Joueur contre IA ('m') :";
+						std::cout << "Joueur contre Joueur ('j') / Joueur contre IA ('m') : ";
 						std::cin >> res;
 					} while ((res != 'j') && (res != 'm'));
 					if (res == 'j') {
@@ -69,6 +69,7 @@ int main() {
 		} while (res == '0');
 		
 		while (!finDePartie) {
+			// TO DO : faire les bons affichages
 			a->jouerActions();
 			if ((a->tourDeJeu == 1) || !(a->getMode())) {
 			// On affiche l'état du jeu avant la création éventuelle d'unité si le joueur est en mode manuel

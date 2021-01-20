@@ -21,9 +21,15 @@ class Unite {
 		virtual char getNomUnite() const=0;
 		int getPV() const {return pv;};
 		int getCamp() const {return camp;};
+		char getCampChar() const;
+		char getCampEnnemiChar() const;
 
+		virtual void setAutreAction(bool b)=0;
 		void setPV(int atq) {pv += atq;};
 		bool estVaincu() {return (pv <= 0);};
+
+		void afficheAttaqueUnite(Unite* emetteur, char nomUnite, int atq, int position, Unite* cible, int positionCible) const;
+		void afficheAttaqueBase(Unite* emetteur, char nomUnite, int atq, int position) const;
 
 		// Renvoie une paire <true, vecteur d'indices des unites vaincus>, true si et seulement si un fantassin a vaincu un autre fantassin
 		virtual std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur) = 0;

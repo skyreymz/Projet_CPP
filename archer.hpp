@@ -25,6 +25,8 @@ class Archer : public Unite {
 
 		bool getAutreAction() {return autreAction;};
 
+		void setAutreAction(bool b) {autreAction = b;}; // inutile
+
 		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur); // ceci est une redéfinition car la méthode de la mère est virtual
 
 };

@@ -242,15 +242,7 @@ void AireDeJeu::print() const {
 	std::cout << "Pièces d'or du Joueur B : " << jB.getArgent() << std::endl;
 
 	std::cout << "\nAIRE DE JEU :" << std::endl;
-	std::string pvBaseJA = std::to_string(jA.getPvBase());
-	while (pvBaseJA.length() < 3) { // pour que l'affichage soit bien aligné
-		pvBaseJA = '0'+pvBaseJA;
-	}
-	std::string pvBaseJB = std::to_string(jB.getPvBase());
-	while (pvBaseJB.length() < 3) { // pour que l'affichage soit bien aligné
-		pvBaseJB = '0'+pvBaseJA;
-	}
-	std::cout << "Base A : " << pvBaseJA << "PV                                 Base B : " << pvBaseJB << "PV" << std::endl;
+	std::cout << "Base A : " << jA.getPvBase() << "PV                                 Base B : " << jB.getPvBase() << "PV" << std::endl;
 	for (int i = 0 ; i < 51 ; i++){
 		if (i == 0 || i == 50) {
 			std::cout << "/\\/\\/\\";
@@ -275,7 +267,7 @@ void AireDeJeu::print() const {
 		}
 	}
 
-	std::cout << " <- Unité(camp)\n|";
+	std::cout << " <- Unité(Camp)\n|";
 
 	for (int i = 0 ; i < 12 ; i++){
 		if (plateau[i] != nullptr) {
@@ -289,7 +281,17 @@ void AireDeJeu::print() const {
 			std::cout << "____|";
 		} 
 	}
-	std::cout << " <- PV des unités\n";	
+	
+	std::cout << " <- PV des unités\n ";	
+
+	for (int i = 0 ; i < 12 ; i++){
+		if (i/10 == 0) {
+			std::cout << "  " << i << "  ";
+		} else {
+			std::cout << " " << i << "  ";
+		}
+	}
+	std::cout << " <- Position\n";	
 }
 
 bool AireDeJeu::tourMaxAtteint() const {
@@ -302,10 +304,10 @@ bool AireDeJeu::tourMaxAtteint() const {
 
 bool AireDeJeu::baseDetruite() const {
 	if ((jA.getPvBase() <= 0)) {
-		std::cout << "FIN DE JEU ! VICTOIRE DU JOUEUR A !" << std::endl;
+		std::cout << "FIN DE JEU ! VICTOIRE DU JOUEUR B !" << std::endl;
 		return true;
 	} else if ((jB.getPvBase() <= 0)) {
-		std::cout << "FIN DE JEU ! VICTOIRE DU JOUEUR B !" << std::endl;
+		std::cout << "FIN DE JEU ! VICTOIRE DU JOUEUR A !" << std::endl;
 		return true;
 	}
 	return false;
@@ -381,19 +383,23 @@ void AireDeJeu::jouerActions() {
 				switch(plateau[i]->getNomUnite()) {
 					case 'F':
 						plateau[i + tourDeJeu] = new Fantassin(plateau[i]->getPV(), plateau[i]->getCamp());
+						std::cout << "F(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé sur la case " << i+tourDeJeu << std::endl;
+						delete plateau[i];
+						plateau[i] = nullptr;
 						break;
 					case 'A':
 						plateau[i + tourDeJeu] = new Archer(plateau[i]->getPV(), plateau[i]->getCamp());
-						break;
-					case 'C':
-						plateau[i + tourDeJeu] = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
+						std::cout << "A(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé sur la case " << i+tourDeJeu << std::endl;
+						delete plateau[i];
+						plateau[i] = nullptr;
 						break;
 					case 'S':
 						plateau[i + tourDeJeu] = new SuperSoldat(plateau[i]->getPV(), plateau[i]->getCamp());
+						std::cout << "S(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé sur la case " << i+tourDeJeu << std::endl;
+						delete plateau[i];
+						plateau[i] = nullptr;
 						break;
 				}
-				delete plateau[i];
-				plateau[i] = nullptr;
 				
 				if (i == indiceUniteMAX) {
 					indiceUniteMAX += tourDeJeu;
@@ -408,27 +414,41 @@ void AireDeJeu::jouerActions() {
 		if (plateau[i] != nullptr) {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
 			if (plateau[i]->getAutreAction()) {
-				std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i, joueurAdverse);
-				// On évolue le fantassin s'il a vaincu un fantassin ennemi
-				if (paire.first) {
-					int pv = plateau[i]->getPV();
-					int camp = plateau[i]->getCamp(); //changer le camp et equipe en int 1 ou -1 !!!!! pck la c un bool
-					delete plateau[i];
-					plateau[i] = new SuperSoldat(pv, camp);
+				std::pair<bool,std::vector<int>> paire;
+				switch (plateau[i]->getNomUnite()) {
+					case 'F':
+					case 'S':
+						paire = plateau[i]->attaque(plateau, i, joueurAdverse);
+						// On évolue le fantassin s'il a vaincu un fantassin ennemi
+						if (paire.first) {
+							int pv = plateau[i]->getPV();
+							int camp = plateau[i]->getCamp(); //changer le camp et equipe en int 1 ou -1 !!!!! pck la c un bool
+							delete plateau[i];
+							plateau[i] = new SuperSoldat(pv, camp);
+						}
+						// On enlève les unités vaincus et ajoute les gains au joueur
+						for (size_t j=0; j<paire.second.size(); j++) {
+							if ( (plateau[paire.second[j]]->getCamp()) != tourDeJeu ) {
+								joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
+							}
+							delete plateau[paire.second[j]];
+							plateau[paire.second[j]] = nullptr;
+						}
+						break;
+					case 'C':
+						if (plateau[i + tourDeJeu] == nullptr) {
+							plateau[i + tourDeJeu] = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
+							std::cout << "C(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé sur la case " << i+tourDeJeu << std::endl;
+							delete plateau[i];
+							plateau[i] = nullptr;
+							break;
+						}
 				}
-				// On enlève les unités vaincus et ajoute les gains au joueur
-				for (size_t j=0; j<paire.second.size(); j++) {
-					if ( (plateau[paire.second[j]]->getCamp()) != tourDeJeu ) {
-						joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
-					}
-					delete plateau[paire.second[j]];
-					plateau[paire.second[j]] = nullptr;
-				}
+			} else if ((plateau[i]->getNomUnite() == 'F') || (plateau[i]->getNomUnite() == 'C')) {
+				plateau[i]->setAutreAction(true);
 			}
 		}
 	}
-	
-	
 }
 
 
@@ -524,12 +544,15 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 		// Stratégie : création de l'unité la plus chère
 		if (joueur->getArgent() >= 20) {
 			joueur->setArgent( (-1) * Catapulte::getPrix() );
+			std::cout << "Le joueur B a recruté une Catapulte" << std::endl; // il n'y a que le joueur B qui peut être en mode automatique
 			plateau[indice] = new Catapulte(tourDeJeu);
 		} else if (joueur->getArgent() >= 12) {
 			joueur->setArgent( (-1) * Archer::getPrix() );
+			std::cout << "Le joueur B a recruté un Archer" << std::endl; // il n'y a que le joueur B qui peut être en mode automatique
 			plateau[indice] = new Archer(tourDeJeu);
 		} else if (joueur->getArgent() >= 10) {
 			joueur->setArgent( (-1) * Fantassin::getPrix() );
+			std::cout << "Le joueur B a recruté un Fantassin" << std::endl; // il n'y a que le joueur B qui peut être en mode automatique
 			plateau[indice] = new Fantassin(tourDeJeu);
 		}
 

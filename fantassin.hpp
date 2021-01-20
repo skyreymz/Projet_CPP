@@ -29,6 +29,8 @@ class Fantassin : public Unite {
 
 		virtual bool getAutreAction() {return autreAction;}; // virtual car on va la redéfinir pour le SuperSoldat pour que celui-ci ne recupere PAS le bool autreAction hérité de Fantassin mais bien le SIEN qui sera tjs true !
 
+		virtual void setAutreAction(bool b) {autreAction = b;};
+
 		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* Joueur); // ceci est une redéfinition car la méthode de la mère est virtual
 };
 

@@ -16,6 +16,8 @@ class SuperSoldat : public Fantassin {
 
 		bool getAutreAction();
 
+		void setAutreAction(bool b) {autreAction = b;}; // inutile
+
 		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur); // redefinition de celle de fantassin, car on ne va plus appeler la fonction aVaincuFantassin
 };
 
