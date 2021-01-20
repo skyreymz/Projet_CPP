@@ -83,6 +83,5 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
         }
         
     }
-    std::cout << (plateau[0] == nullptr) << i; // "warning plateau & i isn't used"
     return std::make_pair(false, std::vector<int>()={});
 }

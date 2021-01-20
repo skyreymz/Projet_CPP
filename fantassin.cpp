@@ -22,16 +22,24 @@ bool Fantassin::aVaincuFantassin(Unite* unite) { //si je mets que Unite unite ca
 
 std::pair<bool,std::vector<int>> Fantassin::attaque(Unite* plateau[12], int i, Joueur* joueur) {
     int indiceMAX;
+    char camp;
+    char campEnnemi;
     if (getCamp() == 1) {
         indiceMAX = 11;
+        camp = 'A';
+        campEnnemi = 'B';
     }
     else {
         indiceMAX = 0;
+        camp = 'B';
+        campEnnemi = 'A';
     }
 
-    if (! (plateau[i + getCamp() * getPortee()] == nullptr) ) {
-        if (plateau[i + getCamp() * getPortee()]->getCamp() != getCamp()) {
-            plateau[i + getCamp() * getPortee()]->setPV(-atq);
+    Unite* cible = plateau[i + getCamp() * getPortee()];
+    if (! (cible == nullptr) ) {
+        if (cible->getCamp() != getCamp()) {
+            std::cout << "F(" << camp << ") a attaqué " << cible->getNomUnite() << '(' << campEnnemi << ')' << std::endl;
+            cible->setPV(-atq);
             if (aVaincuFantassin(plateau[i + getCamp() * getPortee()])) {
                 return std::make_pair(true, std::vector<int>(1)={i+ getCamp() * getPortee()});
             }

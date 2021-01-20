@@ -30,6 +30,5 @@ std::pair<bool,std::vector<int>> SuperSoldat::attaque(Unite* plateau[12], int i,
     else if ( (i + getCamp() * getPortee()) == indiceMAX ) {
         joueur->setPvBase(- Fantassin::getAtq());
     }
-	std::cout << (plateau[0] == nullptr) << i; // "warning plateau & i isn't used"
     return std::make_pair(false, std::vector<int>()={});
 }

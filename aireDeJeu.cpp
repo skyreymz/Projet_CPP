@@ -9,19 +9,29 @@
 #include "archer.hpp"
 #include "catapulte.hpp"
 
-AireDeJeu::AireDeJeu(bool mod, int tourActuel, int tourMaximum) {
+AireDeJeu::AireDeJeu() {
 	for (int i=0; i <= 12; i++) {
 		plateau[i] = nullptr;
 	}
 
 	tourDeJeu = 1;
-	nbToursActuel = tourActuel; // on laisse ça car plus tard on fera sans doute le chargement de partie -> nbToursActuel sera différent
-	nbToursMAX = tourMaximum;
+	nbToursActuel = 0;
 	jA = Joueur(0, 50);
-	jB = Joueur(mod, 50);
+	jB = Joueur(0, 50);
 }
 
 AireDeJeu::~AireDeJeu() {}
+
+void AireDeJeu::resetAireDeJeu() {
+	for (int i=0; i <= 12; i++) {
+		plateau[i] = nullptr;
+	}
+
+	tourDeJeu = 1;
+	nbToursActuel = 0;
+	jA = Joueur(0, 50);
+	jB = Joueur(0, 50);
+}
 
 bool AireDeJeu::charger(std::string entree) {
 	std::ifstream file(entree);
@@ -230,9 +240,17 @@ void AireDeJeu::print() const {
 	}	
 	std::cout << "Pièces d'or du Joueur A : " << jA.getArgent() << std::endl;
 	std::cout << "Pièces d'or du Joueur B : " << jB.getArgent() << std::endl;
-	
+
 	std::cout << "\nAIRE DE JEU :" << std::endl;
-	std::cout << "Base A : " << jA.getPvBase() << "PV                                 Base B : " << jB.getPvBase() << "PV" << std::endl;
+	std::string pvBaseJA = std::to_string(jA.getPvBase());
+	while (pvBaseJA.length() < 3) { // pour que l'affichage soit bien aligné
+		pvBaseJA = '0'+pvBaseJA;
+	}
+	std::string pvBaseJB = std::to_string(jB.getPvBase());
+	while (pvBaseJB.length() < 3) { // pour que l'affichage soit bien aligné
+		pvBaseJB = '0'+pvBaseJA;
+	}
+	std::cout << "Base A : " << pvBaseJA << "PV                                 Base B : " << pvBaseJB << "PV" << std::endl;
 	for (int i = 0 ; i < 51 ; i++){
 		if (i == 0 || i == 50) {
 			std::cout << "/\\/\\/\\";
@@ -274,17 +292,20 @@ void AireDeJeu::print() const {
 	std::cout << " <- PV des unités\n";	
 }
 
-bool AireDeJeu::finDeJeu() const {
-	if (nbToursActuel > nbToursMAX) {
+bool AireDeJeu::tourMaxAtteint() const {
+	if ((tourDeJeu == 1) && (nbToursActuel == nbToursMAX)) {
 		std::cout << "FIN DE JEU ! Nombre de tours maximum dépassé ! AUCUN VAINQUEUR !" << std::endl;
 		return true;
 	}
+	return false;
+}
 
-	if (jA.getPvBase() <= 0) {
-		std::cout << "FIN DE JEU ! VICTOIRE DU JOUEUR B !" << std::endl;
-		return true;
-	} else if (jB.getPvBase() <= 0) {
+bool AireDeJeu::baseDetruite() const {
+	if ((jA.getPvBase() <= 0)) {
 		std::cout << "FIN DE JEU ! VICTOIRE DU JOUEUR A !" << std::endl;
+		return true;
+	} else if ((jB.getPvBase() <= 0)) {
+		std::cout << "FIN DE JEU ! VICTOIRE DU JOUEUR B !" << std::endl;
 		return true;
 	}
 	return false;
@@ -320,9 +341,7 @@ void AireDeJeu::jouerActions() {
 
 	// 2) Tour de jeu d'un joueur
 	
-	// Action 1
-std::cout << "ACTION 1\n";
-	
+	// Action 1	
 	for (int i=indice; ((tourDeJeu == 1) && (i < 11)) || ((tourDeJeu == -1) && (i > 0)); i=i+tourDeJeu) { 
 		if (plateau[i] != nullptr) {
 			if (plateau[i]->getCamp() == tourDeJeu) {
@@ -353,8 +372,6 @@ std::cout << "ACTION 1\n";
 
 
 	// Action 2
-std::cout << "ACTION 2\n";
-
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
 		if (plateau[i] != nullptr) {
 			if ((i + tourDeJeu) == (indice + tourDeJeu * 11)) {
@@ -387,8 +404,6 @@ std::cout << "ACTION 2\n";
 
 
 	// Action 3
-std::cout << "ACTION 3\n";
-
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
 		if (plateau[i] != nullptr) {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
@@ -438,7 +453,7 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 	if (!joueur->getMode()) { // Joueur en mode Manuel
 		do {
 			do {
-				std::cout << "Recruter une unité ('f' / 'a' / 'c') / Ne rien faire ('o') / Sauvegarder ('s') / Quitter la partie en cours ('q') :";
+				std::cout << "Recruter une unité ('f' / 'a' / 'c') / Ne rien faire ('o') / Sauvegarder ('s') / Quitter la partie en cours ('q') : ";
 				std::cin >> choix;
 			} while ((choix != 'f') && (choix != 'a') && (choix != 'c') && (choix != 'o') && (choix != 's') && (choix != 'q'));
 			std::string nomFichier; // nom du fichier pour la sauvegarde

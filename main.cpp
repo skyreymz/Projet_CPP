@@ -5,9 +5,9 @@ int main() {
 	std::cout << "\nProjet C++ : Age of War" << std::endl;
 
 	//INSTANCIATION D'UNE AIRE DE JEU
-	AireDeJeu* a = new AireDeJeu(false);
+	AireDeJeu* a = new AireDeJeu();
+	bool finDePartie = false;
 	char res;
-	
 
 	do {
 		do {
@@ -23,12 +23,28 @@ int main() {
 						std::cin >> res;
 					} while ((res != 'j') && (res != 'm'));
 					if (res == 'j') {
-						a = new AireDeJeu(false);
+						a->setMode(false);
 						res = '1';
 					} else {
-						a = new AireDeJeu(true);
+						a->setMode(true);
 						res = '1';
 					}
+					do {
+						std::string nbTourMaxString;
+						std::cout << "Entrez le nombre maximum de tours (au moins 1) : ";
+						std::cin >> nbTourMaxString;
+						try {
+							int nbTourMaxInt = std::stoi(nbTourMaxString);
+							if (nbTourMaxInt < 1) {
+								res = '0';
+							} else {
+								a->setNbToursMax(nbTourMaxInt);
+								res = '1';
+							}
+						} catch (...) {
+							res = '0';
+						}
+					} while ((res == '0'));
 					break;
 				case 'c' :
 					std::string nomFichier;
@@ -41,6 +57,9 @@ int main() {
 							res = '1';
 							a->print();
 							a->finTour(); // le joueur fini son tour
+							if (a->tourMaxAtteint()) {
+								finDePartie = true;
+							}
 						} else {
 							res = '2';
 						}
@@ -49,12 +68,27 @@ int main() {
 			}
 		} while (res == '0');
 		
-		while (!a->finDeJeu()) {
-std::cout << "EXECUTION DE jouerActions()\n";
+		while (!finDePartie) {
 			a->jouerActions();
-			a->print();
-			a->finTour();
+			if ((a->tourDeJeu == 1) || !(a->getMode())) {
+			// On affiche l'état du jeu avant la création éventuelle d'unité si le joueur est en mode manuel
+				a->print();
+			}
+			if (a->baseDetruite()) {
+				finDePartie = true;
+			} else {
+				a->finTour();
+				/*if ((a->tourDeJeu == 1) && (a->getMode())){
+				// On affiche l'état du jeu après la création éventuelle d'unité si le joueur est en mode automatique
+					a->print();
+				}*/
+				if (a->tourMaxAtteint()) {
+					finDePartie = true;
+				}	
+			}
 		}
+		finDePartie = false;
+		a->resetAireDeJeu();
 	} while (true);
 
 	
