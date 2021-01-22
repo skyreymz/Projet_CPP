@@ -46,6 +46,7 @@ std::pair<bool,std::vector<int>> Fantassin::attaque(Unite* plateau[12], int i, J
     else if ( positionCible == indiceMAX ) {
         afficheAttaqueBase(this, getNomUnite(), atq, i);
         joueur->setPvBase(-atq);
+        autreAction = false;
     }
     return std::make_pair(false, std::vector<int>()={});
 }

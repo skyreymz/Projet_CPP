@@ -22,31 +22,28 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
 
         if (j != 2) {
 
-            if ( ((getCamp() == 1) && ((i + getCamp() * portee[j].first) <= indiceMAX)) || ((getCamp() == -1) && ((i + getCamp() * portee[j].first) >= indiceMAX)) ) {
+            if ( ((getCamp() == 1) && ((positionCibleFirst) <= indiceMAX)) || ((getCamp() == -1) && ((positionCibleFirst) >= indiceMAX)) ) {
                 if (plateau[positionCibleFirst] != nullptr) {
                     if (plateau[positionCibleFirst]->getCamp() != getCamp()) {
                         afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleFirst], positionCibleFirst);
 
                         std::vector<int> vaincus;
                         plateau[positionCibleFirst]->setPV(-atq);
-                        autreAction = false;
                         if (plateau[positionCibleFirst]->estVaincu()) {
-                            vaincus.push_back(i + getCamp() * portee[j].first);
+                            vaincus.push_back(positionCibleFirst);
                         }
 
-                        if ( ((getCamp() == 1) && ((i + getCamp() * portee[j].second) <= indiceMAX)) || ((getCamp() == -1) && ((i + getCamp() * portee[j].second) >= indiceMAX)) ) {
+                        if ( ((getCamp() == 1) && ((positionCibleSecond) <= indiceMAX)) || ((getCamp() == -1) && ((positionCibleSecond) >= indiceMAX)) ) {
                             if (plateau[positionCibleSecond] != nullptr) {
                                 afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleSecond], positionCibleSecond);
                                 plateau[positionCibleSecond]->setPV(-atq);
-                                autreAction = false;
                                 if (plateau[positionCibleSecond]->estVaincu()) {
-                                    vaincus.push_back(i + getCamp() * portee[j].second);
+                                    vaincus.push_back(positionCibleSecond);
                                 }
                             }
-                            else if ( (i + getCamp() * portee[j].second) == indiceMAX ) {
+                            else if ( (positionCibleSecond) == indiceMAX ) {
                                 afficheAttaqueBase(this, getNomUnite(), atq, i);
                                 joueur->setPvBase(-atq);
-                                autreAction = false;
                             }
                         }
 
@@ -55,7 +52,7 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                 
                     }
                 }
-                else if ( (i + getCamp() * portee[j].first) == indiceMAX ) {
+                else if ( positionCibleFirst == indiceMAX ) {
                     afficheAttaqueBase(this, getNomUnite(), atq, i);
                     joueur->setPvBase(-atq);
                     autreAction = false;
@@ -64,37 +61,37 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
         }
         else {
 
-            if ( ((getCamp() == 1) && ((i + getCamp() * portee[j].second) <= indiceMAX)) || ((getCamp() == -1) && ((i + getCamp() * portee[j].second) >= indiceMAX)) ) {
+            if ( ((getCamp() == 1) && ((positionCibleSecond) <= indiceMAX)) || ((getCamp() == -1) && ((positionCibleSecond) >= indiceMAX)) ) {
+                std::vector<int> vaincus;
+
                 if (plateau[positionCibleSecond] != nullptr) {
                     if (plateau[positionCibleSecond]->getCamp() != getCamp()) {
+
                         afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleSecond], positionCibleSecond);
-
-                        std::vector<int> vaincus;
                         plateau[positionCibleSecond]->setPV(-atq);
-                        autreAction = false;
                         if (plateau[positionCibleSecond]->estVaincu()) {
-                            vaincus.push_back(i + getCamp() * portee[j].second);
+                            vaincus.push_back(positionCibleSecond);
                         }
-
-                        if (plateau[positionCibleFirst] != nullptr) {
-                            afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleFirst], positionCibleFirst);
-                            plateau[positionCibleFirst]->setPV(-atq);
-                            autreAction = false;
-                            if (plateau[positionCibleFirst]->estVaincu()) {
-                                vaincus.push_back(i + getCamp() * portee[j].first);
-                            }
-                        }
-
                         autreAction = false;
-                        return std::make_pair(false, vaincus);
-                
                     }
                 }
-                else if ( (i + getCamp() * portee[j].second) == indiceMAX ) {
+                else if ( (positionCibleSecond) == indiceMAX ) {
                     afficheAttaqueBase(this, getNomUnite(), atq, i);
                     joueur->setPvBase(-atq);
                     autreAction = false;
                 }
+
+                if (!autreAction) {
+                    if (plateau[positionCibleFirst] != nullptr) {
+                        afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleFirst], positionCibleFirst);
+                        plateau[positionCibleFirst]->setPV(-atq);
+                        if (plateau[positionCibleFirst]->estVaincu()) {
+                            vaincus.push_back(positionCibleFirst);
+                        }
+                    }
+                }
+
+                return std::make_pair(false, vaincus);
             }
         }
         
