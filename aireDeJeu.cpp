@@ -20,7 +20,7 @@ AireDeJeu::AireDeJeu() {
 	jB = Joueur(0, 50);
 }
 
-AireDeJeu::~AireDeJeu() {}
+AireDeJeu::~AireDeJeu() { /*delete plateau;*/ }
 
 void AireDeJeu::resetAireDeJeu() {
 	for (int i=0; i <= 12; i++) {
