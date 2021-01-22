@@ -11,7 +11,7 @@
 #include "catapulte.hpp"
 
 AireDeJeu::AireDeJeu() {
-	for (size_t i=0; i <= 12; i++) {
+	for (size_t i=0; i < 12; i++) {
 		plateau[i] = nullptr;
 	}
 
@@ -22,13 +22,14 @@ AireDeJeu::AireDeJeu() {
 }
 
 AireDeJeu::~AireDeJeu() {
-	for (size_t i=0; i <= 12; i++) {
+	for (size_t i=0; i<12; i++) {
 		delete plateau[i];
 	}
 }
 
 void AireDeJeu::reset() {
-	for (size_t i=0; i <= 12; i++) {
+	for (size_t i=0; i < 12; i++) {
+		delete plateau[i];
 		plateau[i] = nullptr;
 	}
 
