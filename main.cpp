@@ -96,21 +96,13 @@ int main() {
 			
 			while (!finDePartie) {
 				a->afficherInfos();
-
 				a->jouerActions();
-				//if ((a->tourDeJeu == 1) || !(a->getMode())) {
-				// On affiche l'état du jeu avant la création éventuelle d'unité si le joueur est en mode manuel
-					std::cout << *a << std::endl;
-				//}
+				std::cout << *a << std::endl;
 
 				if (a->baseDetruite()) {
 					finDePartie = true;
 				} else {
 					a->finTour();
-					/*f ((a->tourDeJeu == 1) && (a->getMode())){
-					// On affiche l'état du jeu après la création éventuelle d'unité si le joueur est en mode automatique
-						std::cout << *a << std::endl;
-					}*/
 					if (a->tourMaxAtteint()) {
 						finDePartie = true;
 					}	

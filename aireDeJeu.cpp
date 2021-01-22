@@ -10,8 +10,12 @@
 #include "archer.hpp"
 #include "catapulte.hpp"
 
+#include <exception>
+#include <stdexcept>
+#include <limits>
+
 AireDeJeu::AireDeJeu() {
-	for (size_t i=0; i <= 12; i++) {
+	for (size_t i=0; i < 12; i++) {
 		plateau[i] = nullptr;
 	}
 
@@ -22,15 +26,19 @@ AireDeJeu::AireDeJeu() {
 }
 
 AireDeJeu::~AireDeJeu() {
+	for (size_t i=0; i<12; i++) {
+		delete plateau[i];
+	}
 }
 
 void AireDeJeu::reset() {
-	for (size_t i=0; i <= 12; i++) {
+	for (size_t i=0; i < 12; i++) {
+		delete plateau[i];
 		plateau[i] = nullptr;
 	}
 
 	tourDeJeu = 1;
-	nbToursActuel = 0;
+	nbToursActuel = 1;
 	jA = Joueur();
 	jB = Joueur();
 }
@@ -63,18 +71,18 @@ bool AireDeJeu::charger(std::string entree) {
 		std::string var;
 		// Récupération des informations de la classe AireDeJeu
 		std::getline(file, var);
-		int tourDeJeu0 = std::stoi(var); // 1 ou -1, permet de differencier le joueur de gauche de celui de droite
+		int tourDeJeu0 = std::stoi(var); // 1 (tour du joueur A) ou -1 (tour du joueur B)
 		if ((tourDeJeu0 != 1) && (tourDeJeu0 !=-1)){
-			throw 0;
+			throw std::invalid_argument("tourDeJeu doit être égal à 1 (tour du joueur A) ou -1 (tour du joueur B)");
 		}
 
 		std::getline(file, var);
 		int nbToursActuel0 = std::stoi(var);
-		if (nbToursActuel0 < 0) throw 0;
+		if (nbToursActuel0 <= 0) throw std::invalid_argument("nbToursActuel doit être strictement positif");
 
 		std::getline(file, var);
 		int nbToursMAX0 = std::stoi(var);
-		if (nbToursMAX0 < nbToursActuel0) throw 0;
+		if (nbToursMAX0 < nbToursActuel0) throw std::invalid_argument("nbToursMax doit être supérieur à nbToursActuel");
 
 
 		// Récupération des informations des classes Joueur
@@ -82,32 +90,32 @@ bool AireDeJeu::charger(std::string entree) {
 		int var2 = std::stoi(var);
 		bool modeJB;
 		if (var2 != 0 && var2 != 1) {
-			throw 0;// 0 signifie manuel, 1 signifie automatique
+			throw std::invalid_argument("Le mode du joueur B doit valoir 0 ou 1");// 0 signifie manuel, 1 signifie automatique
 		} else {
 			modeJB = (var2 == 1);
 		}
 
 		std::getline(file, var);
 		int argentJA = std::stoi(var);
-		if (argentJA < 0) throw 0;// 0 signifie manuel, 1 signifie automatique
+		if (argentJA < 0) throw std::invalid_argument("L'argent du joueur A doit être positif");
 
 		std::getline(file, var);
 		int argentJB = std::stoi(var);
-		if (argentJB < 0) throw 0;// 0 signifie manuel, 1 signifie automatique
+		if (argentJB < 0) throw std::invalid_argument("L'argent du joueur B doit être positif");
 
 		std::getline(file, var);
 		int pvBaseJA = std::stoi(var);
+		if (pvBaseJA < 0) throw std::invalid_argument("Les points de vies de la base du joueur A doivent être positifs");
 
 		std::getline(file, var);
 		int pvBaseJB = std::stoi(var);
-
+		if (pvBaseJB < 0) throw std::invalid_argument("Les points de vies de la base du joueur B doivent être positifs");
 
 		// Récupération des informations des classes Unité
 			/* Structure de ces données :
-				   CAMP (A si on passe aux unités de l'équipe adverse)
-			       TYPE DE L'UNITE (f fantassin ; a archer ; c catapulte ; s superSoldat ; N pas d'unité)
-			       PV DE L'UNITE (s'il y a une unité)
-			   Si le type est un espace, cela signifie qu'il n'y a pas d'unité sur cette position
+				A (facultatif) : Marque le début des unités du joueur B
+				TYPE DE L'UNITE ('f' pour Fantassin ; 'a' pour Archer ; 'c' pour Catapulte ; 's' pour SuperSoldat ; 'N' s'il n'y a pas d'Unité)
+				PV DE L'UNITE (si et seulement s'il y a une unité)
 			*/
 		Unite* plateauCopie[12];
 		int camp = 1;
@@ -118,75 +126,72 @@ bool AireDeJeu::charger(std::string entree) {
 			std::getline(file, var);
 			type = var[0];
 			if ((type != 'N') && (type != 'A') && (((position == 0) && (camp == -1)) || ((position == 11) && (camp == 1)))) {
-				std::cerr << "Il ne peut pas y avoir d'unite d'une equipe au niveau de la position de la base adverse" << std::endl;
-				throw 0;
+				throw std::invalid_argument("Une unite d'une equipe ne peut pas être au niveau de la position de la base adverse");
 			} 
 			switch (type) {
 				case 'A':
 					if (camp == 1) {
 						camp = -1;
 					} else {
-						throw 0;
+						throw std::invalid_argument("\"A\" ne peut apparaître qu'une fois dans le fichier de sauvegarde");
 					}
 					break;
 				case 'N':
 					plateauCopie[position] = nullptr;
-					position ++;
-					//std::cout << "pas d'unité\n";
+					position++;
 					break;
 				case 'f':
 					std::getline(file, var);
 					pv = std::stoi(var);
 					plateauCopie[position] = new Fantassin(pv, camp);
-					position ++;
-					//std::cout << "fantassin\n";
+					position++;
 					break;
 				case 'a':
 					std::getline(file, var);
 					pv = std::stoi(var);
 					plateauCopie[position] = new Archer(pv, camp);
-					position ++;
-					//std::cout << "archer\n";
+					position++;
 					break;
 				case 'c':
 					std::getline(file, var);
 					pv = std::stoi(var);
 					plateauCopie[position] = new Catapulte(pv, camp);
-					position ++;
-					//std::cout << "catapulte\n";
+					position++;
 					break;
 				case 's':
 					std::getline(file, var);
 					pv = std::stoi(var);
 					plateauCopie[position] = new SuperSoldat(pv, camp);
-					position ++;
-					//std::cout << "super soldat\n";
+					position++;
 					break;
 				default:
-					throw 0;
+					throw std::invalid_argument("Type d'unité inconnu");
 			}
 		}
 		std::getline(file,var); // le dernier retour à la ligne
-		if (!file.eof()) throw 1;
+		if (!file.eof()) throw std::invalid_argument("Le fichier de sauvegarde comporte plus de données que celles nécessaires");
 
 		// Les données sont valides, mise à jour de l'aire de jeu
 		setAireDeJeu(tourDeJeu0, nbToursActuel0, nbToursMAX0);
 		jA.setJoueur(     0, argentJA, pvBaseJA);
 		jB.setJoueur(modeJB, argentJB, pvBaseJB);
-
 		for (int i = 0 ; i < 12 ; i++) {
 			plateau[i] = plateauCopie[i];
 		}
-
-		std::cout << "\nLa partie a été correctement chargée !" << std::endl;
-		file.close();
-		return true;
 		
-	} catch (...) {
-		std::cerr << "Echec lors de la récupération des données (Fichier invalide)" << std::endl;
-		file.close();		
+		file.close();
+		std::cout << "\nLa partie a été correctement chargée !" << std::endl;
+		return true;
+
+	} catch (std::invalid_argument &e) {
+		std::cerr << "Echec lors de la récupération des données : Argument invalide : " << e.what() << std::endl;
+		file.close();
 		return false;
-	}	
+	} catch (...) {
+		std::cerr << "Echec lors de la récupération des données" << std::endl;
+		file.close();
+		return false;
+	}
 }
 
 bool AireDeJeu::sauvegarder(std::string sortie) const {
@@ -198,16 +203,16 @@ bool AireDeJeu::sauvegarder(std::string sortie) const {
 
 	try {
 		// Stockage des informations de la classe AireDeJeu
-		file << tourDeJeu << " // tourDeJeu : 1 ou -1, permet de differencier le joueur de gauche de celui de droite\n";
-		file << nbToursActuel << " // nbTourActuel\n";
-		file << nbToursMAX << " // nbTourMax\n";
+		file << tourDeJeu << " // tourDeJeu : 1 (tour du joueur A) ou -1 (tour du joueur B)\n";
+		file << nbToursActuel << " // nbToursActuel\n";
+		file << nbToursMAX << " // nbToursMax\n";
 
 		// Stockage des informations des classes Joueur
-		file << jB.getMode() << " // mode du joueur B : 0 manuel ; 1 automatique\n";
-		file << jA.getArgent() << " // argent joueur A\n";
-		file << jB.getArgent() << " // argent joueur B\n";
-		file << jA.getPvBase() << " // pv base joueur A\n";
-		file << jB.getPvBase() << " // pv base joueur B\n";
+		file << jB.getMode() << " // Mode du joueur B : 0 (manuel) ou 1 (automatique)\n";
+		file << jA.getArgent() << " // Argent joueur A\n";
+		file << jB.getArgent() << " // Argent joueur B\n";
+		file << jA.getPvBase() << " // Points de vie de la base du joueur A\n";
+		file << jB.getPvBase() << " // Points de vie de la base du joueur B\n";
 
 		// Stockage des informations des classes Unité
 		int campsUnites = 1; // camps de l'unité ajoutée
@@ -233,18 +238,21 @@ bool AireDeJeu::sauvegarder(std::string sortie) const {
 						file << "s // Position " << i << " : SuperSoldat\n";
 						break;
 					default:
-						std::cerr << "Erreur dans la lecture des unités" << std::endl;
-						throw 0;
+						throw std::invalid_argument("Type d'unité inconnu");
 				}
 				file << plateau[i]->getPV() << " // Ses PV\n";
 			}
 		}
 
-		std::cout << "\nLa partie a été correctement sauvegardée" << std::endl;
+		std::cout << "La partie a été correctement sauvegardée" << std::endl;
 		file.close();
 		return true;
+	} catch (std::invalid_argument &e) {
+		std::cerr << "Echec lors de la sauvegarde des données : " << e.what() << std::endl;
+		file.close();
+		return false;
 	} catch (...) {
-		std::cerr << "Echec lors de la sauvegarde des données (Fichier invalide)" << std::endl;
+		std::cerr << "Echec lors de la sauvegarde des données"<< std::endl;
 		file.close();
 		return false;
 	}
@@ -275,7 +283,7 @@ bool AireDeJeu::baseDetruite() const {
 
 void AireDeJeu::jouerActions() {
 	
-	int indice;
+	int indiceBase;
 	Joueur* joueur;
 	int indiceUniteMAX; //utile pour l'action 2 et 3, potentiellement +/- 1 apres mouvement lors de l'action 2!
 	Joueur* joueurAdverse;
@@ -288,12 +296,12 @@ void AireDeJeu::jouerActions() {
 		nbToursActuel++;
 		jA.setArgent(8);
 		jB.setArgent(8);
-		indice = 0;
+		indiceBase = 0;
 		joueur = &jA;
 		joueurAdverse = &jB;
 		indiceUniteMAX = -1; // s'il n'y a aucune unité de ce joueur sur le plateau
 	} else {
-		indice = 11;
+		indiceBase = 11;
 		joueur = &jB;
 		joueurAdverse = &jA;
 		indiceUniteMAX = 12; // ou plus, tant que c'est strictement superieur à 11
@@ -302,7 +310,7 @@ void AireDeJeu::jouerActions() {
 	// 2) Tour de jeu d'un joueur
 	std::cout << "\nAffichage des actions de ses unités :" << std::endl;	
 	// Action 1	
-	for (int i=indice; ((tourDeJeu == 1) && (i < 11)) || ((tourDeJeu == -1) && (i > 0)); i=i+tourDeJeu) { 
+	for (int i=indiceBase; ((tourDeJeu == 1) && (i < 11)) || ((tourDeJeu == -1) && (i > 0)); i=i+tourDeJeu) { 
 		if (plateau[i] != nullptr) {
 			if (plateau[i]->getCamp() == tourDeJeu) {
 				indiceUniteMAX = i;
@@ -334,7 +342,7 @@ void AireDeJeu::jouerActions() {
 	// Action 2
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
 		if (plateau[i] != nullptr) {
-			if ((i + tourDeJeu) == (indice + tourDeJeu * 11)) {
+			if ((i + tourDeJeu) == (indiceBase + tourDeJeu * 11)) { // si la prochaine case est celle de la base ennemie
 				continue;
 			}
 			if (plateau[i + tourDeJeu] == nullptr) {
@@ -413,7 +421,7 @@ void AireDeJeu::jouerActions() {
 void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; true sinon
 
 	char choix;
-	int indice;
+	int indiceBase;
 	Joueur* joueur;
 	char campJoueur;
 
@@ -421,11 +429,11 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 	// tourDeJeu == -1 signifie que c'est le tour du joueur B, donc jB
 
 	if (tourDeJeu == 1) {
-		indice = 0;
+		indiceBase = 0;
 		joueur = &jA;
 		campJoueur = 'A';
 	} else {
-		indice = 11;
+		indiceBase = 11;
 		joueur = &jB;
 		campJoueur = 'B';
 	}
@@ -434,27 +442,27 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 	if (!joueur->getMode()) { // Joueur en mode Manuel
 		std::string nomFichier; // nom du fichier pour sauvegarder la partie
 		do {
-			if (plateau[indice] == nullptr) {
-				std::cout << "\nCaractéristiques des unités ('h') / Recruter une unité ('f' / 'a' / 'c') / Ne rien faire ('o') / Sauvegarder ('s') / Quitter la partie en cours ('q') : ";
+			if (plateau[indiceBase] == nullptr) {
+				std::cout << "Caractéristiques des unités ('h') / Recruter une unité ('f' / 'a' / 'c') / Ne rien faire ('o') / Sauvegarder ('s') / Quitter la partie en cours ('q') : ";
 			} else {
-				std::cout << "\nCaractéristiques des unités ('h') / Ne rien faire ('o') / Sauvegarder ('s') / Quitter la partie en cours ('q') : ";
+				std::cout << "Caractéristiques des unités ('h') / Ne rien faire ('o') / Sauvegarder ('s') / Quitter la partie en cours ('q') : ";
 			}
 
 			std::cin >> choix;
 			
 			switch (choix) {
 				case 'h':
-					std::cout << "\n  Fantassin  | Prix : 10 pièces d'or | Points de vie : 10 | Points d'attaque : 4 | Portée : 1" << std::endl;
-					std::cout << "   Archer    | Prix : 12 pièces d'or | Points de vie :  8 | Points d'attaque : 3 | Portée : 1, 2 ou 3" << std::endl;
-					std::cout << "  Catapulte  | Prix : 20 pièces d'or | Points de vie : 12 | Points d'attaque : 6 | Portée : 2 à 3 ou 3 à 4" << std::endl;
+					std::cout << "\nFantassin  | Prix : 10 pièces d'or | Points de vie : 10 | Points d'attaque : 4 | Portée : 1" << std::endl;
+					std::cout << "Archer       | Prix : 12 pièces d'or | Points de vie :  8 | Points d'attaque : 3 | Portée : 1, 2 ou 3" << std::endl;
+					std::cout << "Catapulte    | Prix : 20 pièces d'or | Points de vie : 12 | Points d'attaque : 6 | Portée : 2 à 3 ou 3 à 4" << std::endl;
 					std::cout << "Super-soldat | Prix :       --       | Points de vie : 10 | Points d'attaque : 4 | Portée : 1" << std::endl;
 					choix = '0';
 					break;
 				case 'f':
-					if (plateau[indice] == nullptr) {
+					if (plateau[indiceBase] == nullptr) {
 						if (joueur->getArgent() >= Fantassin::getPrix()) {
 							joueur->setArgent( (-1) * Fantassin::getPrix() );
-							plateau[indice] = new Fantassin(tourDeJeu);
+							plateau[indiceBase] = new Fantassin(tourDeJeu);
 							std::cout << "\nLe joueur " << campJoueur << " a recruté un Fantassin" << std::endl;
 							choix = '1';
 						} else {
@@ -467,10 +475,10 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 					}
 					break;
 				case 'a':
-					if (plateau[indice] == nullptr) {
+					if (plateau[indiceBase] == nullptr) {
 						if (joueur->getArgent() >= Archer::getPrix()) {
 							joueur->setArgent( (-1) * Archer::getPrix() );
-							plateau[indice] = new Archer(tourDeJeu);
+							plateau[indiceBase] = new Archer(tourDeJeu);
 							std::cout << "\nLe joueur " << campJoueur << " a recruté un Archer" << std::endl;
 							choix = '1';
 						} else {
@@ -483,10 +491,10 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 					}
 					break;
 				case 'c':
-					if (plateau[indice] == nullptr) {
+					if (plateau[indiceBase] == nullptr) {
 						if (joueur->getArgent() >= Catapulte::getPrix()) {
 							joueur->setArgent( (-1) * Catapulte::getPrix() );
-							plateau[indice] = new Catapulte(tourDeJeu);
+							plateau[indiceBase] = new Catapulte(tourDeJeu);
 							std::cout << "\nLe joueur " << campJoueur << " a recruté une Catapulte" << std::endl;
 							choix = '1';
 						} else {
@@ -503,7 +511,7 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 					break;
 				case 's':
 					do {
-						std::cout << "Entrez le nom du fichier à sauvegarder ('r' pour revenir à la partie en cours) : ";
+						std::cout << "Entrez le nom du fichier où sauvegarder ('r' pour revenir à la partie en cours) : ";
 						std::cin >> nomFichier;
 						if (nomFichier == "r") {
 							choix = '0';
@@ -529,15 +537,15 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 		if (joueur->getArgent() >= 20) {
 			joueur->setArgent( (-1) * Catapulte::getPrix() );
 			std::cout << "\nLe joueur B a recruté une Catapulte" << std::endl; // il n'y a que le joueur B qui peut être en mode automatique
-			plateau[indice] = new Catapulte(tourDeJeu);
+			plateau[indiceBase] = new Catapulte(tourDeJeu);
 		} else if (joueur->getArgent() >= 12) {
 			joueur->setArgent( (-1) * Archer::getPrix() );
 			std::cout << "\nLe joueur B a recruté un Archer" << std::endl; // il n'y a que le joueur B qui peut être en mode automatique
-			plateau[indice] = new Archer(tourDeJeu);
+			plateau[indiceBase] = new Archer(tourDeJeu);
 		} else if (joueur->getArgent() >= 10) {
 			joueur->setArgent( (-1) * Fantassin::getPrix() );
 			std::cout << "\nLe joueur B a recruté un Fantassin" << std::endl; // il n'y a que le joueur B qui peut être en mode automatique
-			plateau[indice] = new Fantassin(tourDeJeu);
+			plateau[indiceBase] = new Fantassin(tourDeJeu);
 		}
 
 	}
@@ -598,7 +606,7 @@ std::ostream& operator<<(std::ostream &flux, AireDeJeu const &a) {
 			flux << " " << i << "  ";
 		}
 	}
-	flux << " <- Position";
+	flux << " <- Position\n";
 
 	return flux;	
 }

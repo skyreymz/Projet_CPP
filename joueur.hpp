@@ -5,7 +5,7 @@
 
 class Joueur {
 	
-	bool mode; // 0 signifie manuel, 1 signifie automatique
+	bool mode; // 0 (manuel) ou 1 (automatique)
 	int argent;
 	int pvBase;
 

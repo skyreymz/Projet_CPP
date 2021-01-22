@@ -12,7 +12,7 @@
 class AireDeJeu {
 	public: // j'ai mis ça pour ajouter plus facilement pour les tests, faudra le supprimer
 	Unite* plateau[12];
-	int tourDeJeu; // 1 ou -1, permet de differencier le joueur de gauche de celui de droite
+	int tourDeJeu; // 1 (tour du joueur A) ou -1 (tour du joueur B)
 	int nbToursActuel;
 	int nbToursMAX;
 
