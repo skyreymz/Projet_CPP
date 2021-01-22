@@ -12,11 +12,14 @@ int main() {
 	do {
 		do {
 			do {
-				std::cout << "Commencer une Nouvelle partie ('n') / Charger une partie ('c') : ";
+				std::cout << "Commencer une Nouvelle partie ('n') / Charger une partie ('c') / Quitter ('q') : ";
 				std::cin >> res;
-			} while ((res != 'n') && (res != 'c'));
+			} while ((res != 'n') && (res != 'c') && (res != 'q'));
 
 			switch (res) {
+				case 'q' :
+					res = '3';
+					break;
 				case 'n' :
 					do {
 						std::cout << "Joueur contre Joueur ('j') / Joueur contre IA ('m') : ";
@@ -24,10 +27,10 @@ int main() {
 					} while ((res != 'j') && (res != 'm'));
 					if (res == 'j') {
 						a->setMode(false);
-						res = '1';
+						res = '1'; // ???
 					} else {
 						a->setMode(true);
-						res = '1';
+						res = '1'; // ???
 					}
 					do {
 						std::string nbTourMaxString;
@@ -68,7 +71,7 @@ int main() {
 			}
 		} while (res == '0');
 		
-		while (!finDePartie) {
+		while (!finDePartie && (res == '1')) {
 			// TO DO : faire les bons affichages
 			a->jouerActions();
 			if ((a->tourDeJeu == 1) || !(a->getMode())) {
@@ -88,9 +91,10 @@ int main() {
 				}	
 			}
 		}
+		
 		finDePartie = false;
 		a->reset();
-	} while (true);
+	} while (res != '3');
 
 	
 	// TESTS (ajouts d'unités)
@@ -122,7 +126,7 @@ int main() {
 	a->charger(nomFichier2);*/
 
 	//a->print();
-
+	
 	delete a; //je crois qu'il faut aussi détruire le plateau
 
 	return 0;
