@@ -27,8 +27,8 @@ class AireDeJeu {
 		void setMode(bool mode) {jB.setMode(mode);};
 		void setNbToursMax(int val) {nbToursMAX = val;};
 		void setAireDeJeu(int tourDeJeu0, int nbToursActuel0, int nbToursMAX0){tourDeJeu = tourDeJeu0; nbToursActuel = nbToursActuel0; nbToursMAX = nbToursMAX0;};
-		void resetAireDeJeu();
-
+		
+		void reset();
 		bool charger(std::string entree);
 		bool sauvegarder(std::string sortie) const;
 

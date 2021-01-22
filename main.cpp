@@ -89,7 +89,7 @@ int main() {
 			}
 		}
 		finDePartie = false;
-		a->resetAireDeJeu();
+		a->reset();
 	} while (true);
 
 	
