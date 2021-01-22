@@ -634,10 +634,3 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 	}*/
 
 }
-
-/*std::ostream &operator<<(std::ostream &flux, const AireDeJeu *a) {
-	//flux << " a ";
-	flux << a->baseDetruite() << " aaaaaaaaaaaaaaa" << "bbbbbbbb";
-	//flux << " b ";
-	return flux;
-}*/
