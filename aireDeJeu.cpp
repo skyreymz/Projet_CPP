@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include "aireDeJeu.hpp"
 #include <cstdlib>
 #include <string>
@@ -230,70 +231,6 @@ bool AireDeJeu::sauvegarder(std::string sortie) const {
 	}
 }
 
-void AireDeJeu::print() const {
-	std::cout << "--------------------------------------------------------------" << std::endl;
-	std::cout << "Tour " << nbToursActuel << '/' << nbToursMAX << " ; Tour du joueur ";	
-	if (tourDeJeu == 1) {
-		std::cout << 'A' << std::endl;
-	} else {
-		std::cout << 'B' << std::endl;
-	}	
-	std::cout << "Pièces d'or du Joueur A : " << jA.getArgent() << std::endl;
-	std::cout << "Pièces d'or du Joueur B : " << jB.getArgent() << std::endl;
-
-	std::cout << "\nAIRE DE JEU :" << std::endl;
-	std::cout << "Base A : " << jA.getPvBase() << "PV                                 Base B : " << jB.getPvBase() << "PV" << std::endl;
-	for (int i = 0 ; i < 51 ; i++){
-		if (i == 0 || i == 50) {
-			std::cout << "/\\/\\/\\";
-		} else {
-			 std::cout << "_";
-		}
-	}
-
-	std::cout << "\n|";	
-
-	for (int i = 0 ; i < 12 ; i++){
-		if (plateau[i] != nullptr) {
-			char camps;
-			if (plateau[i]->getCamp() == 1) {
-				camps = 'A';
-			} else {
-				camps = 'B';
-			}
-			std::cout << plateau[i]->getNomUnite() << '(' << camps << ")|";
-		} else {
-			std::cout << "    |";
-		}
-	}
-
-	std::cout << " <- Unité(Camp)\n|";
-
-	for (int i = 0 ; i < 12 ; i++){
-		if (plateau[i] != nullptr) {
-			int pv = plateau[i]->getPV();
-			if (pv/10 == 0) {
-				std::cout << "__" << pv << "_|";
-			} else {
-				std::cout << "_" << pv << "_|";
-			}
-		} else {
-			std::cout << "____|";
-		} 
-	}
-	
-	std::cout << " <- PV des unités\n ";	
-
-	for (int i = 0 ; i < 12 ; i++){
-		if (i/10 == 0) {
-			std::cout << "  " << i << "  ";
-		} else {
-			std::cout << " " << i << "  ";
-		}
-	}
-	std::cout << " <- Position\n";	
-}
-
 bool AireDeJeu::tourMaxAtteint() const {
 	if ((tourDeJeu == 1) && (nbToursActuel == nbToursMAX)) {
 		std::cout << "FIN DE JEU ! Nombre de tours maximum dépassé ! AUCUN VAINQUEUR !" << std::endl;
@@ -417,6 +354,7 @@ void AireDeJeu::jouerActions() {
 				std::pair<bool,std::vector<int>> paire;
 				switch (plateau[i]->getNomUnite()) {
 					case 'F':
+					case 'S':
 						paire = plateau[i]->attaque(plateau, i, joueurAdverse);
 						// On évolue le fantassin s'il a vaincu un fantassin ennemi
 						if (paire.first) {
@@ -425,17 +363,6 @@ void AireDeJeu::jouerActions() {
 							delete plateau[i];
 							plateau[i] = new SuperSoldat(pv, camp);
 						}
-						// On enlève les unités vaincus et ajoute les gains au joueur
-						for (size_t j=0; j<paire.second.size(); j++) {
-							if ( (plateau[paire.second[j]]->getCamp()) != tourDeJeu ) {
-								joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
-							}
-							delete plateau[paire.second[j]];
-							plateau[paire.second[j]] = nullptr;
-						}
-						break;
-					case 'S':
-						paire = plateau[i]->attaque(plateau, i, joueurAdverse);
 						// On enlève les unités vaincus et ajoute les gains au joueur
 						for (size_t j=0; j<paire.second.size(); j++) {
 							if ( (plateau[paire.second[j]]->getCamp()) != tourDeJeu ) {
@@ -633,4 +560,70 @@ void AireDeJeu::finTour() { // retourne false si le joueur quitte la partie ; tr
 
 	}*/
 
+}
+
+std::ostream& operator<<(std::ostream &flux, AireDeJeu const &a) {
+	//flux << "--------------------------------------------------------------\n";
+	flux << "\nTOUR " << a.nbToursActuel << '/' << a.nbToursMAX << " ; Tour du joueur ";	
+	if (a.tourDeJeu == 1) {
+		flux << "A\n";
+	} else {
+		flux << "B\n";
+	}	
+	flux << "Pièces d'or du Joueur A : " << a.jA.getArgent() << std::endl;
+	flux << "Pièces d'or du Joueur B : " << a.jB.getArgent() << std::endl;
+
+	flux << "AIRE DE JEU :\n";
+	flux << "Base A : " << std::setfill('0') << std::setw(3) << a.jA.getPvBase() << "PV";
+	flux << "                                 Base B : " << std::setfill('0') << std::setw(3) << a.jB.getPvBase() << "PV" << std::endl;
+	for (int i = 0 ; i < 51 ; i++){
+		if (i == 0 || i == 50) {
+			flux << "/\\/\\/\\";
+		} else {
+			 flux << "_";
+		}
+	}
+
+	flux << "\n|";	
+
+	for (int i = 0 ; i < 12 ; i++){
+		if (a.plateau[i] != nullptr) {
+			flux << a.plateau[i]->getNomUnite();
+			if (a.plateau[i]->getCamp() == 1) {
+				flux << "(A)|";
+			} else {
+				flux << "(B)|";
+			}
+		} else {
+			flux << "    |";
+		}
+	}
+
+	flux << " <- Unité(Camp)\n|";
+
+	for (int i = 0 ; i < 12 ; i++){
+		if (a.plateau[i] != nullptr) {
+			int pv = a.plateau[i]->getPV();
+			if (pv/10 == 0) {
+				flux << "__" << pv << "_|";
+			} else {
+				flux << "_" << pv << "_|";
+			}
+		} else {
+			flux << "____|";
+		} 
+	}
+	
+	flux << " <- PV des unités\n ";	
+
+	for (int i = 0 ; i < 12 ; i++){
+		if (i/10 == 0) {
+			flux << "  " << i << "  ";
+		} else {
+			flux << " " << i << "  ";
+		}
+	}
+	flux << " <- Position";
+
+	return flux;	
 }

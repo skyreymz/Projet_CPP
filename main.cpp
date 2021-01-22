@@ -6,12 +6,9 @@ int main() {
 
 	//INSTANCIATION D'UNE AIRE DE JEU
 	AireDeJeu* a = new AireDeJeu();
-	AireDeJeu b = AireDeJeu();
-	//std::cout << a << std::endl;
-	std::cout << b << std::endl;
+
 	bool finDePartie = false;
 	char res;
-
 	do {
 		do {
 			do {
@@ -58,7 +55,7 @@ int main() {
 							res = '0';
 						} else if(a->charger(nomFichier)) {
 							res = '1';
-							a->print();
+							std::cout << *a << std::endl;
 							a->finTour(); // le joueur fini son tour
 							if (a->tourMaxAtteint()) {
 								finDePartie = true;
@@ -76,7 +73,7 @@ int main() {
 			a->jouerActions();
 			if ((a->tourDeJeu == 1) || !(a->getMode())) {
 			// On affiche l'état du jeu avant la création éventuelle d'unité si le joueur est en mode manuel
-				a->print();
+				std::cout << *a << std::endl;
 			}
 			if (a->baseDetruite()) {
 				finDePartie = true;
@@ -125,7 +122,7 @@ int main() {
 	a->charger(nomFichier2);*/
 
 	//a->print();
-//$a;
+
 	delete a; //je crois qu'il faut aussi détruire le plateau
 
 	return 0;

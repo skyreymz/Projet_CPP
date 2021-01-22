@@ -32,13 +32,16 @@ class AireDeJeu {
 		bool charger(std::string entree);
 		bool sauvegarder(std::string sortie) const;
 
-		void print() const;
 		bool tourMaxAtteint() const;
 		bool baseDetruite() const;
 		
 
 		void jouerActions();
 		void finTour();
+
+		//friend std::ostream &operator<<(std::ostream &flux, const AireDeJeu *a);
+		friend std::ostream &operator<<(std::ostream &flux, const AireDeJeu &a);
+
 };
 
 #endif
