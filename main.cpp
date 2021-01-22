@@ -6,6 +6,9 @@ int main() {
 
 	//INSTANCIATION D'UNE AIRE DE JEU
 	AireDeJeu* a = new AireDeJeu();
+	AireDeJeu b = AireDeJeu();
+	//std::cout << a << std::endl;
+	std::cout << b << std::endl;
 	bool finDePartie = false;
 	char res;
 
@@ -122,7 +125,7 @@ int main() {
 	a->charger(nomFichier2);*/
 
 	//a->print();
-
+//$a;
 	delete a; //je crois qu'il faut aussi détruire le plateau
 
 	return 0;

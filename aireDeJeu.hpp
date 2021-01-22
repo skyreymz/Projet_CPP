@@ -39,7 +39,9 @@ class AireDeJeu {
 
 		void jouerActions();
 		void finTour();
-		
+
+		//friend std::ostream &operator<<(std::ostream &flux, const AireDeJeu * a);
+
 };
 
 #endif
