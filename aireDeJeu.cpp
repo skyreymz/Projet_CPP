@@ -417,7 +417,6 @@ void AireDeJeu::jouerActions() {
 				std::pair<bool,std::vector<int>> paire;
 				switch (plateau[i]->getNomUnite()) {
 					case 'F':
-					case 'S':
 						paire = plateau[i]->attaque(plateau, i, joueurAdverse);
 						// On évolue le fantassin s'il a vaincu un fantassin ennemi
 						if (paire.first) {
@@ -426,6 +425,17 @@ void AireDeJeu::jouerActions() {
 							delete plateau[i];
 							plateau[i] = new SuperSoldat(pv, camp);
 						}
+						// On enlève les unités vaincus et ajoute les gains au joueur
+						for (size_t j=0; j<paire.second.size(); j++) {
+							if ( (plateau[paire.second[j]]->getCamp()) != tourDeJeu ) {
+								joueur->setArgent(plateau[paire.second[j]]->getPrixDeces());
+							}
+							delete plateau[paire.second[j]];
+							plateau[paire.second[j]] = nullptr;
+						}
+						break;
+					case 'S':
+						paire = plateau[i]->attaque(plateau, i, joueurAdverse);
 						// On enlève les unités vaincus et ajoute les gains au joueur
 						for (size_t j=0; j<paire.second.size(); j++) {
 							if ( (plateau[paire.second[j]]->getCamp()) != tourDeJeu ) {
