@@ -10,19 +10,19 @@ class Archer : public Unite {
 	static int atq;
 	static int portee[3];
 
-	bool autreAction = false;
+	//bool autreAction = false;
 	
 	public:
-		Archer(int equipe) : Unite(8, equipe) {}
-		Archer(int pdv, int equipe) : Unite(pdv, equipe) {}
+		Archer(int equipe) : Unite(8, equipe, false) {}
+		Archer(int pdv, int equipe) : Unite(pdv, equipe, false) {}
 		~Archer();
 
 		static int getPrix() {return prix;};
-		bool getAutreAction() {return false;};
+		bool getAutreAction() const {return false;};
 		char getNomUnite() const {return 'A';};
 		int getPrixDeces() {return prix/2;};
 
-		void setAutreAction(bool b) {autreAction = !b;}; // Inutile mais obligatoire
+		//void setAutreAction(bool b) {autreAction = !b;}; // Inutile mais obligatoire
 
 		// Renvoie un vecteur d'indices des unites vaincus
 		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur);

@@ -51,7 +51,6 @@ int main() {
 					} while (res == '2');
 
 					do {
-						//std::string nbTourMaxString;
 						std::cout << "Entrez le nombre maximum de tours (au moins 1) : ";
 						std::cin >> resString;
 						try {
@@ -135,25 +134,7 @@ int main() {
 		}
 		
 	} while (res != '3');
-	
-	
-	// TESTS (ajouts d'unités)
-	/*Fantassin* u1 = new Fantassin(1);
-	a->plateau[0] = u1;
-	Archer* u2 = new Archer(1);
-	a->plateau[1] = u2;
-	Catapulte* u3 = new Catapulte(1);
-	a->plateau[2] = u3;
-	SuperSoldat* u4 = new SuperSoldat(10,1);
-	a->plateau[3] = u4;
-	Archer* u5 = new Archer(1);
-	a->plateau[4] = u5;
-	Archer* u6 = new Archer(1);
-	a->plateau[5] = u6;
-	Fantassin* u7 = new Fantassin(-1);
-	a->plateau[11] = u7;*/
 
 	delete a;
-
 	return 0;
 }
