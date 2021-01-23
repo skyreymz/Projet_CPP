@@ -9,8 +9,6 @@ class Archer : public Unite {
 	static int prix;
 	static int atq;
 	static int portee[3];
-
-	//bool autreAction = false;
 	
 	public:
 		Archer(int equipe) : Unite(8, equipe, false) {}
@@ -21,8 +19,6 @@ class Archer : public Unite {
 		bool getAutreAction() const {return false;};
 		char getNomUnite() const {return 'A';};
 		int getPrixDeces() {return prix/2;};
-
-		//void setAutreAction(bool b) {autreAction = !b;}; // Inutile mais obligatoire
 
 		// Renvoie un vecteur d'indices des unites vaincus
 		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur);

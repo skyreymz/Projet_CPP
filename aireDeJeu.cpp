@@ -400,9 +400,9 @@ void AireDeJeu::jouerActions() {
 					}
 				}
 
-			} else {
-				plateau[i]->setAutreAction(true);
 			}
+			plateau[i]->setAutreAction(true);
+			
 		}
 	}
 }

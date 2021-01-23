@@ -10,22 +10,19 @@ class Fantassin : public Unite {
 	static int atq;
 	static int portee[1];
 
-	//bool autreAction = true;
-	
 	public:
-		Fantassin(int equipe) : Unite(10, equipe, true) {}
-		Fantassin(int pdv, int equipe) : Unite(pdv, equipe, true) {}
+		Fantassin(int equipe) : Unite(10, equipe) {}
+		Fantassin(int pdv, int equipe) : Unite(pdv, equipe) {}
+		Fantassin(int pdv, int equipe, bool oneMore) : Unite(pdv, equipe, oneMore) {}
 		~Fantassin();
 
 		// Méthodes de récupération/affichage de valeur des attributs
 		static int getPrix() {return prix;};
 		static int getAtq() {return atq;};
 		static int getPortee() {return portee[0];};
-		virtual bool getAutreAction() {return autreAction;}; // ENLEVER VIRTUAL ??? d'apres le cours comme tu dis
+		bool getAutreAction() {return Unite::getAutreAction();};
 		char getNomUnite() const {return 'F';};
 		int getPrixDeces() {return prix/2;}; // pour la classe SuperSoldat
-
-		//virtual void setAutreAction(bool b) {autreAction = b;}; // ENLEVER VIRTUAL ???
 
 		// Renvoie un vecteur d'indices des unites vaincus
 		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* Joueur);

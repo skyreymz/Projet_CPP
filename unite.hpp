@@ -9,11 +9,12 @@ class Unite { // CLASSE ABSTRAITE
 	
 	int pv;
 	int camp; // 1 (Unite du joueur A) ou -1 (Unite du joueur B)
-	protected:
 	bool autreAction;
+	
 
 	public:
-		Unite(int pdv, int equipe, bool autre) : pv(pdv), camp(equipe), autreAction(autre) {}
+		Unite(int pdv, int equipe) : pv(pdv), camp(equipe), autreAction(true) {}
+		Unite(int pdv, int equipe, bool oneMore) : pv(pdv), camp(equipe), autreAction(oneMore) {}
 		virtual ~Unite()=0;
 
 		// Méthodes de récupération/affichage de valeur des attributs
@@ -23,7 +24,7 @@ class Unite { // CLASSE ABSTRAITE
 		char getCampChar() const;
 		virtual char getNomUnite() const = 0;
 		virtual int getPrixDeces() = 0;
-		virtual bool getAutreAction() const = 0;
+		virtual bool getAutreAction() {return autreAction;};
 		void afficheAttaqueUnite(char nomUnite, int atq, int position, Unite* cible, int positionCible) const;
 		void afficheAttaqueBase(char nomUnite, int atq, int position) const;
 
