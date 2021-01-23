@@ -32,7 +32,7 @@ class Unite { // CLASSE ABSTRAITE
 
 		// Renvoie un vecteur d'indices des unites vaincus
 		virtual std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur) = 0;
-		virtual void deplace(Unite* plateau[12], int i) =0;
+		virtual void deplace(Unite* plateau[12], int i) = 0;
 };
 
 #endif

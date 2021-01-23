@@ -116,6 +116,7 @@ bool AireDeJeu::charger(std::string entree) {
 	}
 	try {
 		std::string var;
+
 		// Récupération des informations de la classe AireDeJeu
 		std::getline(file, var);
 		int tourDeJeu0 = std::stoi(var); // 1 (tour du joueur A) ou -1 (tour du joueur B)
@@ -134,12 +135,12 @@ bool AireDeJeu::charger(std::string entree) {
 
 		// Récupération des informations des classes Joueur
 		std::getline(file, var);
-		int var2 = std::stoi(var);
+		int modeJBInt = std::stoi(var);
 		bool modeJB;
-		if (var2 != 0 && var2 != 1) {
+		if (modeJBInt != 0 && modeJBInt != 1) {
 			throw std::invalid_argument("Le mode du joueur B doit valoir 0 ou 1");// 0 signifie manuel, 1 signifie automatique
 		} else {
-			modeJB = (var2 == 1);
+			modeJB = (modeJBInt == 1);
 		}
 
 		std::getline(file, var);
@@ -160,9 +161,10 @@ bool AireDeJeu::charger(std::string entree) {
 
 		// Récupération des informations des classes Unité
 			/* Structure de ces données :
-				A (facultatif) : Marque le début des unités du joueur B
-				TYPE DE L'UNITE ('f' pour Fantassin ; 'a' pour Archer ; 'c' pour Catapulte ; 's' pour SuperSoldat ; 'N' s'il n'y a pas d'Unité)
-				PV DE L'UNITE (si et seulement s'il y a une unité)
+			      '$' (facultatif) : Marque le début des unités du joueur B
+				  TYPE DE L'UNITE ' ' PV DE L'UNITE (si et seulement s'il y a une unité)
+               
+               Les types possibles : 'f' pour Fantassin ; 'a' pour Archer ; 'c' pour Catapulte ; 's' pour SuperSoldat ; 'N' s'il n'y a pas d'Unité
 			*/
 		Unite* plateauCopie[12];
 		int camp = 1;
@@ -170,21 +172,26 @@ bool AireDeJeu::charger(std::string entree) {
 		int pv;
 		int position = 0;
 		while (position < 12) {
-			std::getline(file, var);
+			std::getline(file, var, ' ');
+			if (var.length() != 1) {
+				throw std::invalid_argument("Type d'unité inconnu");
+			}
 			type = var[0];
-			if ((type != 'N') && (type != 'A') && (((position == 0) && (camp == -1)) || ((position == 11) && (camp == 1)))) {
+			if ((type != 'N') && (type != '$') && (((position == 0) && (camp == -1)) || ((position == 11) && (camp == 1)))) {
 				throw std::invalid_argument("Une unite d'une equipe ne peut pas être au niveau de la position de la base adverse");
 			} 
 			switch (type) {
-				case 'A':
+				case '$':
 					if (camp == 1) {
 						camp = -1;
 					} else {
-						throw std::invalid_argument("\"A\" ne peut apparaître qu'une fois dans le fichier de sauvegarde");
+						throw std::invalid_argument("\"$\" ne peut apparaître qu'une fois dans le fichier de sauvegarde");
 					}
+					std::getline(file, var); // retour à la ligne
 					break;
 				case 'N':
 					plateauCopie[position] = nullptr;
+					std::getline(file, var); // retour à la ligne
 					position++;
 					break;
 				case 'f':
@@ -265,29 +272,28 @@ bool AireDeJeu::sauvegarder(std::string sortie) const {
 		int campsUnites = 1; // camps de l'unité ajoutée
 		for (int i = 0 ; i < 12 ; i++) {
 			if (plateau[i] == nullptr) {
-				file << "N // Position " << i << " : Sans unité\n";
+				file << "N X // Position " << i << " : Sans unité\n";
 			} else {
 				if ((campsUnites == 1) && (plateau[i]->getCamp() == -1)) {
 					campsUnites = -1;
-					file << "A // Début des unités du joueur B\n";
+					file << "$ X // Début des unités du joueur B\n";
 				}
 				switch (plateau[i]->getNomUnite()) { // pour connaître la classe de l'unité
 					case 'F':
-						file << "f // Position " << i << " : Fantassin\n";
+						file << "f " << plateau[i]->getPV() << " // Position " << i << " : Fantassin | " << plateau[i]->getPV() << "PV | Camp " << plateau[i]->getCampChar() << std::endl;
 						break;
 					case 'A':
-						file << "a // Position " << i << " : Archer\n";
+						file << "a " << plateau[i]->getPV() << " // Position " << i << " : Archer | " << plateau[i]->getPV() << "PV | Camp " << plateau[i]->getCampChar() << std::endl;
 						break;
 					case 'C':
-						file << "c // Position " << i << " : Catapulte\n";
+						file << "c " << plateau[i]->getPV() << " // Position " << i << " : Catapulte | " << plateau[i]->getPV() << "PV | Camp " << plateau[i]->getCampChar() << std::endl;
 						break;
 					case 'S':
-						file << "s // Position " << i << " : SuperSoldat\n";
+						file << "s " << plateau[i]->getPV() << " // Position " << i << " : Super-soldat | " << plateau[i]->getPV() << "PV | Camp " << plateau[i]->getCampChar() << std::endl;
 						break;
 					default:
 						throw std::invalid_argument("Type d'unité inconnu");
 				}
-				file << plateau[i]->getPV() << " // Ses PV\n";
 			}
 		}
 

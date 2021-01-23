@@ -11,7 +11,7 @@ class Joueur {
 
 	
 	public:
-		Joueur(int mod = 0, int depart = 50) : mode(mod), argent(depart), pvBase(100) {}
+		Joueur(int mod = 0, int depart = 12) : mode(mod), argent(depart), pvBase(100) {}
 		~Joueur();
 
 		// Méthodes de récupération de valeur des attributs
