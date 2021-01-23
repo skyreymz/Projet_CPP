@@ -26,7 +26,7 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                 if (plateau[positionCibleFirst] != nullptr) {
                     if (plateau[positionCibleFirst]->getCamp() != getCamp()) {
                         pvRetire = plateau[positionCibleFirst]->subPV(atq);
-                        afficheAttaqueUnite(this, getNomUnite(), pvRetire, i, plateau[positionCibleFirst], positionCibleFirst);
+                        afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCibleFirst], positionCibleFirst);
 
                         std::vector<int> vaincus;
                         if (plateau[positionCibleFirst]->estVaincu()) {
@@ -36,14 +36,14 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                         if ( ((getCamp() == 1) && ((positionCibleSecond) <= indiceMAX)) || ((getCamp() == -1) && ((positionCibleSecond) >= indiceMAX)) ) {
                             if (plateau[positionCibleSecond] != nullptr) {
                                 pvRetire = plateau[positionCibleSecond]->subPV(atq);
-                                afficheAttaqueUnite(this, getNomUnite(), pvRetire, i, plateau[positionCibleSecond], positionCibleSecond);
+                                afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCibleSecond], positionCibleSecond);
                                 if (plateau[positionCibleSecond]->estVaincu()) {
                                     vaincus.push_back(positionCibleSecond);
                                 }
                             }
                             else if ( (positionCibleSecond) == indiceMAX ) {
                                 pvRetire = joueur->subPvBase(atq);
-                                afficheAttaqueBase(this, getNomUnite(), pvRetire, i);
+                                afficheAttaqueBase(getNomUnite(), pvRetire, i);
                             }
                         }
 
@@ -54,7 +54,7 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                 }
                 else if ( positionCibleFirst == indiceMAX ) {
                     pvRetire = joueur->subPvBase(atq);
-                    afficheAttaqueBase(this, getNomUnite(), pvRetire, i);
+                    afficheAttaqueBase(getNomUnite(), pvRetire, i);
                     autreAction = false;
                 }
             }
@@ -67,7 +67,7 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                 if (plateau[positionCibleSecond] != nullptr) {
                     if (plateau[positionCibleSecond]->getCamp() != getCamp()) {
                         pvRetire = plateau[positionCibleSecond]->subPV(atq);
-                        afficheAttaqueUnite(this, getNomUnite(), pvRetire, i, plateau[positionCibleSecond], positionCibleSecond);
+                        afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCibleSecond], positionCibleSecond);
                         
                         if (plateau[positionCibleSecond]->estVaincu()) {
                             vaincus.push_back(positionCibleSecond);
@@ -77,14 +77,14 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                 }
                 else if ( (positionCibleSecond) == indiceMAX ) {
                     pvRetire = joueur->subPvBase(atq);
-                    afficheAttaqueBase(this, getNomUnite(), pvRetire, i);
+                    afficheAttaqueBase(getNomUnite(), pvRetire, i);
                     autreAction = false;
                 }
 
                 if (!autreAction) {
                     if (plateau[positionCibleFirst] != nullptr) {
                         pvRetire = plateau[positionCibleFirst]->subPV(atq);
-                        afficheAttaqueUnite(this, getNomUnite(), pvRetire, i, plateau[positionCibleFirst], positionCibleFirst);
+                        afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCibleFirst], positionCibleFirst);
 
                         if (plateau[positionCibleFirst]->estVaincu()) {
                             vaincus.push_back(positionCibleFirst);

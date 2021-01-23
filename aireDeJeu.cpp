@@ -434,7 +434,7 @@ void AireDeJeu::jouerActions() {
 }
 
 bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoie true s'il quitte la partie
-	char choix;
+
 	int indiceBase;
 	Joueur* joueur;
 	char campJoueur;
@@ -452,9 +452,12 @@ bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoi
 		campJoueur = 'B';
 	}
 
-	// 3) Fin de tour d'un joueur
+	// Fin de tour d'un joueur
 	if (!joueur->getMode()) { // Joueur en mode Manuel
-		std::string nomFichier; // nom du fichier pour sauvegarder la partie
+
+		std::string choixString;
+		char choix;
+
 		do {
 			if ((plateau[indiceBase] == nullptr) && joueur->getArgent() >= 10) {
 				std::cout << "Caractéristiques des unités ('h') / Recruter une unité ('f' / 'a' / 'c') / Ne rien faire ('o') / Sauvegarder ('s') / Quitter la partie en cours ('q') : ";
@@ -462,7 +465,12 @@ bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoi
 				std::cout << "Caractéristiques des unités ('h') / Ne rien faire ('o') / Sauvegarder ('s') / Quitter la partie en cours ('q') : ";
 			}
 
-			std::cin >> choix;
+			std::cin >> choixString;
+			if (choixString.length() != 1) {
+				choix = '0';
+			} else {
+				choix = choixString.at(0);
+			}
 			
 			switch (choix) {
 				case 'h':
@@ -526,10 +534,10 @@ bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoi
 				case 's':
 					do {
 						std::cout << "Entrez le nom du fichier où sauvegarder ('r' pour revenir à la partie en cours) : ";
-						std::cin >> nomFichier;
-						if (nomFichier == "r") {
+						std::cin >> choixString;
+						if (choixString == "r") {
 							choix = '0';
-						} else if(this->sauvegarder(nomFichier)) {
+						} else if(sauvegarder(choixString)) {
 							choix = '0';
 						} else {
 							choix = '2';
@@ -541,7 +549,7 @@ bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoi
 					std::cout << "\n==============================================================\n";
 					return false;
 				default :
-					std::cerr << "Caractère incorrect" << std::endl;
+					std::cerr << "Caractère(s) non reconnu(s)" << std::endl;
 					choix = '0';
 					break;
 			}

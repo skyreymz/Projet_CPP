@@ -10,20 +10,12 @@ char Unite::getCampChar() const{
 	}
 }
 
-char Unite::getCampEnnemiChar() const{
-	if (camp == 1) {
-		return 'B';
-	} else {
-		return 'A';
-	}
+void Unite::afficheAttaqueUnite(char nomUnite, int atq, int position, Unite* cible, int positionCible) const{
+	std::cout << nomUnite << '(' << getCampChar() << ")(position " << position << ") a enlevé " << atq << "PV à " << cible->getNomUnite() << '(' << cible->getCampChar() << ")(position " << positionCible << ")\n";
 }
 
-void Unite::afficheAttaqueUnite(Unite* emetteur, char nomUnite, int atq, int position, Unite* cible, int positionCible) const{
-	std::cout << nomUnite << '(' << emetteur->getCampChar() << ")(position " << position << ") a enlevé " << atq << "PV à " << cible->getNomUnite() << '(' << cible->getCampChar() << ")(position " << positionCible << ")\n";
-}
-
-void Unite::afficheAttaqueBase(Unite* emetteur, char nomUnite, int atq, int position) const{
-	std::cout << nomUnite << '(' << emetteur->getCampChar() << ")(position " << position << ") a enlevé " << atq << "PV à la Base du joueur " << getCampEnnemiChar() << std::endl;
+void Unite::afficheAttaqueBase(char nomUnite, int atq, int position) const{
+	std::cout << nomUnite << '(' << getCampChar() << ")(position " << position << ") a enlevé " << atq << "PV à la Base du joueur " << char(getCampChar()+camp) << std::endl;
 }
 
 int Unite::subPV(int atq) {

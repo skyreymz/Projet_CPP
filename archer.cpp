@@ -22,7 +22,7 @@ std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i, Joue
         if (plateau[positionCible] != nullptr) {
             if (plateau[positionCible]->getCamp() != getCamp()) {
                 pvRetire = plateau[positionCible]->subPV(atq);
-                afficheAttaqueUnite(this, getNomUnite(), pvRetire, i, plateau[positionCible], positionCible);
+                afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCible], positionCible);
                 if (plateau[positionCible]->estVaincu()) {
                     return std::make_pair(false, std::vector<int>(1)={i+ getCamp() * portee[j]});
                 }
@@ -31,7 +31,7 @@ std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i, Joue
         }
         else if ( positionCible == indiceMAX ) {
             pvRetire = joueur->subPvBase(atq);
-            afficheAttaqueBase(this, getNomUnite(), pvRetire, i);
+            afficheAttaqueBase(getNomUnite(), pvRetire, i);
             attaqueRealisee = true;
         }
     }

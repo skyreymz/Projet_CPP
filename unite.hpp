@@ -21,12 +21,11 @@ class Unite { // CLASSE ABSTRAITE
 		bool estVaincu() {return (pv == 0);};
 		int getCamp() const {return camp;};
 		char getCampChar() const;
-		char getCampEnnemiChar() const;
 		virtual char getNomUnite() const = 0;
 		virtual int getPrixDeces() = 0;
 		virtual bool getAutreAction() = 0;
-		void afficheAttaqueUnite(Unite* emetteur, char nomUnite, int atq, int position, Unite* cible, int positionCible) const;
-		void afficheAttaqueBase(Unite* emetteur, char nomUnite, int atq, int position) const;
+		void afficheAttaqueUnite(char nomUnite, int atq, int position, Unite* cible, int positionCible) const;
+		void afficheAttaqueBase(char nomUnite, int atq, int position) const;
 
 		// Méthodes de modification de valeur des attributs
 		int subPV(int atq); // Soutrait et retourne le nombre de points de vie soustrait
