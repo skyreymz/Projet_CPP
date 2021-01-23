@@ -17,10 +17,11 @@ std::vector<int> Fantassin::attaque(Unite* plateau[12], int i, Joueur* joueur) {
     }
 
     int positionCible = i + getCamp() * getPortee();
+    int pvRetire;
     if (! (plateau[positionCible] == nullptr) ) {
         if (plateau[positionCible]->getCamp() != getCamp()) {
-            afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCible], positionCible);
-            plateau[positionCible]->subPV(atq);
+            pvRetire = plateau[positionCible]->subPV(atq);
+            afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCible], positionCible);
             autreAction = false;
 
             if (plateau[positionCible]->estVaincu()) {
@@ -36,8 +37,8 @@ std::vector<int> Fantassin::attaque(Unite* plateau[12], int i, Joueur* joueur) {
         }
     }
     else if ( positionCible == indiceMAX ) {
-        afficheAttaqueBase(this, getNomUnite(), atq, i);
-        joueur->subPvBase(atq);
+        pvRetire = joueur->subPvBase(atq);
+        afficheAttaqueBase(getNomUnite(), pvRetire, i);
         autreAction = false;
     }
     return std::vector<int>()={};

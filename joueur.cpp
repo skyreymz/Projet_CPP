@@ -2,10 +2,13 @@
 
 Joueur::~Joueur() {}
 
-void Joueur::subPvBase(int atq) {
-	if ((pvBase - atq) >= 0) {
+int Joueur::subPvBase(int atq) {
+	int res = pvBase;
+	if (pvBase >= atq) {
 		pvBase -= atq;
+		return atq;
 	} else {
 		pvBase = 0;
+		return res;
 	}
 }

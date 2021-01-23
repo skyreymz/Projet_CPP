@@ -18,31 +18,32 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
     for (int j=0; j<3; j++) {
         int positionCibleFirst = i + getCamp() * portee[j].first;
         int positionCibleSecond = i + getCamp() * portee[j].second;
+        int pvRetire;
 
         if (j != 2) {
 
             if ( ((getCamp() == 1) && ((positionCibleFirst) <= indiceMAX)) || ((getCamp() == -1) && ((positionCibleFirst) >= indiceMAX)) ) {
                 if (plateau[positionCibleFirst] != nullptr) {
                     if (plateau[positionCibleFirst]->getCamp() != getCamp()) {
-                        afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleFirst], positionCibleFirst);
+                        pvRetire = plateau[positionCibleFirst]->subPV(atq);
+                        afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCibleFirst], positionCibleFirst);
 
                         std::vector<int> vaincus;
-                        plateau[positionCibleFirst]->subPV(atq);
                         if (plateau[positionCibleFirst]->estVaincu()) {
                             vaincus.push_back(positionCibleFirst);
                         }
 
                         if ( ((getCamp() == 1) && ((positionCibleSecond) <= indiceMAX)) || ((getCamp() == -1) && ((positionCibleSecond) >= indiceMAX)) ) {
                             if (plateau[positionCibleSecond] != nullptr) {
-                                afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleSecond], positionCibleSecond);
-                                plateau[positionCibleSecond]->subPV(atq);
+                                pvRetire = plateau[positionCibleSecond]->subPV(atq);
+                                afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCibleSecond], positionCibleSecond);
                                 if (plateau[positionCibleSecond]->estVaincu()) {
                                     vaincus.push_back(positionCibleSecond);
                                 }
                             }
                             else if ( (positionCibleSecond) == indiceMAX ) {
-                                afficheAttaqueBase(this, getNomUnite(), atq, i);
-                                joueur->subPvBase(atq);
+                                pvRetire = joueur->subPvBase(atq);
+                                afficheAttaqueBase(getNomUnite(), pvRetire, i);
                             }
                         }
 
@@ -52,8 +53,8 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                     }
                 }
                 else if ( positionCibleFirst == indiceMAX ) {
-                    afficheAttaqueBase(this, getNomUnite(), atq, i);
-                    joueur->subPvBase(atq);
+                    pvRetire = joueur->subPvBase(atq);
+                    afficheAttaqueBase(getNomUnite(), pvRetire, i);
                     autreAction = false;
                 }
             }
@@ -65,9 +66,9 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
 
                 if (plateau[positionCibleSecond] != nullptr) {
                     if (plateau[positionCibleSecond]->getCamp() != getCamp()) {
-
-                        afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleSecond], positionCibleSecond);
-                        plateau[positionCibleSecond]->subPV(atq);
+                        pvRetire = plateau[positionCibleSecond]->subPV(atq);
+                        afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCibleSecond], positionCibleSecond);
+                        
                         if (plateau[positionCibleSecond]->estVaincu()) {
                             vaincus.push_back(positionCibleSecond);
                         }
@@ -75,15 +76,16 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                     }
                 }
                 else if ( (positionCibleSecond) == indiceMAX ) {
-                    afficheAttaqueBase(this, getNomUnite(), atq, i);
-                    joueur->subPvBase(atq);
+                    pvRetire = joueur->subPvBase(atq);
+                    afficheAttaqueBase(getNomUnite(), pvRetire, i);
                     autreAction = false;
                 }
 
                 if (!autreAction) {
                     if (plateau[positionCibleFirst] != nullptr) {
-                        afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleFirst], positionCibleFirst);
-                        plateau[positionCibleFirst]->subPV(atq);
+                        pvRetire = plateau[positionCibleFirst]->subPV(atq);
+                        afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCibleFirst], positionCibleFirst);
+
                         if (plateau[positionCibleFirst]->estVaincu()) {
                             vaincus.push_back(positionCibleFirst);
                         }
@@ -93,7 +95,6 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                 return vaincus;
             }
         }
-        
     }
     return std::vector<int>()={};
 }

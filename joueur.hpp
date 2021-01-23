@@ -23,7 +23,7 @@ class Joueur {
 		void setJoueur(bool mode0, int argent0, int pvBase0) {mode = mode0; argent = argent0; pvBase = pvBase0;};
 		void setMode(bool mod) {mode = mod;};
 		void addArgent(int money) {argent += money;};
-		void subPvBase(int atq);
+		int subPvBase(int atq); // Soutrait et retourne le nombre de points de vie soustrait
 };
 
 #endif

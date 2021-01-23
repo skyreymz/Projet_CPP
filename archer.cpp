@@ -18,10 +18,11 @@ std::vector<int> Archer::attaque(Unite* plateau[12], int i, Joueur* joueur) {
     bool attaqueRealisee = false;
     for (int j=0; (j<3) && !attaqueRealisee; j++) {
         int positionCible = i + getCamp() * portee[j];
+        int pvRetire;
         if (plateau[positionCible] != nullptr) {
             if (plateau[positionCible]->getCamp() != getCamp()) {
-                afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCible], positionCible);
-                plateau[positionCible]->subPV(atq);
+                pvRetire = plateau[positionCible]->subPV(atq);
+                afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCible], positionCible);
                 if (plateau[positionCible]->estVaincu()) {
                     return std::vector<int>(1)={i+ getCamp() * portee[j]};
                 }
@@ -29,8 +30,8 @@ std::vector<int> Archer::attaque(Unite* plateau[12], int i, Joueur* joueur) {
             }
         }
         else if ( positionCible == indiceMAX ) {
-            afficheAttaqueBase(this, getNomUnite(), atq, i);
-            joueur->subPvBase(atq);
+            pvRetire = joueur->subPvBase(atq);
+            afficheAttaqueBase(getNomUnite(), pvRetire, i);
             attaqueRealisee = true;
         }
     }

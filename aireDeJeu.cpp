@@ -24,7 +24,7 @@ AireDeJeu::~AireDeJeu() {
 	}
 }
 
-void AireDeJeu::afficherInfos() const {
+void AireDeJeu::afficherTour() const {
 	char tourJoueur;
 	if (tourDeJeu == 1) {
 		std::cout << "\n==============================================================\n";
@@ -35,12 +35,12 @@ void AireDeJeu::afficherInfos() const {
 	}
 
 	std::cout << "\nTOUR " << nbToursActuel << '/' << nbToursMAX << " - " << "Tour du joueur " << tourJoueur << std::endl;
-
-	std::cout << "\nPièces d'or du Joueur A : " << jA.getArgent() << std::endl;
-	std::cout << "Pièces d'or du Joueur B : " << jB.getArgent() << std::endl;
 }
 
 std::ostream& operator<<(std::ostream &flux, AireDeJeu const &a) {
+	flux << "\nPièces d'or du Joueur A : " << a.jA.getArgent() << std::endl;
+	flux << "Pièces d'or du Joueur B : " << a.jB.getArgent() << std::endl;
+
 	flux << "\nAIRE DE JEU :\n";
 	flux << "Base A : " << std::setfill('0') << std::setw(3) << a.jA.getPvBase() << "PV";
 	flux << "                                 Base B : " << std::setfill('0') << std::setw(3) << a.jB.getPvBase() << "PV" << std::endl;
@@ -402,7 +402,7 @@ void AireDeJeu::jouerActions() {
 }
 
 bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoie true s'il quitte la partie
-	char choix;
+
 	int indiceBase;
 	Joueur* joueur;
 	char campJoueur;
@@ -420,17 +420,25 @@ bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoi
 		campJoueur = 'B';
 	}
 
-	// 3) Fin de tour d'un joueur
+	// Fin de tour d'un joueur
 	if (!joueur->getMode()) { // Joueur en mode Manuel
-		std::string nomFichier; // nom du fichier pour sauvegarder la partie
+
+		std::string choixString;
+		char choix;
+
 		do {
-			if (plateau[indiceBase] == nullptr) {
+			if ((plateau[indiceBase] == nullptr) && joueur->getArgent() >= 10) {
 				std::cout << "Caractéristiques des unités ('h') / Recruter une unité ('f' / 'a' / 'c') / Ne rien faire ('o') / Sauvegarder ('s') / Quitter la partie en cours ('q') : ";
 			} else {
 				std::cout << "Caractéristiques des unités ('h') / Ne rien faire ('o') / Sauvegarder ('s') / Quitter la partie en cours ('q') : ";
 			}
 
-			std::cin >> choix;
+			std::cin >> choixString;
+			if (choixString.length() != 1) {
+				choix = '0';
+			} else {
+				choix = choixString.at(0);
+			}
 			
 			switch (choix) {
 				case 'h':
@@ -494,10 +502,10 @@ bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoi
 				case 's':
 					do {
 						std::cout << "Entrez le nom du fichier où sauvegarder ('r' pour revenir à la partie en cours) : ";
-						std::cin >> nomFichier;
-						if (nomFichier == "r") {
+						std::cin >> choixString;
+						if (choixString == "r") {
 							choix = '0';
-						} else if(this->sauvegarder(nomFichier)) {
+						} else if(sauvegarder(choixString)) {
 							choix = '0';
 						} else {
 							choix = '2';
@@ -509,7 +517,7 @@ bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoi
 					std::cout << "\n==============================================================\n";
 					return false;
 				default :
-					std::cerr << "Caractère incorrect" << std::endl;
+					std::cerr << "Caractère(s) non reconnu(s)" << std::endl;
 					choix = '0';
 					break;
 			}
@@ -530,7 +538,7 @@ bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoi
 				std::cout << "\nLe joueur B a recruté un Fantassin" << std::endl; // il n'y a que le joueur B qui peut être en mode automatique
 				plateau[indiceBase] = new Fantassin(tourDeJeu);
 			} else {
-				std::cout << "\n Le joueur B n'a pas assez de pièces d'or pour recruter" << std::endl;
+				std::cout << "\nLe joueur B n'a pas assez de pièces d'or pour recruter" << std::endl;
 			}
 		}
 	}

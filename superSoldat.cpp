@@ -13,10 +13,11 @@ std::vector<int> SuperSoldat::attaque(Unite* plateau[12], int i, Joueur* joueur)
     }
 
     int positionCible = i + getCamp() * getPortee();
+    int pvRetire;
     if (plateau[positionCible] != nullptr) {
         if (plateau[positionCible]->getCamp() != getCamp()) {
-            afficheAttaqueUnite(this, getNomUnite(), Fantassin::getAtq(), i, plateau[positionCible], positionCible);
-            plateau[positionCible]->subPV(Fantassin::getAtq());
+            pvRetire = plateau[positionCible]->subPV(Fantassin::getAtq());
+            afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCible], positionCible);
             
             if (plateau[positionCible]->estVaincu()) {
             	return std::vector<int>(1)={i+ getCamp()};
@@ -24,8 +25,8 @@ std::vector<int> SuperSoldat::attaque(Unite* plateau[12], int i, Joueur* joueur)
         }
     }
     else if ( positionCible == indiceMAX ) {
-        afficheAttaqueBase(this, getNomUnite(), Fantassin::getAtq(), i);
-        joueur->subPvBase(Fantassin::getAtq());
+        pvRetire = joueur->subPvBase(Fantassin::getAtq());
+        afficheAttaqueBase(getNomUnite(), pvRetire, i);
     }
     return std::vector<int>()={};
 }

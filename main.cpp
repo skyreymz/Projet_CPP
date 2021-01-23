@@ -7,17 +7,27 @@ int main() {
 	AireDeJeu* a = new AireDeJeu();
 
 	bool finDePartie = false;
+	std::string resString;
 	char res;
-	std::string nomFichier; // nom du fichier pour charger une partie
 	do {
 		do {
 			std::cout << "\nCommencer une Nouvelle partie ('n') / Charger une partie ('c') / Quitter ('q') : ";
-			std::cin >> res;
+			std::cin >> resString;
+			if (resString.length() != 1) {
+				res = '0';
+			} else {
+				res = resString.at(0);
+			}
 			switch (res) {
 				case 'n' :
 					do {
 						std::cout << "Joueur contre Joueur ('j') / Joueur contre IA ('m') : ";
-						std::cin >> res;
+						std::cin >> resString;
+						if (resString.length() != 1) {
+							res = '2';
+						} else {
+							res = resString.at(0);
+						}
 						switch (res) {
 							case 'j':
 								a->setMode(false);
@@ -28,18 +38,18 @@ int main() {
 								a->addArgent(8);
 								break;
 							default :
-								std::cerr << "Caractère incorrect" << std::endl;
+								std::cerr << "Caractère(s) non reconnu(s)" << std::endl;
 								res = '2';
 								break;
 						}
 					} while (res == '2');
 
 					do {
-						std::string nbTourMaxString;
+						//std::string nbTourMaxString;
 						std::cout << "Entrez le nombre maximum de tours (au moins 1) : ";
-						std::cin >> nbTourMaxString;
+						std::cin >> resString;
 						try {
-							int nbTourMaxInt = std::stoi(nbTourMaxString);
+							int nbTourMaxInt = std::stoi(resString);
 							if (nbTourMaxInt < 1) {
 								std::cerr << "Le nombre de tour ne peut pas être négatif" << std::endl;
 								res = '2';
@@ -48,7 +58,7 @@ int main() {
 								res = '1';
 							}
 						} catch (...) {
-							std::cerr << "Caractère incorrect" << std::endl;
+							std::cerr << "Caractère(s) non reconnu(s)" << std::endl;
 							res = '2';
 						}
 					} while ((res == '2'));
@@ -57,10 +67,10 @@ int main() {
 				case 'c' :
 					do {
 						std::cout << "Entrez le nom du fichier à charger ('r' pour revenir au menu principal) : ";
-						std::cin >> nomFichier;
-						if (nomFichier == "r") {
+						std::cin >> resString;
+						if (resString == "r") {
 							res = '0';
-						} else if(a->charger(nomFichier)) {
+						} else if(a->charger(resString)) {
 							res = '1';
 						} else {
 							res = '2';
@@ -73,7 +83,7 @@ int main() {
 					break;
 
 				default:
-					std::cerr << "Caractère incorrect" << std::endl;
+					std::cerr << "Caractère(s) non reconnu(s)" << std::endl;
 					res = '0';
 					break;
 			}
@@ -85,10 +95,10 @@ int main() {
 
 
 		if (res == '1') {
-			a->afficherInfos();
+			a->afficherTour();
 			std::cout << *a << std::endl;
 
-			if (!a->finTour()) { // si le joueur quitte
+			if (!a->finTour()) { // si le joueur quitte la partie en cours
 				finDePartie = true;
 			} else if (a->tourMaxAtteint()) {
 				finDePartie = true;
@@ -99,14 +109,14 @@ int main() {
 					a->incrNbTourActuel();
 					a->addArgent(8);
 				}
-				a->afficherInfos();
+				a->afficherTour();
 				a->jouerActions();
 				std::cout << *a << std::endl;
 
 				if (a->baseDetruite()) {
 					finDePartie = true;
 				} else {
-					if (!a->finTour()) { // si le joueur quitte
+					if (!a->finTour()) { // si le joueur quitte la partie en cours
 						finDePartie = true;
 					} else if (a->tourMaxAtteint()) {
 						finDePartie = true;
