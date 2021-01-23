@@ -333,21 +333,15 @@ void AireDeJeu::jouerActions() {
 		if (plateau[i] != nullptr) {
 			if (plateau[i]->getCamp() == tourDeJeu) {
 				indiceUniteMAX = i;
-				std::pair<bool,std::vector<int>> paire = plateau[i]->attaque(plateau, i, joueurAdverse);
-				// On évolue le fantassin s'il a vaincu un fantassin ennemi
-				if (paire.first) {
-					int pv = plateau[i]->getPV();
-					int camp = plateau[i]->getCamp(); //changer le camp et equipe en int 1 ou -1 !!!!! pck la c un bool
-					delete plateau[i];
-					plateau[i] = new SuperSoldat(pv, camp);
-				}
+				std::vector<int> vaincus = plateau[i]->attaque(plateau, i, joueurAdverse);
+				
 				// On enlève les unités vaincus et ajoute les gains au joueur
-				for (size_t j=0; j<paire.second.size(); j++) {
-					if ( (plateau[paire.second[j]]->getCamp()) != tourDeJeu ) {
-						joueur->addArgent(plateau[paire.second[j]]->getPrixDeces());
+				for (size_t j=0; j<vaincus.size(); j++) {
+					if ( (plateau[vaincus[j]]->getCamp()) != tourDeJeu ) {
+						joueur->addArgent(plateau[vaincus[j]]->getPrixDeces());
 					}
-					delete plateau[paire.second[j]];
-					plateau[paire.second[j]] = nullptr;
+					delete plateau[vaincus[j]];
+					plateau[vaincus[j]] = nullptr;
 				}
 			}
 			else {
@@ -363,29 +357,11 @@ void AireDeJeu::jouerActions() {
 				continue;
 			}
 			if (plateau[i + tourDeJeu] == nullptr) {
-				switch(plateau[i]->getNomUnite()) {
-					case 'F':
-						plateau[i + tourDeJeu] = new Fantassin(plateau[i]->getPV(), plateau[i]->getCamp());
-						std::cout << "F(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+tourDeJeu << std::endl;
-						delete plateau[i];
-						plateau[i] = nullptr;
-						break;
-					case 'A':
-						plateau[i + tourDeJeu] = new Archer(plateau[i]->getPV(), plateau[i]->getCamp());
-						std::cout << "A(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+tourDeJeu << std::endl;
-						delete plateau[i];
-						plateau[i] = nullptr;
-						break;
-					case 'S':
-						plateau[i + tourDeJeu] = new SuperSoldat(plateau[i]->getPV(), plateau[i]->getCamp());
-						std::cout << "S(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+tourDeJeu << std::endl;
-						delete plateau[i];
-						plateau[i] = nullptr;
-						break;
-				}
-				
-				if (i == indiceUniteMAX) {
-					indiceUniteMAX += tourDeJeu;
+				if (plateau[i]->getNomUnite() != 'C') {
+					plateau[i]->deplace(plateau, i);
+					if (i == indiceUniteMAX) {
+						indiceUniteMAX += tourDeJeu;
+					}
 				}
 			}
 		}
@@ -396,37 +372,29 @@ void AireDeJeu::jouerActions() {
 		if (plateau[i] != nullptr) {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
 			if (plateau[i]->getAutreAction()) {
-				std::pair<bool,std::vector<int>> paire;
-				switch (plateau[i]->getNomUnite()) {
-					case 'F':
-					case 'S':
-						paire = plateau[i]->attaque(plateau, i, joueurAdverse);
-						// On évolue le fantassin s'il a vaincu un fantassin ennemi
-						if (paire.first) {
-							int pv = plateau[i]->getPV();
-							int camp = plateau[i]->getCamp(); 
-							delete plateau[i];
-							plateau[i] = new SuperSoldat(pv, camp);
+				std::vector<int> vaincus;
+
+				if (plateau[i]->getNomUnite() != 'C') {
+					vaincus = plateau[i]->attaque(plateau, i, joueurAdverse);
+					// On enlève les unités vaincus et ajoute les gains au joueur
+					for (size_t j=0; j<vaincus.size(); j++) {
+						if ( (plateau[vaincus[j]]->getCamp()) != tourDeJeu ) {
+							joueur->addArgent(plateau[vaincus[j]]->getPrixDeces());
 						}
-						// On enlève les unités vaincus et ajoute les gains au joueur
-						for (size_t j=0; j<paire.second.size(); j++) {
-							if ( (plateau[paire.second[j]]->getCamp()) != tourDeJeu ) {
-								joueur->addArgent(plateau[paire.second[j]]->getPrixDeces());
-							}
-							delete plateau[paire.second[j]];
-							plateau[paire.second[j]] = nullptr;
-						}
-						break;
-					case 'C':
-						if (plateau[i + tourDeJeu] == nullptr) {
-							plateau[i + tourDeJeu] = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
-							std::cout << "C(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+tourDeJeu << std::endl;
-							delete plateau[i];
-							plateau[i] = nullptr;
-							break;
-						}
+						delete plateau[vaincus[j]];
+						plateau[vaincus[j]] = nullptr;
+					}
+
 				}
-			} else if ((plateau[i]->getNomUnite() == 'F') || (plateau[i]->getNomUnite() == 'C')) {
+				else {
+					if ((i + tourDeJeu) != (indiceBase + tourDeJeu * 11)) { // si la prochaine case n'est pas celle de la base ennemie
+						if (plateau[i + tourDeJeu] == nullptr) {
+							plateau[i]->deplace(plateau, i);
+						}
+					}
+				}
+
+			} else {
 				plateau[i]->setAutreAction(true);
 			}
 		}

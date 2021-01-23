@@ -2,7 +2,6 @@
 #define UNITE_HPP
 
 #include <string>
-#include <utility>
 #include <vector>
 #include "joueur.hpp"
 
@@ -32,8 +31,9 @@ class Unite { // CLASSE ABSTRAITE
 		void subPV(int atq) {pv -= atq;};
 		virtual void setAutreAction(bool b) = 0;
 
-		// Renvoie une paire <bool, vecteur d'indices des unites vaincus> (true si et seulement si un fantassin a vaincu un autre fantassin)
-		virtual std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur) = 0;
+		// Renvoie un vecteur d'indices des unites vaincus
+		virtual std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur) = 0;
+		virtual void deplace(Unite* plateau[12], int i) =0;
 };
 
 #endif

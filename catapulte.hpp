@@ -25,8 +25,9 @@ class Catapulte : public Unite {
 
 		void setAutreAction(bool b) {autreAction = b;};
 
-		// Renvoie une paire <bool, vecteur d'indices des unites vaincus> (true si et seulement si un fantassin a vaincu un autre fantassin)
-		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur);
+		// Renvoie un vecteur d'indices des unites vaincus
+		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur);
+		void deplace(Unite* plateau[12], int i);
 };
 
 #endif

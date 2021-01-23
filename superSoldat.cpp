@@ -2,11 +2,8 @@
 
 SuperSoldat::~SuperSoldat() {}
 
-bool SuperSoldat::getAutreAction() {
-    return autreAction;
-}
 
-std::pair<bool,std::vector<int>> SuperSoldat::attaque(Unite* plateau[12], int i, Joueur* joueur) {
+std::vector<int> SuperSoldat::attaque(Unite* plateau[12], int i, Joueur* joueur) {
     int indiceMAX;
     if (getCamp() == 1) {
         indiceMAX = 11;
@@ -22,7 +19,7 @@ std::pair<bool,std::vector<int>> SuperSoldat::attaque(Unite* plateau[12], int i,
             plateau[positionCible]->subPV(Fantassin::getAtq());
             
             if (plateau[positionCible]->estVaincu()) {
-            	return std::make_pair(false, std::vector<int>(1)={i+ getCamp()});
+            	return std::vector<int>(1)={i+ getCamp()};
             }
         }
     }
@@ -30,5 +27,12 @@ std::pair<bool,std::vector<int>> SuperSoldat::attaque(Unite* plateau[12], int i,
         afficheAttaqueBase(this, getNomUnite(), Fantassin::getAtq(), i);
         joueur->subPvBase(Fantassin::getAtq());
     }
-    return std::make_pair(false, std::vector<int>()={});
+    return std::vector<int>()={};
+}
+
+void SuperSoldat::deplace(Unite* plateau[12], int i) {
+    plateau[i + getCamp()] = new SuperSoldat(plateau[i]->getPV(), plateau[i]->getCamp());
+	std::cout << "S(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
+	delete plateau[i];
+	plateau[i] = nullptr;
 }

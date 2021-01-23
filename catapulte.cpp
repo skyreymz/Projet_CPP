@@ -6,7 +6,7 @@ std::pair<int,int> Catapulte::portee[3] = {std::make_pair(2,3), std::make_pair(3
 
 Catapulte::~Catapulte() {}
 
-std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
+std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
     int indiceMAX;
     if (getCamp() == 1) {
         indiceMAX = 11;
@@ -47,7 +47,7 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                         }
 
                         autreAction = false;
-                        return std::make_pair(false, vaincus);
+                        return vaincus;
                 
                     }
                 }
@@ -90,10 +90,17 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                     }
                 }
 
-                return std::make_pair(false, vaincus);
+                return vaincus;
             }
         }
         
     }
-    return std::make_pair(false, std::vector<int>()={});
+    return std::vector<int>()={};
+}
+
+void Catapulte::deplace(Unite* plateau[12], int i) {
+    plateau[i + getCamp()] = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
+	std::cout << "C(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
+	delete plateau[i];
+	plateau[i] = nullptr;
 }

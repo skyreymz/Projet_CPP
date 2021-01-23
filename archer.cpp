@@ -6,7 +6,7 @@ int Archer::portee[3] = {1,2,3};
 
 Archer::~Archer() {}
 
-std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i, Joueur* joueur) {
+std::vector<int> Archer::attaque(Unite* plateau[12], int i, Joueur* joueur) {
     int indiceMAX;
     if (getCamp() == 1) {
         indiceMAX = 11;
@@ -23,7 +23,7 @@ std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i, Joue
                 afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCible], positionCible);
                 plateau[positionCible]->subPV(atq);
                 if (plateau[positionCible]->estVaincu()) {
-                    return std::make_pair(false, std::vector<int>(1)={i+ getCamp() * portee[j]});
+                    return std::vector<int>(1)={i+ getCamp() * portee[j]};
                 }
                 attaqueRealisee = true;
             }
@@ -34,5 +34,12 @@ std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i, Joue
             attaqueRealisee = true;
         }
     }
-    return std::make_pair(false, std::vector<int>()={});
+    return std::vector<int>()={};
+}
+
+void Archer::deplace(Unite* plateau[12], int i) {
+    plateau[i + getCamp()] = new Archer(plateau[i]->getPV(), plateau[i]->getCamp());
+	std::cout << "A(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
+	delete plateau[i];
+	plateau[i] = nullptr;
 }

@@ -21,14 +21,15 @@ class Fantassin : public Unite {
 		static int getPrix() {return prix;};
 		static int getAtq() {return atq;};
 		static int getPortee() {return portee[0];};
-		virtual bool getAutreAction() {return autreAction;};
+		virtual bool getAutreAction() {return autreAction;}; // ENLEVER VIRTUAL ??? d'apres le cours comme tu dis
 		char getNomUnite() const {return 'F';};
 		int getPrixDeces() {return prix/2;}; // pour la classe SuperSoldat
 
-		virtual void setAutreAction(bool b) {autreAction = b;};
+		virtual void setAutreAction(bool b) {autreAction = b;}; // ENLEVER VIRTUAL ???
 
-		// Renvoie une paire <bool, vecteur d'indices des unites vaincus> (true si et seulement si un fantassin a vaincu un autre fantassin)
-		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* Joueur);
+		// Renvoie un vecteur d'indices des unites vaincus
+		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* Joueur);
+		void deplace(Unite* plateau[12], int i);
 
 		bool aVaincuFantassin(Unite* unite);
 };

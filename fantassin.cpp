@@ -1,4 +1,5 @@
 #include "fantassin.hpp"
+#include "superSoldat.hpp"
 
 int Fantassin::prix = 10;
 int Fantassin::atq = 4;
@@ -6,7 +7,7 @@ int Fantassin::portee[1] = {1};
 
 Fantassin::~Fantassin() {}
 
-std::pair<bool,std::vector<int>> Fantassin::attaque(Unite* plateau[12], int i, Joueur* joueur) {
+std::vector<int> Fantassin::attaque(Unite* plateau[12], int i, Joueur* joueur) {
     int indiceMAX;
     if (getCamp() == 1) {
         indiceMAX = 11;
@@ -21,26 +22,39 @@ std::pair<bool,std::vector<int>> Fantassin::attaque(Unite* plateau[12], int i, J
             afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCible], positionCible);
             plateau[positionCible]->subPV(atq);
             autreAction = false;
-            if (aVaincuFantassin(plateau[positionCible])) {
-                return std::make_pair(true, std::vector<int>(1)={i+ getCamp() * getPortee()});
-            }
-            else if (plateau[positionCible]->estVaincu()) {
-                return std::make_pair(false, std::vector<int>(1)={i+ getCamp() * getPortee()});
+
+            if (plateau[positionCible]->estVaincu()) {
+                if (aVaincuFantassin(plateau[positionCible])) {
+                    // On évolue le fantassin s'il a vaincu un fantassin ennemi
+				    int pv = plateau[i]->getPV();
+                    int camp = plateau[i]->getCamp(); 
+				    delete plateau[i];
+				    plateau[i] = new SuperSoldat(pv, camp);
+                }
+                return std::vector<int>(1)={positionCible};
             }
         }
     }
     else if ( positionCible == indiceMAX ) {
         afficheAttaqueBase(this, getNomUnite(), atq, i);
         joueur->subPvBase(atq);
+        autreAction = false;
     }
-    return std::make_pair(false, std::vector<int>()={});
+    return std::vector<int>()={};
 }
 
-bool Fantassin::aVaincuFantassin(Unite* unite) { //si je mets que Unite unite ca marche pas... il veut un pointeur ce shlag
-    if ( unite->estVaincu() && (unite->getNomUnite() == 'F') ) {
+bool Fantassin::aVaincuFantassin(Unite* unite) { 
+    if (unite->getNomUnite() == 'F') {
         return true;
     }
     else {
         return false;
     }
+}
+
+void Fantassin::deplace(Unite* plateau[12], int i) {
+    plateau[i + getCamp()] = new Fantassin(plateau[i]->getPV(), plateau[i]->getCamp());
+	std::cout << "F(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
+	delete plateau[i];
+	plateau[i] = nullptr;
 }
