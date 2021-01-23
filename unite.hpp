@@ -1,41 +1,39 @@
 #ifndef UNITE_HPP
 #define UNITE_HPP
 
-#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
 #include "joueur.hpp"
 
-class Unite {
+class Unite { // CLASSE ABSTRAITE
 	
 	int pv;
-
-	int camp; // 1 ou -1, permet de differencier l'unite du joueur de gauche de celui de droite
+	int camp; // 1 (Unite du joueur A) ou -1 (Unite du joueur B)
 	
 
 	public:
 		Unite(int pdv, int equipe) : pv(pdv), camp(equipe) {}
 		virtual ~Unite()=0;
 
-		virtual char getNomUnite() const=0;
+		// Méthodes de récupération/affichage de valeur des attributs
 		int getPV() const {return pv;};
+		bool estVaincu() {return (pv <= 0);};
 		int getCamp() const {return camp;};
 		char getCampChar() const;
 		char getCampEnnemiChar() const;
-
-		virtual void setAutreAction(bool b)=0;
-		void setPV(int atq) {pv += atq;};
-		bool estVaincu() {return (pv <= 0);};
-
+		virtual char getNomUnite() const = 0;
+		virtual int getPrixDeces() = 0;
+		virtual bool getAutreAction() = 0;
 		void afficheAttaqueUnite(Unite* emetteur, char nomUnite, int atq, int position, Unite* cible, int positionCible) const;
 		void afficheAttaqueBase(Unite* emetteur, char nomUnite, int atq, int position) const;
 
-		// Renvoie une paire <true, vecteur d'indices des unites vaincus>, true si et seulement si un fantassin a vaincu un autre fantassin
-		virtual std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur) = 0;
+		// Méthodes de modification de valeur des attributs
+		void subPV(int atq) {pv -= atq;};
+		virtual void setAutreAction(bool b) = 0;
 
-		virtual int getPrixDeces() =0; // pour polymorphisme
-		virtual bool getAutreAction() =0; // pour polymorphisme
+		// Renvoie une paire <bool, vecteur d'indices des unites vaincus> (true si et seulement si un fantassin a vaincu un autre fantassin)
+		virtual std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur) = 0;
 };
 
 #endif

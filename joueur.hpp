@@ -5,7 +5,7 @@
 
 class Joueur {
 	
-	bool mode; // 0 signifie manuel, 1 signifie automatique
+	bool mode; // 0 (manuel) ou 1 (automatique)
 	int argent;
 	int pvBase;
 
@@ -14,15 +14,16 @@ class Joueur {
 		Joueur(int mod = 0, int depart = 50) : mode(mod), argent(depart), pvBase(100) {}
 		~Joueur();
 
-		void setJoueur(bool mode0, int argent0, int pvBase0) {mode = mode0; argent = argent0; pvBase = pvBase0;};
-
+		// Méthodes de récupération de valeur des attributs
 		bool getMode() const {return mode;};
 		int getArgent() const {return argent;};
 		int getPvBase() const {return pvBase;};
+
+		// Méthodes de modification de valeur des attributs
+		void setJoueur(bool mode0, int argent0, int pvBase0) {mode = mode0; argent = argent0; pvBase = pvBase0;};
 		void setMode(bool mod) {mode = mod;};
-		void setArgent(int money) {argent += money;};
-		void setPvBase(int atq);
-		void detruireBase() {pvBase = 0;};
+		void addArgent(int money) {argent += money;};
+		void subPvBase(int atq);
 };
 
 #endif
