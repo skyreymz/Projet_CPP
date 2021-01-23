@@ -17,7 +17,7 @@ class Catapulte : public Unite {
 		~Catapulte();
 
 		static int getPrix() {return prix;};
-		bool getAutreAction() {return Unite::getAutreAction();};
+		bool getAutreAction() const {return Unite::getAutreAction();};
 		char getNomUnite() const {return 'C';};
 		int getPrixDeces() {return prix/2;};
 

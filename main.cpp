@@ -98,7 +98,6 @@ int main() {
 			// Si (res == '3') : quitte l'application
 		} while (res == '0');
 
-
 		if (res == '1') {
 			a->afficherTour();
 			std::cout << *a << std::endl;
@@ -108,7 +107,6 @@ int main() {
 			} else if (a->tourMaxAtteint()) {
 				finDePartie = true;
 			}
-			
 			while (!finDePartie) {
 				if (a->getTourDeJeu() == 1) {
 					a->incrNbTourActuel();

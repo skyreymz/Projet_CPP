@@ -1,0 +1,21 @@
+-1 // tourDeJeu : 1 (tour du joueur A) ou -1 (tour du joueur B)
+7 // nbToursActuel
+100 // nbToursMax
+0 // Mode du joueur B : 0 (manuel) ou 1 (automatique)
+6 // Argent joueur A
+26 // Argent joueur B
+100 // Points de vie de la base du joueur A
+100 // Points de vie de la base du joueur B
+c 12 // Position 0 : Catapulte | 12PV | Camp A
+a 8 // Position 1 : Archer | 8PV | Camp A
+N X // Position 2 : Sans unité
+N X // Position 3 : Sans unité
+a 8 // Position 4 : Archer | 8PV | Camp A
+a 5 // Position 5 : Archer | 5PV | Camp A
+$ X // Début des unités du joueur B
+a 5 // Position 6 : Archer | 5PV | Camp B
+a 8 // Position 7 : Archer | 8PV | Camp B
+N X // Position 8 : Sans unité
+a 8 // Position 9 : Archer | 8PV | Camp B
+N X // Position 10 : Sans unité
+N X // Position 11 : Sans unité

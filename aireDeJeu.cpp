@@ -312,7 +312,6 @@ bool AireDeJeu::sauvegarder(std::string sortie) const {
 }
 
 void AireDeJeu::jouerActions() {
-	
 	int indiceBase;
 	Joueur* joueur;
 	int indiceUniteMAX; //utile pour l'action 2 et 3, potentiellement +/- 1 apres mouvement lors de l'action 2!
@@ -333,8 +332,9 @@ void AireDeJeu::jouerActions() {
 		indiceUniteMAX = 12; // ou plus, tant que c'est strictement superieur à 11
 	}
 
-	std::cout << "\nAffichage des actions de ses unités :" << std::endl;	
-	// Action 1	
+	std::cout << "\nAffichage des actions de ses unités :" << std::endl;
+
+	// Action 1	: Attaquer pour chacune des unités du joueur
 	for (int i=indiceBase; ((tourDeJeu == 1) && (i < 11)) || ((tourDeJeu == -1) && (i > 0)); i=i+tourDeJeu) { 
 		if (plateau[i] != nullptr) {
 			if (plateau[i]->getCamp() == tourDeJeu) {
@@ -356,7 +356,7 @@ void AireDeJeu::jouerActions() {
 		}
 	}
 
-	// Action 2
+	// Action 2 : Avancer pour chacune des unités du joueur sauf Catapulte
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
 		if (plateau[i] != nullptr) {
 			if ((i + tourDeJeu) == (indiceBase + tourDeJeu * 11)) { // si la prochaine case est celle de la base ennemie
@@ -377,11 +377,10 @@ void AireDeJeu::jouerActions() {
 	for (int i = indiceUniteMAX ; ((tourDeJeu == 1) && (i>=0)) || ((tourDeJeu == -1) && (i <= 11)) ; i -=tourDeJeu ) {
 		if (plateau[i] != nullptr) {
 			//if (plateau[i]->getCamp() == tourDeJeu) {
-			if (plateau[i]->getAutreAction()) {
-				std::vector<int> vaincus;
+			if (plateau[i]->getAutreAction()) { // Unite possible : Fantassin ou Catapulte ou Super-Soldat
 
-				if (plateau[i]->getNomUnite() != 'C') {
-					vaincus = plateau[i]->attaque(plateau, i, joueurAdverse);
+				if (plateau[i]->getNomUnite() != 'C') {	// Unité possible : Fantassin ou Super-soldat		
+					std::vector<int> vaincus = plateau[i]->attaque(plateau, i, joueurAdverse);
 					// On enlève les unités vaincus et ajoute les gains au joueur
 					for (size_t j=0; j<vaincus.size(); j++) {
 						if ( (plateau[vaincus[j]]->getCamp()) != tourDeJeu ) {
@@ -390,19 +389,21 @@ void AireDeJeu::jouerActions() {
 						delete plateau[vaincus[j]];
 						plateau[vaincus[j]] = nullptr;
 					}
+					plateau[i]->setAutreAction(true);
 
-				}
-				else {
-					if ((i + tourDeJeu) != (indiceBase + tourDeJeu * 11)) { // si la prochaine case n'est pas celle de la base ennemie
-						if (plateau[i + tourDeJeu] == nullptr) {
+				} else { // Unité possible : Catapulte
+
+					if ((i + tourDeJeu) != (indiceBase + tourDeJeu * 11)) { // Si la prochaine case n'est pas celle de la base ennemie
+						if (plateau[i + tourDeJeu] == nullptr) {									
 							plateau[i]->deplace(plateau, i);
 						}
 					}
-				}
+					plateau[i + tourDeJeu]->setAutreAction(true);
 
+				}
+			} else {
+				plateau[i]->setAutreAction(true);
 			}
-			plateau[i]->setAutreAction(true);
-			
 		}
 	}
 }

@@ -10,6 +10,7 @@
 #include "superSoldat.hpp"
 
 class AireDeJeu {
+	
 	Unite* plateau[12];
 	int tourDeJeu; // 1 (tour du joueur A) ou -1 (tour du joueur B)
 	int nbToursActuel;

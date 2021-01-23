@@ -20,7 +20,7 @@ class Fantassin : public Unite {
 		static int getPrix() {return prix;};
 		static int getAtq() {return atq;};
 		static int getPortee() {return portee[0];};
-		bool getAutreAction() {return Unite::getAutreAction();};
+		bool getAutreAction() const {return Unite::getAutreAction();};
 		char getNomUnite() const {return 'F';};
 		int getPrixDeces() {return prix/2;}; // pour la classe SuperSoldat
 
