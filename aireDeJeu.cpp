@@ -14,8 +14,8 @@ AireDeJeu::AireDeJeu() {
 
 	tourDeJeu = 1;
 	nbToursActuel = 1;
-	jA = Joueur(0, 50);
-	jB = Joueur(0, 50);
+	jA = Joueur();
+	jB = Joueur();
 }
 
 AireDeJeu::~AireDeJeu() {
@@ -448,10 +448,10 @@ bool AireDeJeu::finTour() { // retourne true si le joueur fini son tour ; renvoi
 			
 			switch (choix) {
 				case 'h':
-					std::cout << "\nFantassin  | Prix : 10 pièces d'or | Points de vie : 10 | Points d'attaque : 4 | Portée : 1" << std::endl;
-					std::cout << "Archer       | Prix : 12 pièces d'or | Points de vie :  8 | Points d'attaque : 3 | Portée : 1, 2 ou 3" << std::endl;
-					std::cout << "Catapulte    | Prix : 20 pièces d'or | Points de vie : 12 | Points d'attaque : 6 | Portée : 2 à 3 ou 3 à 4" << std::endl;
-					std::cout << "Super-soldat | Prix :       --       | Points de vie : 10 | Points d'attaque : 4 | Portée : 1" << std::endl;
+					std::cout << "\nFantassin    | Prix : 10 pièces d'or | Points de vie : 10 | Points d'attaque : 4 | Portée : 1" << std::endl;
+					  std::cout << "Archer       | Prix : 12 pièces d'or | Points de vie :  8 | Points d'attaque : 3 | Portée : 1, 2 ou 3" << std::endl;
+					  std::cout << "Catapulte    | Prix : 20 pièces d'or | Points de vie : 12 | Points d'attaque : 6 | Portée : 2 à 3 ou 3 à 4" << std::endl;
+					  std::cout << "Super-soldat | Prix :       --       | Points de vie : 10 | Points d'attaque : 4 | Portée : 1\n" << std::endl;
 					choix = '0';
 					break;
 				case 'f':

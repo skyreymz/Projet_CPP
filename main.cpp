@@ -1,7 +1,13 @@
 #include "aireDeJeu.hpp"
 
 int main() {
-	std::cout << "\nProjet C++ : Age of War" << std::endl;
+	std::cout << "\nPROJET C++ | THIEFFRY Rémy | VU Tri-Man William" << std::endl;
+	std::cout << " _____   ______   _____     _____   _____     _       _   _____   _____\n";
+	std::cout << "|  _  | |  ____| |  ___|   |  _  | |  ___|   | |     | | |  _  | |  _  |\n";
+	std::cout << "| |_| | | |  __  | |__     | | | | | |__     | |  _  | | | |_| | | |_| |\n";
+	std::cout << "|  _  | | | |_ | |  __|    | | | | |  __|    | | | | | | |  _  | |    _|\n";
+	std::cout << "| | | | | |__| | | |___    | |_| | | |       | |_| |_| | | | | | | |\\ \\\n";
+	std::cout << "|_| |_| |______| |_____|   |_____| |_|       |_________| |_| |_| |_| \\_\\\n";
 
 	//INSTANCIATION D'UNE AIRE DE JEU
 	AireDeJeu* a = new AireDeJeu();
@@ -129,7 +135,7 @@ int main() {
 		}
 		
 	} while (res != '3');
-
+	
 	
 	// TESTS (ajouts d'unités)
 	/*Fantassin* u1 = new Fantassin(1);
