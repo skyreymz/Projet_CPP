@@ -1,5 +1,4 @@
 #include "aireDeJeu.hpp"
-#include <string>
 
 int main() {
 	std::cout << "\nProjet C++ : Age of War" << std::endl;
@@ -22,11 +21,11 @@ int main() {
 						switch (res) {
 							case 'j':
 								a->setMode(false);
-								a->setArgent(8);
+								a->addArgent(8);
 								break;
 							case 'm':
 								a->setMode(true);
-								a->setArgent(8);
+								a->addArgent(8);
 								break;
 							default :
 								std::cerr << "Caractère incorrect" << std::endl;
@@ -70,7 +69,7 @@ int main() {
 					break;
 
 				case 'q' :
-					res = '3'; // quitter l'appilcation
+					res = '3'; // quitter l'application
 					break;
 
 				default:
@@ -89,12 +88,17 @@ int main() {
 			a->afficherInfos();
 			std::cout << *a << std::endl;
 
-			a->finTour();
-			if (a->tourMaxAtteint()) {
+			if (!a->finTour()) { // si le joueur quitte
+				finDePartie = true;
+			} else if (a->tourMaxAtteint()) {
 				finDePartie = true;
 			}
 			
 			while (!finDePartie) {
+				if (a->getTourDeJeu() == 1) {
+					a->incrNbTourActuel();
+					a->addArgent(8);
+				}
 				a->afficherInfos();
 				a->jouerActions();
 				std::cout << *a << std::endl;
@@ -102,8 +106,9 @@ int main() {
 				if (a->baseDetruite()) {
 					finDePartie = true;
 				} else {
-					a->finTour();
-					if (a->tourMaxAtteint()) {
+					if (!a->finTour()) { // si le joueur quitte
+						finDePartie = true;
+					} else if (a->tourMaxAtteint()) {
 						finDePartie = true;
 					}	
 				}
@@ -112,7 +117,6 @@ int main() {
 			finDePartie = false;
 			a->reset();
 		}
-
 		
 	} while (res != '3');
 
@@ -133,21 +137,7 @@ int main() {
 	Fantassin* u7 = new Fantassin(-1);
 	a->plateau[11] = u7;*/
 
-	// Sauvegarder un fichier de jeu :
-	/*char* nomFichier = new char;
-	std::cout << "Entrez le nom du fichier où sauver : ";
-	std::cin >> nomFichier;
-	a->sauvegarder(nomFichier);*/
-
-	// Charger un fichier de jeu :
-	/*char* nomFichier2 = new char;
-	std::cout << "Entrez le nom du fichier à charger : ";
-	std::cin >> nomFichier2;
-	a->charger(nomFichier2);*/
-
-	//a->print();
-	
-	delete a; //je crois qu'il faut aussi détruire le plateau
+	delete a;
 
 	return 0;
 }

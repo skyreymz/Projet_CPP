@@ -1,4 +1,3 @@
-#include <iostream>
 #include "catapulte.hpp"
 
 int Catapulte::prix = 20;
@@ -28,7 +27,7 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                         afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleFirst], positionCibleFirst);
 
                         std::vector<int> vaincus;
-                        plateau[positionCibleFirst]->setPV(-atq);
+                        plateau[positionCibleFirst]->subPV(atq);
                         if (plateau[positionCibleFirst]->estVaincu()) {
                             vaincus.push_back(positionCibleFirst);
                         }
@@ -36,14 +35,14 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                         if ( ((getCamp() == 1) && ((positionCibleSecond) <= indiceMAX)) || ((getCamp() == -1) && ((positionCibleSecond) >= indiceMAX)) ) {
                             if (plateau[positionCibleSecond] != nullptr) {
                                 afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleSecond], positionCibleSecond);
-                                plateau[positionCibleSecond]->setPV(-atq);
+                                plateau[positionCibleSecond]->subPV(atq);
                                 if (plateau[positionCibleSecond]->estVaincu()) {
                                     vaincus.push_back(positionCibleSecond);
                                 }
                             }
                             else if ( (positionCibleSecond) == indiceMAX ) {
                                 afficheAttaqueBase(this, getNomUnite(), atq, i);
-                                joueur->setPvBase(-atq);
+                                joueur->subPvBase(atq);
                             }
                         }
 
@@ -54,7 +53,7 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                 }
                 else if ( positionCibleFirst == indiceMAX ) {
                     afficheAttaqueBase(this, getNomUnite(), atq, i);
-                    joueur->setPvBase(-atq);
+                    joueur->subPvBase(atq);
                     autreAction = false;
                 }
             }
@@ -68,7 +67,7 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                     if (plateau[positionCibleSecond]->getCamp() != getCamp()) {
 
                         afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleSecond], positionCibleSecond);
-                        plateau[positionCibleSecond]->setPV(-atq);
+                        plateau[positionCibleSecond]->subPV(atq);
                         if (plateau[positionCibleSecond]->estVaincu()) {
                             vaincus.push_back(positionCibleSecond);
                         }
@@ -77,14 +76,14 @@ std::pair<bool,std::vector<int>> Catapulte::attaque(Unite* plateau[12], int i, J
                 }
                 else if ( (positionCibleSecond) == indiceMAX ) {
                     afficheAttaqueBase(this, getNomUnite(), atq, i);
-                    joueur->setPvBase(-atq);
+                    joueur->subPvBase(atq);
                     autreAction = false;
                 }
 
                 if (!autreAction) {
                     if (plateau[positionCibleFirst] != nullptr) {
                         afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCibleFirst], positionCibleFirst);
-                        plateau[positionCibleFirst]->setPV(-atq);
+                        plateau[positionCibleFirst]->subPV(atq);
                         if (plateau[positionCibleFirst]->estVaincu()) {
                             vaincus.push_back(positionCibleFirst);
                         }

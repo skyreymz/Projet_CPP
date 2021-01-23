@@ -1,8 +1,6 @@
 #ifndef CATAPULTE_HPP
 #define CATAPULTE_HPP
 
-#include <iostream>
-#include <utility>
 #include "unite.hpp"
 #include "joueur.hpp"
 
@@ -20,15 +18,15 @@ class Catapulte : public Unite {
 		Catapulte(int pdv, int equipe) : Unite(pdv, equipe) {}
 		~Catapulte();
 
-		char getNomUnite() const {return 'C';};
 		static int getPrix() {return prix;};
-		int getPrixDeces() {return prix/2;};
-
 		bool getAutreAction() {return autreAction;};
+		char getNomUnite() const {return 'C';};
+		int getPrixDeces() {return prix/2;};
 
 		void setAutreAction(bool b) {autreAction = b;};
 
-		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur); // ceci est une redéfinition car la méthode de la mère est virtual
+		// Renvoie une paire <bool, vecteur d'indices des unites vaincus> (true si et seulement si un fantassin a vaincu un autre fantassin)
+		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur);
 };
 
 #endif

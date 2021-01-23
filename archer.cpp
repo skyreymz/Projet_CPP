@@ -1,4 +1,3 @@
-#include <iostream>
 #include "archer.hpp"
 
 int Archer::prix = 12;
@@ -22,7 +21,7 @@ std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i, Joue
         if (plateau[positionCible] != nullptr) {
             if (plateau[positionCible]->getCamp() != getCamp()) {
                 afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCible], positionCible);
-                plateau[positionCible]->setPV(-atq);
+                plateau[positionCible]->subPV(atq);
                 if (plateau[positionCible]->estVaincu()) {
                     return std::make_pair(false, std::vector<int>(1)={i+ getCamp() * portee[j]});
                 }
@@ -31,7 +30,7 @@ std::pair<bool,std::vector<int>> Archer::attaque(Unite* plateau[12], int i, Joue
         }
         else if ( positionCible == indiceMAX ) {
             afficheAttaqueBase(this, getNomUnite(), atq, i);
-            joueur->setPvBase(-atq);
+            joueur->subPvBase(atq);
             attaqueRealisee = true;
         }
     }

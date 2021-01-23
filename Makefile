@@ -14,5 +14,4 @@ run: main
 	./$<
 
 clean:
-	rm -f *.o *~ core 
-
+	rm -f *.o *~ main
