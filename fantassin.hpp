@@ -31,7 +31,7 @@ class Fantassin : public Unite {
 
 		virtual void setAutreAction(bool b) {autreAction = b;};
 
-		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* Joueur); // ceci est une redéfinition car la méthode de la mère est virtual
+		std::pair<bool,std::vector<int>> attaque(Unite* plateau[12], int i, Joueur* joueur); // ceci est une redéfinition car la méthode de la mère est virtual
 };
 
 #endif
