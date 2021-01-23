@@ -47,7 +47,7 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                             }
                         }
 
-                        autreAction = false;
+                        setAutreAction(false);
                         return vaincus;
                 
                     }
@@ -55,7 +55,7 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                 else if ( positionCibleFirst == indiceMAX ) {
                     pvRetire = joueur->subPvBase(atq);
                     afficheAttaqueBase(getNomUnite(), pvRetire, i);
-                    autreAction = false;
+                    setAutreAction(false);
                 }
             }
         }
@@ -72,16 +72,16 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                         if (plateau[positionCibleSecond]->estVaincu()) {
                             vaincus.push_back(positionCibleSecond);
                         }
-                        autreAction = false;
+                        setAutreAction(false);
                     }
                 }
                 else if ( (positionCibleSecond) == indiceMAX ) {
                     pvRetire = joueur->subPvBase(atq);
                     afficheAttaqueBase(getNomUnite(), pvRetire, i);
-                    autreAction = false;
+                    setAutreAction(false);
                 }
 
-                if (!autreAction) {
+                if (!getAutreAction()) {
                     if (plateau[positionCibleFirst] != nullptr) {
                         pvRetire = plateau[positionCibleFirst]->subPV(atq);
                         afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCibleFirst], positionCibleFirst);
