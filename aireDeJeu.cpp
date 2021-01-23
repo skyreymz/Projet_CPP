@@ -398,7 +398,14 @@ void AireDeJeu::jouerActions() {
 							plateau[i]->deplace(plateau, i);
 						}
 					}
-					plateau[i + tourDeJeu]->setAutreAction(true);
+					//plateau[i + tourDeJeu]->setAutreAction(true);
+					// c'est faux si la catapulte n'a pas bougé
+
+					// en fait il ne faut rien faire ici !
+					// si on est dans ce else, autreAction vaut forcément true.
+					// la methode deplace ne la change pas à false
+					// donc que la capulte ait bougé ou non, ON N'A RIEN BESOIN DE FAIRE, C'EST DEJA A TRUE
+					// LA SOLUTION ETAIT JUSTE LE ELSE QUE J'AVAIS ENLEVe juste en dessous MDR
 
 				}
 			} else {
