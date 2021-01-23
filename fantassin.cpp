@@ -16,10 +16,11 @@ std::pair<bool,std::vector<int>> Fantassin::attaque(Unite* plateau[12], int i, J
     }
 
     int positionCible = i + getCamp() * getPortee();
+    int pvRetire;
     if (! (plateau[positionCible] == nullptr) ) {
         if (plateau[positionCible]->getCamp() != getCamp()) {
-            afficheAttaqueUnite(this, getNomUnite(), atq, i, plateau[positionCible], positionCible);
-            plateau[positionCible]->subPV(atq);
+            pvRetire = plateau[positionCible]->subPV(atq);
+            afficheAttaqueUnite(this, getNomUnite(), pvRetire, i, plateau[positionCible], positionCible);
             autreAction = false;
             if (aVaincuFantassin(plateau[positionCible])) {
                 return std::make_pair(true, std::vector<int>(1)={i+ getCamp() * getPortee()});
@@ -30,8 +31,8 @@ std::pair<bool,std::vector<int>> Fantassin::attaque(Unite* plateau[12], int i, J
         }
     }
     else if ( positionCible == indiceMAX ) {
-        afficheAttaqueBase(this, getNomUnite(), atq, i);
-        joueur->subPvBase(atq);
+        pvRetire = joueur->subPvBase(atq);
+        afficheAttaqueBase(this, getNomUnite(), pvRetire, i);
     }
     return std::make_pair(false, std::vector<int>()={});
 }

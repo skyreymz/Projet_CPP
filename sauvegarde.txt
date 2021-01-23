@@ -1,28 +1,31 @@
--1 // tourDeJeu : 1 (tour du joueur A) ou -1 (tour du joueur B)
-21 // nbToursActuel
-30 // nbToursMax
-1 // Mode du joueur B : 0 (manuel) ou 1 (automatique)
-84 // Argent joueur A
-9 // Argent joueur B
-100 // Points de vie de la base du joueur A
-100 // Points de vie de la base du joueur B
+1 // tourDeJeu : 1 (tour du joueur A) ou -1 (tour du joueur B)
+20 // nbToursActuel
+100 // nbToursMax
+0 // Mode du joueur B : 0 (manuel) ou 1 (automatique)
+178 // Argent joueur A
+170 // Argent joueur B
+78 // Points de vie de la base du joueur A
+82 // Points de vie de la base du joueur B
 N // Position 0 : Sans unité
-N // Position 1 : Sans unité
+a // Position 1 : Archer
+8 // Ses PV
 c // Position 2 : Catapulte
 12 // Ses PV
-c // Position 3 : Catapulte
-12 // Ses PV
-c // Position 4 : Catapulte
+N // Position 3 : Sans unité
+f // Position 4 : Fantassin
 6 // Ses PV
-N // Position 5 : Sans unité
-N // Position 6 : Sans unité
-N // Position 7 : Sans unité
-A // Début des unités du joueur B
-f // Position 8 : Fantassin
+f // Position 5 : Fantassin
 4 // Ses PV
-f // Position 9 : Fantassin
-10 // Ses PV
+A // Début des unités du joueur B
+f // Position 6 : Fantassin
+6 // Ses PV
+f // Position 7 : Fantassin
+6 // Ses PV
+a // Position 8 : Archer
+8 // Ses PV
+a // Position 9 : Archer
+8 // Ses PV
 a // Position 10 : Archer
 8 // Ses PV
-a // Position 11 : Archer
-8 // Ses PV
+c // Position 11 : Catapulte
+12 // Ses PV

@@ -25,3 +25,14 @@ void Unite::afficheAttaqueUnite(Unite* emetteur, char nomUnite, int atq, int pos
 void Unite::afficheAttaqueBase(Unite* emetteur, char nomUnite, int atq, int position) const{
 	std::cout << nomUnite << '(' << emetteur->getCampChar() << ")(position " << position << ") a enlevé " << atq << "PV à la Base du joueur " << getCampEnnemiChar() << std::endl;
 }
+
+int Unite::subPV(int atq) {
+	int res = pv;
+	if (pv >= atq) {
+		pv -= atq;
+		return atq;
+	} else {
+		pv = 0;
+		return res;
+	}
+}

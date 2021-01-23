@@ -16,10 +16,11 @@ std::pair<bool,std::vector<int>> SuperSoldat::attaque(Unite* plateau[12], int i,
     }
 
     int positionCible = i + getCamp() * getPortee();
+    int pvRetire;
     if (plateau[positionCible] != nullptr) {
         if (plateau[positionCible]->getCamp() != getCamp()) {
-            afficheAttaqueUnite(this, getNomUnite(), Fantassin::getAtq(), i, plateau[positionCible], positionCible);
-            plateau[positionCible]->subPV(Fantassin::getAtq());
+            pvRetire = plateau[positionCible]->subPV(Fantassin::getAtq());
+            afficheAttaqueUnite(this, getNomUnite(), pvRetire, i, plateau[positionCible], positionCible);
             
             if (plateau[positionCible]->estVaincu()) {
             	return std::make_pair(false, std::vector<int>(1)={i+ getCamp()});
@@ -27,8 +28,8 @@ std::pair<bool,std::vector<int>> SuperSoldat::attaque(Unite* plateau[12], int i,
         }
     }
     else if ( positionCible == indiceMAX ) {
-        afficheAttaqueBase(this, getNomUnite(), Fantassin::getAtq(), i);
-        joueur->subPvBase(Fantassin::getAtq());
+        pvRetire = joueur->subPvBase(Fantassin::getAtq());
+        afficheAttaqueBase(this, getNomUnite(), pvRetire, i);
     }
     return std::make_pair(false, std::vector<int>()={});
 }

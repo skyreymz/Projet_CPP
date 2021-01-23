@@ -85,10 +85,10 @@ int main() {
 
 
 		if (res == '1') {
-			a->afficherInfos();
+			a->afficherTour();
 			std::cout << *a << std::endl;
 
-			if (!a->finTour()) { // si le joueur quitte
+			if (!a->finTour()) { // si le joueur quitte la partie en cours
 				finDePartie = true;
 			} else if (a->tourMaxAtteint()) {
 				finDePartie = true;
@@ -99,14 +99,14 @@ int main() {
 					a->incrNbTourActuel();
 					a->addArgent(8);
 				}
-				a->afficherInfos();
+				a->afficherTour();
 				a->jouerActions();
 				std::cout << *a << std::endl;
 
 				if (a->baseDetruite()) {
 					finDePartie = true;
 				} else {
-					if (!a->finTour()) { // si le joueur quitte
+					if (!a->finTour()) { // si le joueur quitte la partie en cours
 						finDePartie = true;
 					} else if (a->tourMaxAtteint()) {
 						finDePartie = true;
