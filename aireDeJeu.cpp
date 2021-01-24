@@ -573,7 +573,7 @@ bool AireDeJeu::tourMaxAtteint() const {
 			} else if (jA.getArgent() < jB.getArgent()) {
 				std::cout << "VICTOIRE DU JOUEUR B (il a le plus de pièces d'or) !" << std::endl;
 			} else {
-				std::cout << " AUCUN VAINQUEUR !" << std::endl;
+				std::cout << "AUCUN VAINQUEUR !" << std::endl;
 			}
 		}
 		std::cout << "\n==============================================================\n";

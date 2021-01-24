@@ -22,7 +22,6 @@ class AireDeJeu {
 		~AireDeJeu();
 
 		// Méthodes et fonctions de récupération/affichage de valeur des attributs
-		int getTourDeJeu() const {return tourDeJeu;};
 		bool getMode() const {return jB.getMode();};
 		void afficherTour() const;
 		friend std::ostream &operator<<(std::ostream &flux, const AireDeJeu &a); // Affichage des pièces d'or, des pv des bases et de l'aire de jeu
