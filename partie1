@@ -1,0 +1,21 @@
+1 // tourDeJeu : 1 (tour du joueur A) ou -1 (tour du joueur B)
+10 // nbToursActuel
+100 // nbToursMax
+0 // Mode du joueur B : 0 (manuel) ou 1 (automatique)
+30 // Argent joueur A
+30 // Argent joueur B
+100 // Points de vie de la base du joueur A
+100 // Points de vie de la base du joueur B
+N X // Position 0 : Sans unité
+f 10 // Position 1 : Fantassin | 10PV | Camp A
+N X // Position 2 : Sans unité
+c 12 // Position 3 : Catapulte | 12PV | Camp A
+a 8 // Position 4 : Archer | 8PV | Camp A
+f 10 // Position 5 : Fantassin | 10PV | Camp A
+N X // Position 6 : Sans unité
+$ X // Début des unités du joueur B
+f 10 // Position 7 : Fantassin | 10PV | Camp B
+a 8 // Position 8 : Archer | 8PV | Camp B
+c 12 // Position 9 : Catapulte | 12PV | Camp B
+N X // Position 10 : Sans unité
+f 10 // Position 11 : Fantassin | 10PV | Camp B
