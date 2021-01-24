@@ -33,12 +33,9 @@ int main() {
 						}
 						switch (res) {
 							case 'j':
-								a->setMode(false);
-								a->addArgent(8);
-								break;
+								[[fallthrough]];
 							case 'm':
-								a->setMode(true);
-								a->addArgent(8);
+								a->setMode(res == 'm');
 								break;
 							default :
 								std::cerr << "Caractère(s) non reconnu(s)" << std::endl;
@@ -57,6 +54,9 @@ int main() {
 								res = '2';
 							} else {
 								a->setNbToursMax(nbTourMaxInt);
+								a->afficherTour();
+								a->addArgent(8);
+								std::cout << "\nLes joueurs ont gagné 8 pièces d'or (nouveau tour)" << std::endl;
 								res = '1';
 							}
 						} catch (...) {
@@ -73,6 +73,7 @@ int main() {
 						if (resString == "r") {
 							res = '0';
 						} else if(a->charger(resString)) {
+							a->afficherTour();
 							res = '1';
 						} else {
 							res = '2';
@@ -90,13 +91,13 @@ int main() {
 					break;
 			}
 			// Si (res == '0') : retour au menu principal
-			// Si (res == '1') : partie lancée
+			// Si (res == '1') : nouvelle partie lancée
 			// Si (res == '2') : boucle dans les "sous-boucles"
 			// Si (res == '3') : quitte l'application
 		} while (res == '0');
 
 		if (res == '1') {
-			a->afficherTour();
+			
 			std::cout << *a << std::endl;
 
 			if (!a->finTour()) { // Si le joueur quitte la partie en cours
@@ -108,9 +109,12 @@ int main() {
 			while (!finDePartie) {
 				if (a->getTourDeJeu() == 1) {
 					a->incrNbTourActuel();
+					a->afficherTour();
 					a->addArgent(8);
+					std::cout << "\nLes joueurs ont gagné 8 pièces d'or (nouveau tour)" << std::endl;
+				} else {
+					a->afficherTour();
 				}
-				a->afficherTour();
 				a->jouerActions();
 				std::cout << *a << std::endl;
 

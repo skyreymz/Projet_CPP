@@ -24,9 +24,10 @@ class Unite { // CLASSE ABSTRAITE
 		virtual bool getAutreAction()const {return autreAction;};
 		virtual char getNomUnite() const = 0;
 		virtual int getPrixDeces() = 0;
+		friend std::ostream &operator<<(std::ostream &flux, const Unite &u); // Affichage du Nom d'unité et de son camps
 
 		// Méthodes de modification de valeur des attributs
-		int subPV(int atq); // Soutrait et retourne le nombre de points de vie soustrait
+		int subPV(int atq); // Soutrait et retourne le nombre de points de vie soustrait si l'unité est toujours en vie -1 sinon
 		void setAutreAction(bool b) {autreAction = b;};
 
 		// Méthodes pour effectuer les actions des Unités

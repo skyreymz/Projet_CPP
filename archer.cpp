@@ -40,7 +40,7 @@ std::vector<int> Archer::attaque(Unite* plateau[12], int i, Joueur* joueur) {
 
 void Archer::deplace(Unite* plateau[12], int i) {
     plateau[i + getCamp()] = new Archer(plateau[i]->getCamp(), plateau[i]->getPV());
-	std::cout << "A(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
+	std::cout << *(plateau[i]) << "(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
 	delete plateau[i];
 	plateau[i] = nullptr;
 }

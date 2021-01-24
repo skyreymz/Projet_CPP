@@ -56,12 +56,7 @@ std::ostream& operator<<(std::ostream &flux, AireDeJeu const &a) {
 
 	for (int i = 0 ; i < 12 ; i++){
 		if (a.plateau[i] != nullptr) {
-			flux << a.plateau[i]->getNomUnite();
-			if (a.plateau[i]->getCamp() == 1) {
-				flux << "(A)|";
-			} else {
-				flux << "(B)|";
-			}
+			flux << *(a.plateau[i]) << '|';
 		} else {
 			flux << "    |";
 		}
@@ -315,6 +310,7 @@ bool AireDeJeu::sauvegarder(std::string sortie) const {
 void AireDeJeu::jouerActions() {
 	int indiceBase;
 	Joueur* joueur;
+	char campJoueur;
 	int indiceUniteMAX; // utile pour les actions 2 et 3, potentiellement +/- 1 apres mouvement lors de l'action 2!
 	Joueur* joueurAdverse;
 
@@ -324,16 +320,18 @@ void AireDeJeu::jouerActions() {
 	if (tourDeJeu == 1) {
 		indiceBase = 0;
 		joueur = &jA;
-		joueurAdverse = &jB;
+		campJoueur = 'A';
 		indiceUniteMAX = -1; // S'il n'y a aucune unité de ce joueur sur le plateau (utile pour les boucles des actions 2 et 3)
+		joueurAdverse = &jB;
 	} else {
 		indiceBase = 11;
 		joueur = &jB;
-		joueurAdverse = &jA;
+		campJoueur = 'B';
 		indiceUniteMAX = 12; // S'il n'y a aucune unité de ce joueur sur le plateau (utile pour les boucles des actions 2 et 3)
+		joueurAdverse = &jA;
 	}
 
-	std::cout << "\nAffichage des actions de ses unités :" << std::endl;
+	std::cout << "\nAffichage des actions des unités :" << std::endl;
 
 	// Action 1	: Attaquer pour chacune des unités du joueur
 	for (int i=indiceBase; ((tourDeJeu == 1) && (i < 11)) || ((tourDeJeu == -1) && (i > 0)); i += tourDeJeu) { 
@@ -345,6 +343,7 @@ void AireDeJeu::jouerActions() {
 				// On enlève les unités vaincues et ajoute les gains au joueur
 				for (size_t j=0; j<vaincus.size(); j++) {
 					if ( (plateau[vaincus[j]]->getCamp()) != tourDeJeu ) {
+						std::cout << "Le joueur " << campJoueur << " a gagné " << plateau[vaincus[j]]->getPrixDeces() << " pièces d'or (décès de " << *(plateau[vaincus[j]]) << ")\n";
 						joueur->addArgent(plateau[vaincus[j]]->getPrixDeces());
 					}
 					delete plateau[vaincus[j]];
@@ -392,6 +391,7 @@ void AireDeJeu::jouerActions() {
 					// On enlève les unités vaincus et ajoute les gains au joueur
 					for (size_t j=0; j<vaincus.size(); j++) {
 						if ( (plateau[vaincus[j]]->getCamp()) != tourDeJeu ) {
+							std::cout << "Le joueur " << campJoueur << " a gagné " << plateau[vaincus[j]]->getPrixDeces() << " pièces d'or (décès de " << *(plateau[vaincus[j]]) << ")\n";
 							joueur->addArgent(plateau[vaincus[j]]->getPrixDeces());
 						}
 						delete plateau[vaincus[j]];

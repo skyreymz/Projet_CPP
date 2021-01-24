@@ -46,6 +46,7 @@ std::vector<int> Fantassin::attaque(Unite* plateau[12], int i, Joueur* joueur) {
 
 bool Fantassin::aVaincuFantassin(Unite* unite) { 
     if (unite->getNomUnite() == 'F') {
+        std::cout << "Transformation de " << *unite << " en Super-Soldat" << std::endl;
         return true;
     }
     else {
@@ -55,7 +56,7 @@ bool Fantassin::aVaincuFantassin(Unite* unite) {
 
 void Fantassin::deplace(Unite* plateau[12], int i) {
     plateau[i + getCamp()] = new Fantassin(plateau[i]->getCamp(), plateau[i]->getPV(), plateau[i]->getAutreAction());
-	std::cout << "F(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
+	std::cout << *(plateau[i]) << "(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
 	delete plateau[i];
 	plateau[i] = nullptr;
 }

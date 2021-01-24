@@ -33,7 +33,7 @@ std::vector<int> SuperSoldat::attaque(Unite* plateau[12], int i, Joueur* joueur)
 
 void SuperSoldat::deplace(Unite* plateau[12], int i) {
     plateau[i + getCamp()] = new SuperSoldat(plateau[i]->getCamp(), plateau[i]->getPV());
-	std::cout << "S(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
+	std::cout << *(plateau[i]) << "(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
 	delete plateau[i];
 	plateau[i] = nullptr;
 }
