@@ -245,6 +245,12 @@ bool AireDeJeu::charger(std::string entree) {
 }
 
 bool AireDeJeu::sauvegarder(std::string sortie) const {
+	std::size_t h = sortie.find(".h");
+	std::size_t cpp = sortie.find(".cpp");
+	if ((h != std::string::npos) || (cpp != std::string::npos)) {
+		std::cerr << "Vous ne pouvez pas sauvegarder dans un .h ou .cpp" << std::endl;
+		return false;
+	}
 	std::ofstream file(sortie);
 	if (!file) {
 		std::cerr << "Ouverture de fichier impossible" << std::endl;
