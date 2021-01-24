@@ -11,12 +11,10 @@ class Fantassin : public Unite {
 	static int portee[1];
 
 	public:
-		Fantassin(int equipe) : Unite(10, equipe) {}
-		Fantassin(int pdv, int equipe) : Unite(pdv, equipe) {}
-		Fantassin(int pdv, int equipe, bool oneMore) : Unite(pdv, equipe, oneMore) {}
+		Fantassin(int equipe, int pdv = 10, bool oneMore = true) : Unite(equipe, pdv, oneMore) {}
 		~Fantassin();
 
-		// Méthodes de récupération/affichage de valeur des attributs
+		// Méthodes de récupération de valeur des attributs
 		static int getPrix() {return prix;};
 		static int getAtq() {return atq;};
 		static int getPortee() {return portee[0];};
@@ -24,11 +22,10 @@ class Fantassin : public Unite {
 		char getNomUnite() const {return 'F';};
 		int getPrixDeces() {return prix/2;}; // pour la classe SuperSoldat
 
-		// Renvoie un vecteur d'indices des unites vaincus
-		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* Joueur);
-		void deplace(Unite* plateau[12], int i);
-
+		// Méthodes pour effectuer les actions de Fantassin
+		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* Joueur); // Renvoie un vecteur d'indices des unites vaincus
 		bool aVaincuFantassin(Unite* unite);
+		void deplace(Unite* plateau[12], int i);
 };
 
 #endif

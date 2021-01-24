@@ -9,7 +9,6 @@ int main() {
 	std::cout << "| | | | | |__| | | |___    | |_| | | |       | |_| |_| | | | | | | |\\ \\\n";
 	std::cout << "|_| |_| |______| |_____|   |_____| |_|       |_________| |_| |_| |_| \\_\\\n";
 
-	//INSTANCIATION D'UNE AIRE DE JEU
 	AireDeJeu* a = new AireDeJeu();
 
 	bool finDePartie = false;
@@ -29,9 +28,7 @@ int main() {
 					do {
 						std::cout << "Joueur contre Joueur ('j') / Joueur contre IA ('m') : ";
 						std::cin >> resString;
-						if (resString.length() != 1) {
-							res = '2';
-						} else {
+						if (resString.length() == 1) {
 							res = resString.at(0);
 						}
 						switch (res) {
@@ -102,11 +99,12 @@ int main() {
 			a->afficherTour();
 			std::cout << *a << std::endl;
 
-			if (!a->finTour()) { // si le joueur quitte la partie en cours
+			if (!a->finTour()) { // Si le joueur quitte la partie en cours
 				finDePartie = true;
 			} else if (a->tourMaxAtteint()) {
 				finDePartie = true;
 			}
+
 			while (!finDePartie) {
 				if (a->getTourDeJeu() == 1) {
 					a->incrNbTourActuel();
@@ -119,7 +117,7 @@ int main() {
 				if (a->baseDetruite()) {
 					finDePartie = true;
 				} else {
-					if (!a->finTour()) { // si le joueur quitte la partie en cours
+					if (!a->finTour()) { // Si le joueur quitte la partie en cours
 						finDePartie = true;
 					} else if (a->tourMaxAtteint()) {
 						finDePartie = true;

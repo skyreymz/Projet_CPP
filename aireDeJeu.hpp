@@ -42,7 +42,7 @@ class AireDeJeu {
 
 		// Méthodes principales pour le déroulement de la partie
 		void jouerActions(); // Phase de résolution des actions 1 à 3 des unités du joueur
-		bool finTour(); // Création éventuelle d'une nouvelle unité du joueur (retourn false si le joueur quitte la partie ; true sinon)
+		bool finTour(); // Création éventuelle d'une nouvelle unité du joueur (// Retourne true si le joueur fini son tour ; false s'il quitte la partie)
 		
 		// Méthodes pour détecter la fin de partie
 		bool tourMaxAtteint() const;

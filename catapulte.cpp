@@ -91,7 +91,6 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                         }
                     }
                 }
-
                 return vaincus;
             }
         }
@@ -100,7 +99,7 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
 }
 
 void Catapulte::deplace(Unite* plateau[12], int i) {
-    plateau[i + getCamp()] = new Catapulte(plateau[i]->getPV(), plateau[i]->getCamp());
+    plateau[i + getCamp()] = new Catapulte( plateau[i]->getCamp(), plateau[i]->getPV());
 	std::cout << "C(" << plateau[i]->getCampChar() << ")(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;
 	delete plateau[i];
 	plateau[i] = nullptr;
