@@ -1,1 +1,4 @@
-# Projet_CPP
+# AgeOfWar
+
+## Lancement du programme
+`make run`
