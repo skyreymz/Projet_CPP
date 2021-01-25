@@ -106,7 +106,7 @@ std::ostream& operator<<(std::ostream &flux, AireDeJeu const &a) {
 }
 
 /**
- * Réinitialisation des attributs de l'instance (sauf nbToursMAX car il sera redéfinit)
+ * Réinitialisation des attributs de l'instance (sauf nbToursMAX car il sera redéfini)
  */
 void AireDeJeu::reset() {
 	for (size_t i=0; i < 12; i++) {
@@ -125,7 +125,7 @@ void AireDeJeu::reset() {
  * Affichage de l'erreur et de sa localisation si le fichier contient des informations incohérentes, affichage du succès dans le cas contraire
  *
  * @param entree le nom du fichier de sauvegarde
- * return true si la modification a été effectuée, false sinon
+ * @return true si la modification a été effectuée, false sinon
  */
 bool AireDeJeu::charger(std::string entree) {
 	std::ifstream file(entree);
@@ -277,7 +277,7 @@ bool AireDeJeu::charger(std::string entree) {
  * Affichage de l'erreur si l'instance contient des informations incohérentes, affichage du succès dans le cas contraire
  *
  * @param sortie le nom du fichier de sauvegarde (ne doit contenir ni ".h" ni ".cpp")
- * return true si la sauvegarde a été effectuée, false sinon
+ * @return true si la sauvegarde a été effectuée, false sinon
  */
 bool AireDeJeu::sauvegarder(std::string sortie) const {
 	std::size_t h = sortie.find(".h");
@@ -356,7 +356,7 @@ void AireDeJeu::jouerActions() {
 	int indiceBase;
 	Joueur* joueur;
 	char campJoueur;
-	int indiceUniteMAX; // utile pour les actions 2 et 3, potentiellement +/- 1 apres mouvement lors de l'action 2!
+	int indiceUniteMAX; // utile pour les actions 2 et 3, potentiellement +/- 1 apres mouvement lors de l'action 2
 	Joueur* joueurAdverse;
 
 	// tourDeJeu == 1 signifie tour du joueur A (jA)

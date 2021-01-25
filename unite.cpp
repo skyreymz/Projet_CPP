@@ -36,7 +36,7 @@ std::ostream &operator<<(std::ostream &flux, const Unite &u) {
 }
 
 /**
- * Soutrait Unite::pv par la valeur de atq si l'attaque est inférieure à Unite::pv
+ * Soustrait Unite::pv par la valeur de atq si l'attaque est inférieure à Unite::pv
  * Met Unite::pv à 0 sinon
  *
  * @param atq les points d'attaque de l'unité
@@ -56,7 +56,7 @@ int Unite::subPV(int atq) {
  * Affichage des caractéristiques de l'attaque de l'Unité envers une autre unité
  *
  * @param1 nomUnite le premier caractère de la classe de l'unité courante
- * @param2 atq les points d'attaques de l'Unite courante
+ * @param2 atq les points d'attaque de l'Unite courante
  * @param3 position entier correspondant à l'indice de l'Unite courante en jeu
  * @param4 *cible pointeur sur l'Unité subissant l'attaque
  * @param5 positionCible entier correspondant à l'indice de l'Unite cible en jeu
@@ -75,7 +75,7 @@ void Unite::afficheAttaqueUnite(char nomUnite, int atq, int position, const Unit
  * Affichage des caractéristiques de l'attaque de l'Unité envers la base ennemie
  *
  * @param1 nomUnite le premier caractère de la classe de l'Unité courante
- * @param2 atq les points d'attaques de l'Unite courante
+ * @param2 atq les points d'attaque de l'Unite courante
  * @param3 position entier correspondant à l'indice de l'Unite courante en jeu
  */
 void Unite::afficheAttaqueBase(char nomUnite, int atq, int position) const{

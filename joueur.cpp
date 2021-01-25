@@ -3,7 +3,7 @@
 Joueur::~Joueur() {}
 
 /**
- * Soutrait Joueur::pvBase par la valeur de atq si l'attaque est inférieure à Joueur::pv
+ * Soustrait Joueur::pvBase par la valeur de atq si l'attaque est inférieure à Joueur::pv
  * Met Joueur::pvBase à 0 sinon
  *
  * @param atq la quantité de points de vie soustraite
