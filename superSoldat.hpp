@@ -15,8 +15,8 @@ class SuperSoldat : public Fantassin {
 		char getNomUnite() const {return 'S';};
 
 		// Méthodes pour effectuer les actions deSuperSoldat
-		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur); // Redéfinition de celle de Fantassin car on n'appelle plus la méthode aVaincuFantassin
-		void deplace(Unite* plateau[12], int i); // Redéfinition de celle de Fantassin car on instancie un SuperSoldat
+		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur);
+		void deplace(Unite* plateau[12], int i);
 };
 
 #endif

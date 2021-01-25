@@ -48,7 +48,7 @@ void AireDeJeu::afficherTour() const {
  *     - de l'aire de jeu avec les unités
  *
  * @param1 &flux reçoit les informations
- * @param2 &a une référence de l'instance à traiter
+ * @param2 &a une référence de l'AireDeJeu à traiter
  * @return &flux
  */
 std::ostream& operator<<(std::ostream &flux, AireDeJeu const &a) {
@@ -122,7 +122,7 @@ void AireDeJeu::reset() {
 
 /**
  * Modification de l'instance à partir d'un fichier de sauvegarde.
- * Affichage de l'erreur et de sa localisation si le fichier contient des informations incohérentes. Affichage du succès dans le cas contraire.
+ * Affichage de l'erreur et de sa localisation si le fichier contient des informations incohérentes, affichage du succès dans le cas contraire
  *
  * @param entree le nom du fichier de sauvegarde
  * return true si la modification a été effectuée, false sinon
@@ -274,7 +274,7 @@ bool AireDeJeu::charger(std::string entree) {
 
 /**
  * Stockage des informations de l'instance dans un fichier de sauvegarde
- * Affichage de l'erreur si l'instance contient des informations incohérentes. Affichage du succès dans le cas contraire
+ * Affichage de l'erreur si l'instance contient des informations incohérentes, affichage du succès dans le cas contraire
  *
  * @param sortie le nom du fichier de sauvegarde (ne doit contenir ni ".h" ni ".cpp")
  * return true si la sauvegarde a été effectuée, false sinon
@@ -462,10 +462,10 @@ void AireDeJeu::jouerActions() {
 
 /**
  * Affichage des actions pouvant être réalisées par le joueur
- * Affichage et réalisation de l'action souhaitée ; Affichage de l'erreur si l'action ne peut pas être réalisée
+ * Affichage et réalisation de l'action souhaitée si elle peut être réalisée, affichage de l'erreur sinon
  * Modification de tourDeJeu pour passer au tour du joueur suivant
  *
- * @return true si le joueur fini son tour ; false s'il quitte la partie
+ * @return true si le joueur fini son tour, false s'il quitte la partie
  */
 bool AireDeJeu::finTour() {
 

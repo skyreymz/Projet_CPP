@@ -21,7 +21,7 @@ char Unite::getCampChar() const{
  * pour permettre l'affichage
  * 
  * @param &flux reçoit les informations
- * @param &u une référence de l'instance à traiter
+ * @param &u une référence de l'Unite à traiter
  * @return &flux
  */
 std::ostream &operator<<(std::ostream &flux, const Unite &u) {
@@ -36,9 +36,10 @@ std::ostream &operator<<(std::ostream &flux, const Unite &u) {
 }
 
 /**
- * Soutrait pv par la valeur de atq si l'attaque est inférieure à pv, met pv à 0 sinon
+ * Soutrait Unite::pv par la valeur de atq si l'attaque est inférieure à Unite::pv
+ * Met Unite::pv à 0 sinon
  *
- * @param atq la quantité de points de vie soustraite
+ * @param atq les points d'attaque de l'unité
  * @return atq si atq est strictement inférieure à pv, -1 sinon
  */
 int Unite::subPV(int atq) {
@@ -51,6 +52,15 @@ int Unite::subPV(int atq) {
 	}
 }
 
+/**
+ * Affichage des caractéristiques de l'attaque de l'unité envers une autre unité
+ *
+ * @param1 nomUnite le premier caractère de la classe de l'unité courante
+ * @param2 atq les points d'attaques de l'Unite courante
+ * @param3 position entier correspondant à l'indice de l'Unite courante en jeu
+ * @param4 *cible pointeur sur l'Unité subissant l'attaque
+ * @param5 positionCible entier correspondant à l'indice de l'Unite cible en jeu
+ */
 void Unite::afficheAttaqueUnite(char nomUnite, int atq, int position, Unite* cible, int positionCible) const{
 	std::cout << nomUnite << '(' << getCampChar() << ")(position " << position << ')';
 	if (atq != -1) {
@@ -61,6 +71,13 @@ void Unite::afficheAttaqueUnite(char nomUnite, int atq, int position, Unite* cib
 	 std::cout << *cible << "(position " << positionCible << ")\n";
 }
 
+/**
+ * Affichage des caractéristiques de l'attaque de l'unité envers la base ennemie
+ *
+ * @param1 nomUnite le premier caractère de la classe de l'Unité courante
+ * @param2 atq les points d'attaques de l'Unite courante
+ * @param3 position entier correspondant à l'indice de l'Unite courante en jeu
+ */
 void Unite::afficheAttaqueBase(char nomUnite, int atq, int position) const{
 	std::cout << nomUnite << '(' << getCampChar() << ")(position " << position << ')';
 	if (atq != -1) {

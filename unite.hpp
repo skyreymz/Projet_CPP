@@ -10,7 +10,7 @@ class Unite { // CLASSE ABSTRAITE
 	
 	int camp; // 1 (Unite du joueur A) ou -1 (Unite du joueur B)
 	int pv;
-	bool autreAction; // true si l'unite n'a pas deja attaque, false sinon
+	bool autreAction; // true si l'unite a deja attaque lors de l'Action 1, false sinon
 
 
 	public:
@@ -25,7 +25,7 @@ class Unite { // CLASSE ABSTRAITE
 		virtual bool getAutreAction()const {return autreAction;};
 		virtual char getNomUnite() const = 0;
 		virtual int getPrixDeces() = 0;
-		friend std::ostream &operator<<(std::ostream &flux, const Unite &u); // Affichage du Nom d'unité et de son camps
+		friend std::ostream &operator<<(std::ostream &flux, const Unite &u);
 
 		// Méthodes de modification de valeur des attributs
 		int subPV(int atq);
