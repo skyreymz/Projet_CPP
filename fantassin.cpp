@@ -11,9 +11,9 @@ Fantassin::~Fantassin() {}
  * Redéfinition de la méthode attaque
  * Simule l'attaque d'un Fantassin et le transforme en SuperSoldat s'il vainc un Fantassin ennemi
  * 
- * @param plateau tableau de pointeurs d'Unite de taille fixée à 12, contient les pointeurs d'Unite selon leur position en jeu
+ * @param *plateau tableau de pointeurs d'Unite de taille fixée à 12, contient les pointeurs d'Unite selon leur position en jeu
  * @param i entier correspondant à l'indice de l'Unite courante en jeu
- * @param joueur pointeur sur le Joueur adverse
+ * @param *joueur pointeur sur le Joueur adverse
  * @return un vecteur d'indices du tableau, correspondant aux unités vaincus
  */
 std::vector<int> Fantassin::attaque(Unite* plateau[12], int i, Joueur* joueur) {

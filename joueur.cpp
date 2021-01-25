@@ -3,13 +3,13 @@
 Joueur::~Joueur() {}
 
 /**
- * Soutrait pvBase par la valeur de atq si l'attaque est inférieure à pv, met pvBase à 0 sinon
+ * Soutrait Joueur::pvBase par la valeur de atq si l'attaque est inférieure à Joueur::pv
+ * Met Joueur::pvBase à 0 sinon
  *
  * @param atq la quantité de points de vie soustraite
- * @return atq si atq est strictement inférieure à pvBase, -1 sinon
+ * @return atq si atq est strictement inférieure à Joueur::pvBase, -1 sinon
   */
 int Joueur::subPvBase(int atq) {
-	int res = pvBase;
 	if (pvBase > atq) {
 		pvBase -= atq;
 		return atq;
