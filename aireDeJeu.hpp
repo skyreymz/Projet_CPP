@@ -25,7 +25,7 @@ class AireDeJeu {
 		int getTourDeJeu() const {return tourDeJeu;};
 		bool getMode() const {return jB.getMode();};
 		void afficherTour() const;
-		friend std::ostream &operator<<(std::ostream &flux, const AireDeJeu &a); // Affichage des pièces d'or, des pv des bases et de l'aire de jeu
+		friend std::ostream &operator<<(std::ostream &flux, const AireDeJeu &a);
 
 		// Méthodes de modification de valeur des attributs
 		void setAireDeJeu(int tourDeJeu0, int nbToursActuel0, int nbToursMAX0){tourDeJeu = tourDeJeu0; nbToursActuel = nbToursActuel0; nbToursMAX = nbToursMAX0;};
@@ -40,8 +40,8 @@ class AireDeJeu {
 		bool sauvegarder(std::string sortie) const;
 
 		// Méthodes principales pour le déroulement de la partie
-		void jouerActions(); // Phase de résolution des actions 1 à 3 des unités du joueur
-		bool finTour(); // Création éventuelle d'une nouvelle unité du joueur (// Retourne true si le joueur fini son tour ; false s'il quitte la partie)
+		void jouerActions();
+		bool finTour();
 		
 		// Méthodes pour détecter la fin de partie
 		bool tourMaxAtteint() const;

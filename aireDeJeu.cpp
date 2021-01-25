@@ -24,6 +24,9 @@ AireDeJeu::~AireDeJeu() {
 	}
 }
 
+/**
+ * Affichage des informations liées au tour du joueur
+ */
 void AireDeJeu::afficherTour() const {
 	char tourJoueur;
 	if (tourDeJeu == 1) {
@@ -37,6 +40,15 @@ void AireDeJeu::afficherTour() const {
 	std::cout << "\nTOUR " << nbToursActuel << '/' << nbToursMAX << " - " << "Tour du joueur " << tourJoueur << std::endl;
 }
 
+/**
+ * Stockage :
+ *     - des valeurs des pièces d'or des joueurs
+ *     - des points de vie de la base des joueurs
+ *     - de l'aire de jeu avec les unités
+ * @param1 flux reçoit les informations
+ * @param2 a l'instance à traiter
+ * @return flux
+ */
 std::ostream& operator<<(std::ostream &flux, AireDeJeu const &a) {
 	flux << "\nPièces d'or du Joueur A : " << a.jA.getArgent() << std::endl;
 	flux << "Pièces d'or du Joueur B : " << a.jB.getArgent() << std::endl;
@@ -91,6 +103,9 @@ std::ostream& operator<<(std::ostream &flux, AireDeJeu const &a) {
 	return flux;	
 }
 
+/**
+ * Réinitialisation des attributs de l'instance (sauf nbToursMAX car il sera redéfinit)
+ */
 void AireDeJeu::reset() {
 	for (size_t i=0; i < 12; i++) {
 		delete plateau[i];
@@ -103,6 +118,12 @@ void AireDeJeu::reset() {
 	jB = Joueur();
 }
 
+/**
+ * Modification de l'instance à partir d'un fichier de sauvegarde.
+ * Affichage de l'erreur et de sa localisation si le fichier contient des informations incohérentes. Affichage du succès dans le cas contraire.
+ * @param entree le nom du fichier de sauvegarde
+ * return true si la modification a été effectuée, false sinon
+ */
 bool AireDeJeu::charger(std::string entree) {
 	std::ifstream file(entree);
 	if (!file) {
@@ -159,7 +180,11 @@ bool AireDeJeu::charger(std::string entree) {
 			      "$ X" (facultatif) : Marque le début des unités du joueur B
 				  TYPE DE L'UNITE ' ' PV DE L'UNITE (si et seulement s'il y a une unité)
                
-               Les types possibles : 'f' pour Fantassin ; 'a' pour Archer ; 'c' pour Catapulte ; 's' pour SuperSoldat ; 'N' s'il n'y a pas d'Unité
+               Les types possibles : 'f' pour Fantassin
+                                     'a' pour Archer
+                                     'c' pour Catapulte
+                                     's' pour SuperSoldat
+               	                     'N' s'il n'y a pas d'Unité
 			*/
 		Unite* plateauCopie[12];
 		int camp = 1;
@@ -244,6 +269,12 @@ bool AireDeJeu::charger(std::string entree) {
 	}
 }
 
+/**
+ * Stockage des informations de l'instance dans un fichier de sauvegarde
+ * Affichage de l'erreur si l'instance contient des informations incohérentes. Affichage du succès dans le cas contraire
+ * @param sortie le nom du fichier de sauvegarde (ne doit contenir ni ".h" ni ".cpp")
+ * return true si la sauvegarde a été effectuée, false sinon
+ */
 bool AireDeJeu::sauvegarder(std::string sortie) const {
 	std::size_t h = sortie.find(".h");
 	std::size_t cpp = sortie.find(".cpp");
@@ -313,6 +344,10 @@ bool AireDeJeu::sauvegarder(std::string sortie) const {
 	}
 }
 
+/**
+ * Phase de résolution et affichage des actions 1 à 3 des unités du joueur
+ * En cas de gain de pièces d'or, affichage de la quantité gagnée
+ */
 void AireDeJeu::jouerActions() {
 	int indiceBase;
 	Joueur* joueur;
@@ -421,7 +456,13 @@ void AireDeJeu::jouerActions() {
 	}
 }
 
-bool AireDeJeu::finTour() { // Retourne true si le joueur fini son tour ; false s'il quitte la partie
+/**
+ * Affichage des actions pouvant être réalisées par le joueur
+ * Affichage et réalisation de l'action souhaitée ; Affichage de l'erreur si l'action ne peut pas être réalisée
+ * Modification de tourDeJeu pour passer au tour du joueur suivant
+ * @return true si le joueur fini son tour ; false s'il quitte la partie
+ */
+bool AireDeJeu::finTour() {
 
 	int indiceBase;
 	Joueur* joueur;
@@ -566,6 +607,10 @@ bool AireDeJeu::finTour() { // Retourne true si le joueur fini son tour ; false 
 	return true;
 }
 
+/**
+ * Affichage du vainqueur si le nombre de tour maximum est dépassé
+ * @return true si le nombre de tour maximum est dépassé, false sinon
+ */
 bool AireDeJeu::tourMaxAtteint() const {
 	if ((tourDeJeu == 1) && (nbToursActuel == nbToursMAX)) {
 		std::cout << "\nFIN DE PARTIE ! TOUR MAXIMUM DEPASSE ! ";
@@ -588,6 +633,10 @@ bool AireDeJeu::tourMaxAtteint() const {
 	return false;
 }
 
+/**
+ * Affichage du vainqueur si une base est détruite
+ * @return true si une base est détruite, false sinon
+ */
 bool AireDeJeu::baseDetruite() const {
 	if ((jA.getPvBase() <= 0)) {
 		std::cout << "\nFIN DE PARTIE ! VICTOIRE DU JOUEUR B !" << std::endl;

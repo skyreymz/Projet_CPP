@@ -26,16 +26,16 @@ int main() {
 			switch (res) {
 				case 'n' :
 					do {
-						std::cout << "Joueur contre Joueur ('j') / Joueur contre IA ('m') : ";
+						std::cout << "Humain contre Humain ('h') / Humain contre IA ('i') : ";
 						std::cin >> resString;
 						if (resString.length() == 1) {
 							res = resString.at(0);
 						}
 						switch (res) {
-							case 'j':
+							case 'h':
 								[[fallthrough]];
-							case 'm':
-								a->setMode(res == 'm');
+							case 'i':
+								a->setMode(res == 'i');
 								break;
 							default :
 								std::cerr << "Caractère(s) non reconnu(s)" << std::endl;
