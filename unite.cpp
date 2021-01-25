@@ -53,7 +53,7 @@ int Unite::subPV(int atq) {
 }
 
 /**
- * Affichage des caractéristiques de l'attaque de l'unité envers une autre unité
+ * Affichage des caractéristiques de l'attaque de l'Unité envers une autre unité
  *
  * @param1 nomUnite le premier caractère de la classe de l'unité courante
  * @param2 atq les points d'attaques de l'Unite courante
@@ -72,7 +72,7 @@ void Unite::afficheAttaqueUnite(char nomUnite, int atq, int position, Unite* cib
 }
 
 /**
- * Affichage des caractéristiques de l'attaque de l'unité envers la base ennemie
+ * Affichage des caractéristiques de l'attaque de l'Unité envers la base ennemie
  *
  * @param1 nomUnite le premier caractère de la classe de l'Unité courante
  * @param2 atq les points d'attaques de l'Unite courante

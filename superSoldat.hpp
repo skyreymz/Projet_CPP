@@ -14,7 +14,7 @@ class SuperSoldat : public Fantassin {
 		bool getAutreAction() const {return true;};
 		char getNomUnite() const {return 'S';};
 
-		// Méthodes pour effectuer les actions deSuperSoldat
+		// Méthodes pour effectuer les actions de SuperSoldat
 		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur);
 		void deplace(Unite* plateau[12], int i);
 };
