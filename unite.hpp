@@ -36,7 +36,7 @@ class Unite { // CLASSE ABSTRAITE
 		virtual void deplace(Unite* plateau[12], int i) = 0;
 		
 		// Méthodes pour l'affichage des attaques des Unités
-		void afficheAttaqueUnite(char nomUnite, int atq, int position, Unite* cible, int positionCible) const;
+		void afficheAttaqueUnite(char nomUnite, int atq, int position, const Unite* cible, int positionCible) const;
 		void afficheAttaqueBase(char nomUnite, int atq, int position) const;
 };
 

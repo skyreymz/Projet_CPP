@@ -61,7 +61,7 @@ int Unite::subPV(int atq) {
  * @param4 *cible pointeur sur l'Unité subissant l'attaque
  * @param5 positionCible entier correspondant à l'indice de l'Unite cible en jeu
  */
-void Unite::afficheAttaqueUnite(char nomUnite, int atq, int position, Unite* cible, int positionCible) const{
+void Unite::afficheAttaqueUnite(char nomUnite, int atq, int position, const Unite* cible, int positionCible) const{
 	std::cout << nomUnite << '(' << getCampChar() << ")(position " << position << ')';
 	if (atq != -1) {
 	 std::cout << " a enlevé " << atq << "PV à ";
