@@ -2,6 +2,11 @@
 
 Unite::~Unite() {}
 
+/**
+ * Permet d'obtenir un caractère utile à l'affichage en fonction du camp de l'unité
+ * 
+ * @return un caractère représentant une équipe
+ */
 char Unite::getCampChar() const{
 	if (camp == 1) {
 		return 'A';
@@ -10,7 +15,14 @@ char Unite::getCampChar() const{
 	}
 }
 
-
+/**
+ * Surcharge de l'opérateur <<
+ * Permet l'affichage du type de l'unité et de son camp
+ * 
+ * @param flux : ostream& 
+ * @param u : const Unite&
+ * @return ????????????????
+ */
 std::ostream &operator<<(std::ostream &flux, const Unite &u) {
 	char campChar;
 	if (u.getCamp() == 1) {
