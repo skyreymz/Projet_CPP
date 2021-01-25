@@ -10,6 +10,8 @@ Fantassin::~Fantassin() {}
 /**
  * Redéfinition de la méthode attaque
  * Simule l'attaque d'un Fantassin et le transforme en SuperSoldat s'il vainc un Fantassin ennemi
+ * Affiche l'attaque d'un Fantassin si elle a eu lieu
+ * Affiche la transformation en SuperSoldat si elle a eu lieu
  * 
  * @param *plateau tableau de pointeurs d'Unite de taille fixée à 12, contient les pointeurs d'Unite selon leur position en jeu
  * @param i entier correspondant à l'indice de l'Unite courante en jeu
@@ -58,7 +60,8 @@ std::vector<int> Fantassin::attaque(Unite* plateau[12], int i, Joueur* joueur) {
 
 /**
  * Vérifie si l'objet passé en paramètre est un Fantassin
- * 
+ * Affiche la transformation si l'objet passé en paramètre est un Fantassin
+ *
  * @param *unite Unite dont on veut vérifier le type
  * @return true si l'objet passé en paramètre est un Fantassin, false sinon
  */
@@ -75,6 +78,7 @@ bool Fantassin::aVaincuFantassin(const Unite* unite) {
 /**
  * Redéfinition de la méthode deplace
  * Déplace un pointeur de Fantassin vers une case adjacente du tableau de pointeurs d'Unite
+ * Affiche les caractéristiques du déplacement
  * 
  * @param *plateau tableau de pointeurs d'Unite de taille fixée à 12, contient les pointeurs d'Unite selon leur position en jeu
  * @param i entier correspondant à l'indice de l'Unite courante en jeu

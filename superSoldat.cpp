@@ -5,6 +5,7 @@ SuperSoldat::~SuperSoldat() {}
 /**
  * Redéfinition de la méthode attaque
  * Simule l'attaque d'un SuperSoldat
+ * Affiche l'attaque d'un SuperSoldat si elle a eu lieu
  * 
  * @param *plateau tableau de pointeurs d'Unite de taille fixée à 12, contient les pointeurs d'Unite selon leur position en jeu
  * @param i entier correspondant à l'indice de l'Unite courante en jeu
@@ -44,7 +45,8 @@ std::vector<int> SuperSoldat::attaque(Unite* plateau[12], int i, Joueur* joueur)
 /**
  * Redéfinition de la méthode deplace
  * Déplace un pointeur de SuperSoldat vers une case adjacente du tableau de pointeurs d'Unite
- * 
+ * Affiche les caractéristiques du déplacement
+ *
  * @param *plateau tableau de pointeurs d'Unite de taille fixée à 12, contient les pointeurs d'Unite selon leur position en jeu
  * @param i entier correspondant à l'indice de l'Unite courante en jeu
  */
