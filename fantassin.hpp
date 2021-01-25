@@ -25,7 +25,7 @@ class Fantassin : public Unite {
 
 		// Méthodes pour effectuer les actions de Fantassin
 		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* Joueur);
-		bool aVaincuFantassin(Unite* unite);
+		bool aVaincuFantassin(const Unite* unite);
 		void deplace(Unite* plateau[12], int i);
 };
 

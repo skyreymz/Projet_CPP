@@ -62,7 +62,7 @@ std::vector<int> Fantassin::attaque(Unite* plateau[12], int i, Joueur* joueur) {
  * @param unite Unite dont on veut vérifier le type
  * @return true si l'objet passé en paramètre est un Fantassin, false sinon
  */
-bool Fantassin::aVaincuFantassin(Unite* unite) { 
+bool Fantassin::aVaincuFantassin(const Unite* unite) { 
     if (unite->getNomUnite() == 'F') {
         std::cout << "Transformation de " << *unite << " en Super-Soldat" << std::endl;
         return true;
