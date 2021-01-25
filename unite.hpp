@@ -10,7 +10,8 @@ class Unite { // CLASSE ABSTRAITE
 	
 	int camp; // 1 (Unite du joueur A) ou -1 (Unite du joueur B)
 	int pv;
-	bool autreAction;
+	bool autreAction; // true si l'unite n'a pas deja attaque, false sinon
+
 
 	public:
 		Unite(int equipe, int pdv, bool oneMore) : camp(equipe), pv(pdv), autreAction(oneMore) {}
@@ -27,11 +28,11 @@ class Unite { // CLASSE ABSTRAITE
 		friend std::ostream &operator<<(std::ostream &flux, const Unite &u); // Affichage du Nom d'unité et de son camps
 
 		// Méthodes de modification de valeur des attributs
-		int subPV(int atq); // Soutrait et retourne le nombre de points de vie soustrait si l'unité est toujours en vie -1 sinon
+		int subPV(int atq);
 		void setAutreAction(bool b) {autreAction = b;};
 
 		// Méthodes pour effectuer les actions des Unités
-		virtual std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur) = 0; // Renvoie un vecteur d'indices des unites vaincus
+		virtual std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur) = 0;
 		virtual void deplace(Unite* plateau[12], int i) = 0;
 		
 		// Méthodes pour l'affichage des attaques des Unités

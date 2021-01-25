@@ -10,6 +10,7 @@ class Fantassin : public Unite {
 	static int atq;
 	static int portee[1];
 
+
 	public:
 		Fantassin(int equipe, int pdv = 10, bool oneMore = true) : Unite(equipe, pdv, oneMore) {}
 		~Fantassin();
@@ -20,10 +21,10 @@ class Fantassin : public Unite {
 		static int getPortee() {return portee[0];};
 		bool getAutreAction() const {return Unite::getAutreAction();};
 		char getNomUnite() const {return 'F';};
-		int getPrixDeces() {return prix/2;}; // pour la classe SuperSoldat
+		int getPrixDeces() {return prix/2;};
 
 		// Méthodes pour effectuer les actions de Fantassin
-		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* Joueur); // Renvoie un vecteur d'indices des unites vaincus
+		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* Joueur);
 		bool aVaincuFantassin(Unite* unite);
 		void deplace(Unite* plateau[12], int i);
 };

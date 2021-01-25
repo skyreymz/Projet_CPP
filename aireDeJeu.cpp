@@ -41,13 +41,15 @@ void AireDeJeu::afficherTour() const {
 }
 
 /**
- * Stockage :
+ * Surcharge de l'opérateur <<
+ * Stockage (pour l'affichage) :
  *     - des valeurs des pièces d'or des joueurs
  *     - des points de vie de la base des joueurs
  *     - de l'aire de jeu avec les unités
- * @param1 flux reçoit les informations
- * @param2 a l'instance à traiter
- * @return flux
+ *
+ * @param1 &flux reçoit les informations
+ * @param2 &a une référence de l'instance à traiter
+ * @return &flux
  */
 std::ostream& operator<<(std::ostream &flux, AireDeJeu const &a) {
 	flux << "\nPièces d'or du Joueur A : " << a.jA.getArgent() << std::endl;
@@ -121,6 +123,7 @@ void AireDeJeu::reset() {
 /**
  * Modification de l'instance à partir d'un fichier de sauvegarde.
  * Affichage de l'erreur et de sa localisation si le fichier contient des informations incohérentes. Affichage du succès dans le cas contraire.
+ *
  * @param entree le nom du fichier de sauvegarde
  * return true si la modification a été effectuée, false sinon
  */
@@ -272,6 +275,7 @@ bool AireDeJeu::charger(std::string entree) {
 /**
  * Stockage des informations de l'instance dans un fichier de sauvegarde
  * Affichage de l'erreur si l'instance contient des informations incohérentes. Affichage du succès dans le cas contraire
+ *
  * @param sortie le nom du fichier de sauvegarde (ne doit contenir ni ".h" ni ".cpp")
  * return true si la sauvegarde a été effectuée, false sinon
  */
@@ -460,6 +464,7 @@ void AireDeJeu::jouerActions() {
  * Affichage des actions pouvant être réalisées par le joueur
  * Affichage et réalisation de l'action souhaitée ; Affichage de l'erreur si l'action ne peut pas être réalisée
  * Modification de tourDeJeu pour passer au tour du joueur suivant
+ *
  * @return true si le joueur fini son tour ; false s'il quitte la partie
  */
 bool AireDeJeu::finTour() {
@@ -609,6 +614,7 @@ bool AireDeJeu::finTour() {
 
 /**
  * Affichage du vainqueur si le nombre de tour maximum est dépassé
+ *
  * @return true si le nombre de tour maximum est dépassé, false sinon
  */
 bool AireDeJeu::tourMaxAtteint() const {
@@ -635,6 +641,7 @@ bool AireDeJeu::tourMaxAtteint() const {
 
 /**
  * Affichage du vainqueur si une base est détruite
+ *
  * @return true si une base est détruite, false sinon
  */
 bool AireDeJeu::baseDetruite() const {

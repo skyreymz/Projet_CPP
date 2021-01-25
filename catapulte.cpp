@@ -6,8 +6,18 @@ std::pair<int,int> Catapulte::portee[3] = {std::make_pair(2,3), std::make_pair(3
 
 Catapulte::~Catapulte() {}
 
+/**
+ * Redéfinition de la méthode attaque
+ * Simule l'attaque d'une Catapulte
+ * 
+ * @param plateau tableau de pointeurs d'Unite de taille fixée à 12, contient les pointeurs d'Unite selon leur position en jeu
+ * @param i entier correspondant à l'indice de l'Unite courante en jeu
+ * @param joueur pointeur sur le Joueur adverse
+ * @return un vecteur d'indices du tableau, correspondant aux unités vaincus
+ */
 std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
-    int indiceMAX;
+
+    int indiceMAX; // représente l'indice de la base adverse
     if (getCamp() == 1) {
         indiceMAX = 11;
     }
@@ -16,9 +26,9 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
     }
 
     for (int j=0; j<3; j++) {
-        int positionCibleFirst = i + getCamp() * portee[j].first;
-        int positionCibleSecond = i + getCamp() * portee[j].second;
-        int pvRetire;
+        int positionCibleFirst = i + getCamp() * portee[j].first; // représente l'indice du premier ennemi sur les deux touchés par l'attaque, potentiellement attaquables
+        int positionCibleSecond = i + getCamp() * portee[j].second; // représente l'indice du deuxième ennemi sur les deux touchés par l'attaque, potentiellement attaquables
+        int pvRetire; // représente le nombre de points de vie retirés à la cible
 
         if (j != 2) {
 
@@ -28,7 +38,7 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                         pvRetire = plateau[positionCibleFirst]->subPV(atq);
                         afficheAttaqueUnite(getNomUnite(), pvRetire, i, plateau[positionCibleFirst], positionCibleFirst);
 
-                        std::vector<int> vaincus;
+                        std::vector<int> vaincus; // représente les indices du tableau des unités vaincus
                         if (plateau[positionCibleFirst]->estVaincu()) {
                             vaincus.push_back(positionCibleFirst);
                         }
@@ -41,7 +51,7 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                                     vaincus.push_back(positionCibleSecond);
                                 }
                             }
-                            else if ( (positionCibleSecond) == indiceMAX ) {
+                            else if (positionCibleSecond == indiceMAX) {
                                 pvRetire = joueur->subPvBase(atq);
                                 afficheAttaqueBase(getNomUnite(), pvRetire, i);
                             }
@@ -52,7 +62,7 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                 
                     }
                 }
-                else if ( positionCibleFirst == indiceMAX ) {
+                else if (positionCibleFirst == indiceMAX) {
                     pvRetire = joueur->subPvBase(atq);
                     afficheAttaqueBase(getNomUnite(), pvRetire, i);
                     setAutreAction(false);
@@ -75,7 +85,7 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
                         setAutreAction(false);
                     }
                 }
-                else if ( (positionCibleSecond) == indiceMAX ) {
+                else if (positionCibleSecond == indiceMAX) {
                     pvRetire = joueur->subPvBase(atq);
                     afficheAttaqueBase(getNomUnite(), pvRetire, i);
                     setAutreAction(false);
@@ -98,6 +108,13 @@ std::vector<int> Catapulte::attaque(Unite* plateau[12], int i, Joueur* joueur) {
     return std::vector<int>()={};
 }
 
+/**
+ * Redéfinition de la méthode deplace
+ * Déplace un pointeur de Catapulte vers une case adjacente du tableau de pointeurs d'Unite
+ * 
+ * @param plateau tableau de pointeurs d'Unite de taille fixée à 12, contient les pointeurs d'Unite selon leur position en jeu
+ * @param i entier correspondant à l'indice de l'Unite courante en jeu
+ */
 void Catapulte::deplace(Unite* plateau[12], int i) {
     plateau[i + getCamp()] = new Catapulte( plateau[i]->getCamp(), plateau[i]->getPV());
 	std::cout << *(plateau[i]) << "(position " << i << ") a avancé à la position " << i+getCamp() << std::endl;

@@ -22,7 +22,7 @@ class Catapulte : public Unite {
 		int getPrixDeces() {return prix/2;};
 
 		// Méthodes pour effectuer les actions de Catapulte
-		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur); // Renvoie un vecteur d'indices des unites vaincus
+		std::vector<int> attaque(Unite* plateau[12], int i, Joueur* joueur);
 		void deplace(Unite* plateau[12], int i);
 };
 
